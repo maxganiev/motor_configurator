@@ -3,6 +3,8 @@ const { fillExtraOptions } = require('./motorExtraOptions');
 const { optionsConfig } = require('./motorExtraOptions');
 const { setMotorDrawAndDims } = require('./setMotorDrawAndDims');
 const { assetsConfig } = require('./setMotorDrawAndDims');
+const { setDims } = require('./setChartDims');
+const { assets } = require('./setChartDims');
 
 //router init:
 const router = express.Router();
@@ -25,16 +27,25 @@ router.post('/', async (req, res) => {
 
 		fillExtraOptions(motorItem.frameSize, motorItem.encoderIsChecked, motorItem.ventSystemOptionValue);
 
-		setMotorDrawAndDims(
-			motorItem.model,
+		// setMotorDrawAndDims(
+		// 	motorItem.model,
+		// 	motorItem.encoderIsChecked,
+		// 	motorItem.conicShaftIsChecked,
+		// 	motorItem.ventSystemOptionValue,
+		// 	motorItem.brakeType,
+		// 	motorItem.pawType
+		// );
+
+		setDims(
+			motorItem.frameSize,
+			motorItem.brakeType,
+			motorItem.ventSystemOptionValue,
 			motorItem.encoderIsChecked,
 			motorItem.conicShaftIsChecked,
-			motorItem.ventSystemOptionValue,
-			motorItem.brakeType,
 			motorItem.pawType
 		);
 
-		res.json({ motorItem, assetsConfig });
+		res.json({ motorItem, assetsConfig, assets });
 	} catch (error) {
 		console.error(error.message);
 		res.status(500).send('Server Error');
