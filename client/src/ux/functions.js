@@ -1,4 +1,3 @@
-import { inputModel } from './global_dom';
 import { selectorModel } from './global_dom';
 import { selectorRpm } from './global_dom';
 import { selectorPower } from './global_dom';
@@ -11,6 +10,9 @@ import { fillExtraOptions } from '../motordata/options_list';
 import { optionsConfig } from '../motordata/options_list';
 import { regex } from './global_vars';
 import { motorsAllSeriesFlatten } from '../motordata/models';
+import { imageDrawing } from './global_dom';
+import { imgSrcData } from '../motordata/imgSrcData';
+import { setImgSrcData } from '../motordata/imgSrcData';
 
 //получение списка моделей и очистка UI:
 export function searchModel(e) {
@@ -33,7 +35,7 @@ export function searchModel(e) {
 }
 
 //селективный объект для получения опций:
-const optionsSelector = {
+export const optionsSelector = {
 	setOptionsList: function () {
 		const sliced = selectorModel.value
 			.slice(4)
@@ -47,48 +49,76 @@ const optionsSelector = {
 		this.encoderIsChecked = checkboxEncoder.checked;
 		this.conicShaftIsChecked = checkboxConicShaft.checked;
 		this.pawType = selectorPaws.value === '' ? 'Лапы (1001/1081)' : selectorPaws.value;
-		console.log(this);
 
-		fillExtraOptions(this.frameSize, this.encoderIsChecked, this.ventSystemOptionValue);
+		fillExtraOptions(this.frameSize, this.encoderIsChecked, this.ventSystemOptionValue, this.brakeType);
+
+		const _this = this;
+		this.currSelection = {
+			e: _this.encoderIsChecked,
+			v: _this.ventSystemOptionValue,
+			b: _this.brakeType,
+		};
 	},
 };
 
 //получение списка опций из полей ввода (селекторы, чекбоксы):
-export function getOptions(selectorsId) {
+export function getOptions(selectorsId, operationType) {
 	if (selectorModel.value !== '-') {
 		optionsSelector.setOptionsList();
 
 		const { electroMagneticBreak, paws, ventSystem } = optionsConfig;
 
 		if (Array.isArray(selectorsId)) {
-			populateOptionsList(selectorsId, [electroMagneticBreak.splice(1), paws, ventSystem.splice(1)]);
-		} else {
-			populateOptionsList(selectorsId, [electroMagneticBreak.splice(1)]);
+			if (selectorsId.length > 1) {
+				populateOptionsList(selectorsId, [electroMagneticBreak.splice(1), paws, ventSystem.splice(1)], operationType);
+			} else {
+				if (selectorsId[0].id === 'selector-breaks') {
+					populateOptionsList(selectorsId, [electroMagneticBreak], operationType);
+				} else {
+					populateOptionsList(selectorsId, [ventSystem], operationType);
+				}
+			}
 		}
-
 		checkboxConicShaft.disabled = optionsConfig.conicShaftDisabled;
+
+		const { frameSize, brakeType, encoderIsChecked, ventSystemOptionValue, conicShaftIsChecked, pawType } = optionsSelector;
+
+		setImgSrcData(frameSize, encoderIsChecked, ventSystemOptionValue, conicShaftIsChecked);
+
+		setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValue, conicShaftIsChecked, pawType);
 	}
 }
 
 //функция для наполнения списка опций:
-function populateOptionsList(selectorsId, srcData) {
+function populateOptionsList(selectorsId, srcData, operationType) {
 	selectorsId !== null && selectorsId.forEach((selector, index) => fillOptions(selector, srcData[index]));
-	console.log(srcData);
 
 	function fillOptions(parentSelector, srcData) {
-		parentSelector.id !== 'selector-paws'
-			? Array.from(parentSelector.children).forEach((child, index) => index !== 0 && child.remove())
-			: Array.from(parentSelector.children).forEach((child) => child.remove());
+		//перезаливка опций:
+		if (operationType === 'populateOptionsList') {
+			parentSelector.id !== 'selector-paws'
+				? Array.from(parentSelector.children).forEach((child, index) => index !== 0 && child.remove())
+				: Array.from(parentSelector.children).forEach((child) => child.remove());
 
-		srcData.forEach((obj) => {
-			const option = document.createElement('option');
-			option.value = obj.type;
-			option.innerText = obj.type;
-			option.disabled = (obj.selectable !== undefined || typeof obj.selectable !== 'undefined') && !obj.selectable;
-			option.setAttribute('data-itemId', obj.id);
+			srcData.forEach((obj) => {
+				const option = document.createElement('option');
+				option.value = obj.type;
+				option.innerText = obj.type;
+				option.disabled = (obj.selectable !== undefined || typeof obj.selectable !== 'undefined') && !obj.selectable;
+				option.setAttribute('data-itemId', obj.id);
 
-			parentSelector.appendChild(option);
-		});
+				parentSelector.appendChild(option);
+			});
+		}
+
+		//перезаливка свойств disabled:
+		if (operationType === 'resetOptionsList') {
+			Array.from(selectorsId[0].children).forEach((child, index) => {
+				child.disabled = !srcData[index].selectable;
+			});
+
+			checkboxEncoder.disabled = !optionsConfig.encoderIsDisabled;
+		}
 	}
 }
 
@@ -121,4 +151,79 @@ export function getModel(query, targetArr) {
 			Array.from(selectorModel.children).forEach((child, index) => index !== 0 && child.remove());
 		}
 	}, 400);
+}
+
+//выбор чертежа в зависимости от ввода (селекторы / чекбоксы):
+function setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValue, conicShaftIsChecked, pawType) {
+	const pathStart =
+		brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked
+			? 'https://www.elcomspb.ru/image/catalog/products/to/engine/adchr/'
+			: 'https://www.elcomspb.ru/image/catalog/products/to/engine/5ai/new/';
+
+	const path_vent_part =
+		ventSystemOptionValue.includes('наездник') && frameSize >= 112 && frameSize <= 132
+			? 'naezd/do_132/'
+			: ventSystemOptionValue.includes('наездник') && frameSize > 132 && frameSize <= 250
+			? 'naezd/160_250/'
+			: ventSystemOptionValue.includes('наездник') && frameSize > 250
+			? 'naezd/ot_280/'
+			: '';
+
+	const path_shaft_part = conicShaftIsChecked === true ? 'shaft/' : '';
+	let restPath = '';
+	let completePath = '';
+
+	switch (pawType) {
+		case 'Лапы (1001/1081)':
+			//case for DIN:
+			restPath =
+				brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked
+					? path_vent_part + path_shaft_part + 'paws/'
+					: '1001_small.png';
+			break;
+
+		case 'Лапы + Фланец (2001/2081)':
+			//case for DIN:
+			restPath =
+				brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked
+					? path_vent_part + path_shaft_part + 'large_flange_paws/'
+					: frameSize <= 180 &&
+					  (brakeType === '-' || !encoderIsChecked || ventSystemOptionValue === '-' || !conicShaftIsChecked)
+					? '2001_below_small.png'
+					: '2001_over_small.png';
+
+			break;
+
+		case 'Фланец (3081)':
+			//case for DIN:
+			restPath =
+				brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked
+					? path_vent_part + path_shaft_part + 'flange/'
+					: frameSize <= 132 &&
+					  (brakeType === '-' || !encoderIsChecked || ventSystemOptionValue === '-' || !conicShaftIsChecked)
+					? '3001_below_small.png'
+					: '3001_over.png';
+
+			break;
+
+		case 'Лапы + Малый фланец (2181)':
+			//case for DIN:
+			restPath =
+				brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked
+					? path_vent_part + path_shaft_part + 'little_flange_paws/'
+					: '2101_small.png';
+
+			break;
+
+		//case for DIN (B14:)
+		//restPath = path_shaft_part + 'little_flange/';
+	}
+
+	const currSelectionIndex = optionsConfig.options.findIndex(
+		(optionObj) => JSON.stringify(optionObj) === JSON.stringify(optionsSelector.currSelection)
+	);
+
+	completePath = `${pathStart}${restPath}${imgSrcData.data[currSelectionIndex].path}`;
+
+	imageDrawing.setAttribute('src', completePath);
 }

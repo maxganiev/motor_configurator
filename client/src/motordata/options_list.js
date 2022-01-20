@@ -1,6 +1,6 @@
 export const optionsConfig = {};
 
-export const fillExtraOptions = function (motorFrameSize, encoderIsChecked, ventSystemOptionValue) {
+export const fillExtraOptions = function (motorFrameSize, encoderIsChecked, ventSystemOptionValue, brakeType) {
 	//термодатчики (UI: button):
 	optionsConfig.tempDataSensors = [
 		{
@@ -54,6 +54,9 @@ export const fillExtraOptions = function (motorFrameSize, encoderIsChecked, vent
 
 	//конический вал (UI: checkbox):
 	optionsConfig.conicShaftDisabled = motorFrameSize < 200 ? true : false;
+
+	//энкодер:
+	optionsConfig.encoderIsDisabled = brakeType.includes('независимым питанием') || brakeType === '-' ? true : false;
 
 	//вибродатчики (UI: checkbox):
 	optionsConfig.tempDataSensors = {
@@ -242,7 +245,7 @@ export const fillExtraOptions = function (motorFrameSize, encoderIsChecked, vent
 			group: 'Независимая вентиляция',
 			type: 'Встроенный вентилятор с питанием 220В',
 			description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 220В)',
-			selectable: motorFrameSize <= 250 ? true : false,
+			selectable: motorFrameSize <= 250 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
 		},
 
 		{
@@ -250,7 +253,7 @@ export const fillExtraOptions = function (motorFrameSize, encoderIsChecked, vent
 			group: 'Независимая вентиляция',
 			type: 'Встроенный вентилятор с питанием 380В',
 			description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 380В)',
-			selectable: motorFrameSize >= 132 ? true : false,
+			selectable: motorFrameSize >= 132 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
 		},
 
 		{
@@ -258,15 +261,44 @@ export const fillExtraOptions = function (motorFrameSize, encoderIsChecked, vent
 			group: 'Независимая вентиляция',
 			type: 'Пристроенный вентилятор (наездник) с питанием 220В',
 			description: 'Укомплектован узлом независимой вентиляции (пристроенный вентилятор (наездник) с питанием 220В)',
-			selectable: motorFrameSize >= 112 && motorFrameSize <= 200 ? true : false,
+			selectable:
+				motorFrameSize >= 112 &&
+				((motorFrameSize <= 200 && brakeType.includes('независимым питанием')) || brakeType === '-')
+					? true
+					: false,
 		},
 
 		{
 			id: 'V4',
 			group: 'Независимая вентиляция',
-			type: 'Встроенный вентилятор с питанием 380В',
-			description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 380В)',
-			selectable: motorFrameSize >= 225 ? true : false,
+			type: 'Пристроенный вентилятор (наездник) с питанием 380В',
+			description: 'Укомплектован узлом независимой вентиляции (пристроенный вентилятор (наездник) с питанием 380В)',
+			selectable: motorFrameSize >= 225 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
 		},
 	];
+
+	const options = [];
+	const encoderOptions = [true, false];
+	const ventOptions = optionsConfig.ventSystem.map((obj) => obj.type);
+
+	if (encoderIsChecked || ventSystemOptionValue !== '-') {
+		const brakeOptions = optionsConfig.electroMagneticBreak
+			.filter((obj) => obj.type.includes('независимым питанием') || obj.type.includes('-'))
+			.map((obj) => obj.type);
+
+		encoderOptions.forEach((e) => {
+			ventOptions.forEach((v) => {
+				brakeOptions.forEach((b) => {
+					options.push({ e, v, b });
+				});
+			});
+		});
+	} else {
+		const brakeOptions = optionsConfig.electroMagneticBreak.map((obj) => obj.type);
+		brakeOptions.forEach((b) => {
+			options.push({ e: false, v: '-', b });
+		});
+	}
+
+	optionsConfig.options = options;
 };

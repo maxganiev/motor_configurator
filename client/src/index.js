@@ -1,2 +1,5 @@
 import { globeEvHandler } from './ux/event_listeners';
-globeEvHandler();
+
+document.addEventListener('DOMContentLoaded', () => {
+	globeEvHandler();
+});

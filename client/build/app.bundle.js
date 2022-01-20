@@ -3944,6 +3944,7 @@ var selectorPaws = exports.selectorPaws = document.getElementById('selector-paws
 var checkboxEncoder = exports.checkboxEncoder = document.getElementById('checkbox-encoder');
 var checkboxConicShaft = exports.checkboxConicShaft = document.getElementById('checkbox-conicShaft');
 var selectorVentSystem = exports.selectorVentSystem = document.getElementById('selector-ventSystem');
+var imageDrawing = exports.imageDrawing = document.getElementById('img-drawing');
 
 /***/ }),
 /* 131 */
@@ -9525,7 +9526,9 @@ module.exports = function (regExp, replace) {
 
 var _event_listeners = __webpack_require__(335);
 
-(0, _event_listeners.globeEvHandler)();
+document.addEventListener('DOMContentLoaded', function () {
+	(0, _event_listeners.globeEvHandler)();
+});
 
 /***/ }),
 /* 335 */
@@ -9552,31 +9555,31 @@ function globeEvHandler() {
 	};
 
 	//selecting a motor model:
-	_global_dom.selectorModel.addEventListener('change', function (e) {
-		(0, _functions.getOptions)([_global_dom.selectorBrakes, _global_dom.selectorPaws, _global_dom.selectorVentSystem]);
+	_global_dom.selectorModel.addEventListener('change', function () {
+		(0, _functions.getOptions)([_global_dom.selectorBrakes, _global_dom.selectorPaws, _global_dom.selectorVentSystem], 'populateOptionsList');
 	});
 	//selecting a paw type:
-	_global_dom.selectorPaws.addEventListener('change', function (e) {
+	_global_dom.selectorPaws.addEventListener('change', function () {
 		(0, _functions.getOptions)(null);
 	});
 
 	//selecting a breaks type:
-	_global_dom.selectorBrakes.addEventListener('change', function (e) {
-		(0, _functions.getOptions)(null);
+	_global_dom.selectorBrakes.addEventListener('change', function () {
+		(0, _functions.getOptions)([_global_dom.selectorVentSystem], 'resetOptionsList');
 	});
 
 	//selecting vent system type:
 	_global_dom.selectorVentSystem.addEventListener('change', function () {
-		(0, _functions.getOptions)([_global_dom.selectorBrakes]);
+		(0, _functions.getOptions)([_global_dom.selectorBrakes], 'resetOptionsList');
 	});
 
 	//choosing encoder:
-	_global_dom.checkboxEncoder.addEventListener('change', function (e) {
-		(0, _functions.getOptions)([_global_dom.selectorBrakes]);
+	_global_dom.checkboxEncoder.addEventListener('change', function () {
+		(0, _functions.getOptions)([_global_dom.selectorBrakes], 'resetOptionsList');
 	});
 
 	//chosing conic shaft:
-	_global_dom.checkboxConicShaft.addEventListener('change', function (e) {
+	_global_dom.checkboxConicShaft.addEventListener('change', function () {
 		(0, _functions.getOptions)(null);
 	});
 }
@@ -9591,6 +9594,7 @@ function globeEvHandler() {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.optionsSelector = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -9605,6 +9609,8 @@ var _options_list = __webpack_require__(337);
 var _global_vars = __webpack_require__(338);
 
 var _models = __webpack_require__(339);
+
+var _imgSrcData = __webpack_require__(340);
 
 //получение списка моделей и очистка UI:
 function searchModel(e) {
@@ -9633,7 +9639,7 @@ function searchModel(e) {
 }
 
 //селективный объект для получения опций:
-var optionsSelector = {
+var optionsSelector = exports.optionsSelector = {
 	setOptionsList: function setOptionsList() {
 		var sliced = _global_dom.selectorModel.value.slice(4).split('').map(function (w) {
 			return w !== ' ' && !isNaN(Number(w)) && Number(w);
@@ -9646,14 +9652,20 @@ var optionsSelector = {
 		this.encoderIsChecked = _global_dom.checkboxEncoder.checked;
 		this.conicShaftIsChecked = _global_dom.checkboxConicShaft.checked;
 		this.pawType = _global_dom.selectorPaws.value === '' ? 'Лапы (1001/1081)' : _global_dom.selectorPaws.value;
-		console.log(this);
 
-		(0, _options_list.fillExtraOptions)(this.frameSize, this.encoderIsChecked, this.ventSystemOptionValue);
+		(0, _options_list.fillExtraOptions)(this.frameSize, this.encoderIsChecked, this.ventSystemOptionValue, this.brakeType);
+
+		var _this = this;
+		this.currSelection = {
+			e: _this.encoderIsChecked,
+			v: _this.ventSystemOptionValue,
+			b: _this.brakeType
+		};
 	}
 };
 
 //получение списка опций из полей ввода (селекторы, чекбоксы):
-function getOptions(selectorsId) {
+function getOptions(selectorsId, operationType) {
 	if (_global_dom.selectorModel.value !== '-') {
 		optionsSelector.setOptionsList();
 
@@ -9663,38 +9675,66 @@ function getOptions(selectorsId) {
 
 
 		if (Array.isArray(selectorsId)) {
-			populateOptionsList(selectorsId, [electroMagneticBreak.splice(1), paws, ventSystem.splice(1)]);
-		} else {
-			populateOptionsList(selectorsId, [electroMagneticBreak.splice(1)]);
+			if (selectorsId.length > 1) {
+				populateOptionsList(selectorsId, [electroMagneticBreak.splice(1), paws, ventSystem.splice(1)], operationType);
+			} else {
+				if (selectorsId[0].id === 'selector-breaks') {
+					populateOptionsList(selectorsId, [electroMagneticBreak], operationType);
+				} else {
+					populateOptionsList(selectorsId, [ventSystem], operationType);
+				}
+			}
 		}
-
 		_global_dom.checkboxConicShaft.disabled = _options_list.optionsConfig.conicShaftDisabled;
+
+		var frameSize = optionsSelector.frameSize,
+		    brakeType = optionsSelector.brakeType,
+		    encoderIsChecked = optionsSelector.encoderIsChecked,
+		    ventSystemOptionValue = optionsSelector.ventSystemOptionValue,
+		    conicShaftIsChecked = optionsSelector.conicShaftIsChecked,
+		    pawType = optionsSelector.pawType;
+
+
+		(0, _imgSrcData.setImgSrcData)(frameSize, encoderIsChecked, ventSystemOptionValue, conicShaftIsChecked);
+
+		setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValue, conicShaftIsChecked, pawType);
 	}
 }
 
 //функция для наполнения списка опций:
-function populateOptionsList(selectorsId, srcData) {
+function populateOptionsList(selectorsId, srcData, operationType) {
 	selectorsId !== null && selectorsId.forEach(function (selector, index) {
 		return fillOptions(selector, srcData[index]);
 	});
-	console.log(srcData);
 
 	function fillOptions(parentSelector, srcData) {
-		parentSelector.id !== 'selector-paws' ? Array.from(parentSelector.children).forEach(function (child, index) {
-			return index !== 0 && child.remove();
-		}) : Array.from(parentSelector.children).forEach(function (child) {
-			return child.remove();
-		});
+		//перезаливка опций:
+		if (operationType === 'populateOptionsList') {
+			parentSelector.id !== 'selector-paws' ? Array.from(parentSelector.children).forEach(function (child, index) {
+				return index !== 0 && child.remove();
+			}) : Array.from(parentSelector.children).forEach(function (child) {
+				return child.remove();
+			});
 
-		srcData.forEach(function (obj) {
-			var option = document.createElement('option');
-			option.value = obj.type;
-			option.innerText = obj.type;
-			option.disabled = (obj.selectable !== undefined || typeof obj.selectable !== 'undefined') && !obj.selectable;
-			option.setAttribute('data-itemId', obj.id);
+			srcData.forEach(function (obj) {
+				var option = document.createElement('option');
+				option.value = obj.type;
+				option.innerText = obj.type;
+				option.disabled = (obj.selectable !== undefined || typeof obj.selectable !== 'undefined') && !obj.selectable;
+				option.setAttribute('data-itemId', obj.id);
 
-			parentSelector.appendChild(option);
-		});
+				parentSelector.appendChild(option);
+			});
+		}
+
+		//перезаливка свойств disabled:
+		if (operationType === 'resetOptionsList') {
+			Array.from(selectorsId[0].children).forEach(function (child, index) {
+				child.disabled = !srcData[index].selectable;
+			});
+
+			_global_dom.checkboxEncoder.disabled = !_options_list.optionsConfig.encoderIsDisabled;
+		}
 	}
 }
 
@@ -9734,6 +9774,53 @@ function getModel(query, targetArr) {
 	}, 400);
 }
 
+//выбор чертежа в зависимости от ввода (селекторы / чекбоксы):
+function setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValue, conicShaftIsChecked, pawType) {
+	var pathStart = brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked ? 'https://www.elcomspb.ru/image/catalog/products/to/engine/adchr/' : 'https://www.elcomspb.ru/image/catalog/products/to/engine/5ai/new/';
+
+	var path_vent_part = ventSystemOptionValue.includes('наездник') && frameSize >= 112 && frameSize <= 132 ? 'naezd/do_132/' : ventSystemOptionValue.includes('наездник') && frameSize > 132 && frameSize <= 250 ? 'naezd/160_250/' : ventSystemOptionValue.includes('наездник') && frameSize > 250 ? 'naezd/ot_280/' : '';
+
+	var path_shaft_part = conicShaftIsChecked === true ? 'shaft/' : '';
+	var restPath = '';
+	var completePath = '';
+
+	switch (pawType) {
+		case 'Лапы (1001/1081)':
+			//case for DIN:
+			restPath = brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked ? path_vent_part + path_shaft_part + 'paws/' : '1001_small.png';
+			break;
+
+		case 'Лапы + Фланец (2001/2081)':
+			//case for DIN:
+			restPath = brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked ? path_vent_part + path_shaft_part + 'large_flange_paws/' : frameSize <= 180 && (brakeType === '-' || !encoderIsChecked || ventSystemOptionValue === '-' || !conicShaftIsChecked) ? '2001_below_small.png' : '2001_over_small.png';
+
+			break;
+
+		case 'Фланец (3081)':
+			//case for DIN:
+			restPath = brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked ? path_vent_part + path_shaft_part + 'flange/' : frameSize <= 132 && (brakeType === '-' || !encoderIsChecked || ventSystemOptionValue === '-' || !conicShaftIsChecked) ? '3001_below_small.png' : '3001_over.png';
+
+			break;
+
+		case 'Лапы + Малый фланец (2181)':
+			//case for DIN:
+			restPath = brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked ? path_vent_part + path_shaft_part + 'little_flange_paws/' : '2101_small.png';
+
+			break;
+
+		//case for DIN (B14:)
+		//restPath = path_shaft_part + 'little_flange/';
+	}
+
+	var currSelectionIndex = _options_list.optionsConfig.options.findIndex(function (optionObj) {
+		return JSON.stringify(optionObj) === JSON.stringify(optionsSelector.currSelection);
+	});
+
+	completePath = '' + pathStart + restPath + _imgSrcData.imgSrcData.data[currSelectionIndex].path;
+
+	_global_dom.imageDrawing.setAttribute('src', completePath);
+}
+
 /***/ }),
 /* 337 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -9746,7 +9833,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var optionsConfig = exports.optionsConfig = {};
 
-var fillExtraOptions = exports.fillExtraOptions = function fillExtraOptions(motorFrameSize, encoderIsChecked, ventSystemOptionValue) {
+var fillExtraOptions = exports.fillExtraOptions = function fillExtraOptions(motorFrameSize, encoderIsChecked, ventSystemOptionValue, brakeType) {
 	//термодатчики (UI: button):
 	optionsConfig.tempDataSensors = [{
 		id: 'Б1',
@@ -9788,6 +9875,9 @@ var fillExtraOptions = exports.fillExtraOptions = function fillExtraOptions(moto
 
 	//конический вал (UI: checkbox):
 	optionsConfig.conicShaftDisabled = motorFrameSize < 200 ? true : false;
+
+	//энкодер:
+	optionsConfig.encoderIsDisabled = brakeType.includes('независимым питанием') || brakeType === '-' ? true : false;
 
 	//вибродатчики (UI: checkbox):
 	optionsConfig.tempDataSensors = {
@@ -9930,26 +10020,57 @@ var fillExtraOptions = exports.fillExtraOptions = function fillExtraOptions(moto
 		group: 'Независимая вентиляция',
 		type: 'Встроенный вентилятор с питанием 220В',
 		description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 220В)',
-		selectable: motorFrameSize <= 250 ? true : false
+		selectable: motorFrameSize <= 250 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false
 	}, {
 		id: 'V2',
 		group: 'Независимая вентиляция',
 		type: 'Встроенный вентилятор с питанием 380В',
 		description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 380В)',
-		selectable: motorFrameSize >= 132 ? true : false
+		selectable: motorFrameSize >= 132 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false
 	}, {
 		id: 'V3',
 		group: 'Независимая вентиляция',
 		type: 'Пристроенный вентилятор (наездник) с питанием 220В',
 		description: 'Укомплектован узлом независимой вентиляции (пристроенный вентилятор (наездник) с питанием 220В)',
-		selectable: motorFrameSize >= 112 && motorFrameSize <= 200 ? true : false
+		selectable: motorFrameSize >= 112 && (motorFrameSize <= 200 && brakeType.includes('независимым питанием') || brakeType === '-') ? true : false
 	}, {
 		id: 'V4',
 		group: 'Независимая вентиляция',
-		type: 'Встроенный вентилятор с питанием 380В',
-		description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 380В)',
-		selectable: motorFrameSize >= 225 ? true : false
+		type: 'Пристроенный вентилятор (наездник) с питанием 380В',
+		description: 'Укомплектован узлом независимой вентиляции (пристроенный вентилятор (наездник) с питанием 380В)',
+		selectable: motorFrameSize >= 225 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false
 	}];
+
+	var options = [];
+	var encoderOptions = [true, false];
+	var ventOptions = optionsConfig.ventSystem.map(function (obj) {
+		return obj.type;
+	});
+
+	if (encoderIsChecked || ventSystemOptionValue !== '-') {
+		var brakeOptions = optionsConfig.electroMagneticBreak.filter(function (obj) {
+			return obj.type.includes('независимым питанием') || obj.type.includes('-');
+		}).map(function (obj) {
+			return obj.type;
+		});
+
+		encoderOptions.forEach(function (e) {
+			ventOptions.forEach(function (v) {
+				brakeOptions.forEach(function (b) {
+					options.push({ e: e, v: v, b: b });
+				});
+			});
+		});
+	} else {
+		var _brakeOptions = optionsConfig.electroMagneticBreak.map(function (obj) {
+			return obj.type;
+		});
+		_brakeOptions.forEach(function (b) {
+			options.push({ e: false, v: '-', b: b });
+		});
+	}
+
+	optionsConfig.options = options;
 };
 
 /***/ }),
@@ -10039,6 +10160,228 @@ motorData.forEach(function (motorObject) {
 });
 
 var motorsAllSeriesFlatten = exports.motorsAllSeriesFlatten = motorsAllSeries.flat(Infinity);
+
+/***/ }),
+/* 340 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+			value: true
+});
+var imgSrcData = exports.imgSrcData = {};
+var setImgSrcData = exports.setImgSrcData = function setImgSrcData(frameSize, encoderIsChecked, ventSystemOptionValue, conicShaftIsChecked) {
+			if (encoderIsChecked || ventSystemOptionValue !== '-') {
+						imgSrcData.data = [
+						//"e": true, "v": "-", "b": "-"
+						{ i: 0, path: 'encoder.png' },
+
+						//"e": true, "v": "-", "b": "Тормоз (питание 220В) с независимым питанием (ED1)"
+						{ i: 1, path: 'tormoz_nezavisimoe_pitanie_encoder.png' },
+
+						//"e": true, "v": "-", "b": "Тормоз (питание 380В) с независимым питанием(ET1)"
+						{ i: 2, path: 'tormoz_nezavisimoe_pitanie_encoder.png' },
+
+						//"e": true, "v": "-", "b": "Тормоз (питание 220В) с независимым питанием и ручным растормаживающим устройством (ED1ED2)"
+						{ i: 3, path: 'tormoz_nezavisimoe_pitanie_ruchka_encoder.png' },
+
+						//"e": true, "v": "-", "b": "Тормоз (питание 380В) с независимым питанием и ручным растормаживающим устройством (ET1ET2)"
+						{ i: 4, path: 'tormoz_nezavisimoe_pitanie_ruchka_encoder.png' },
+
+						//"e": true, "v": "Встроенный вентилятор с питанием 220В", "b": "-"
+						{ i: 5, path: frameSize <= 159 ? 'vent_encoder.png' : 'vent_encoder_big.png' },
+
+						//"e": true, "v": "Встроенный вентилятор с питанием 220В (V1)", "b": "Тормоз (питание 220В) с независимым питанием (ED1)"
+						{
+									i: 6,
+									path: frameSize <= 159 ? 'tormoz_nezavisimoe_pitanie_vent_encoder.png' : 'tormoz_nezavisimoe_pitanie_vent_encoder_big.png'
+						},
+
+						//"e": true, "v": "Встроенный вентилятор с питанием 220В (V1)", "b": "Тормоз (питание 380В) с независимым питанием(ET1)"
+						{
+									i: 7,
+									path: frameSize <= 159 ? 'tormoz_nezavisimoe_pitanie_vent_encoder.png' : 'tormoz_nezavisimoe_pitanie_vent_encoder_big.png'
+						},
+
+						//"e": true, "v": "Встроенный вентилятор с питанием 220В (V1)", "b": "Тормоз (питание 220В) с независимым питанием и ручным растормаживающим устройством (ED1ED2)"
+						{
+									i: 8,
+									path: frameSize <= 150 ? 'tormoz_nezavisimoe_pitanie_ruchka_vent_encoder.png' : 'tormoz_nezavisimoe_pitanie_ruchka_vent_encoder_big.png'
+						},
+
+						//"e": true, "v": "Встроенный вентилятор с питанием 220В (V1)", "b": "Тормоз (питание 380В) с независимым питанием и ручным растормаживающим устройством(ET1ET2)"
+						{
+									i: 9,
+									path: frameSize <= 150 ? 'tormoz_nezavisimoe_pitanie_ruchka_vent_encoder.png' : 'tormoz_nezavisimoe_pitanie_ruchka_vent_encoder_big.png'
+						},
+
+						//"e": true, "v": "Встроенный вентилятор с питанием 380В (V2)", "b": "-"
+						{ i: 10, path: frameSize <= 159 ? 'vent_encoder.png' : 'vent_encoder_big.png' },
+
+						//"e": true, "v": "Встроенный вентилятор с питанием 380В (V2)", "b": "Тормоз (питание 220В) с независимым питанием (ED1)"
+						{
+									i: 11,
+									path: frameSize <= 159 ? 'tormoz_nezavisimoe_pitanie_vent_encoder.png' : 'tormoz_nezavisimoe_pitanie_vent_encoder_big.png'
+						},
+
+						//"e": true, "v": "Встроенный вентилятор с питанием 380В (V2)", "b": "Тормоз (питание 380В) с независимым питанием(ET1)"
+						{
+									i: 12,
+									path: frameSize <= 159 ? 'tormoz_nezavisimoe_pitanie_vent_encoder.png' : 'tormoz_nezavisimoe_pitanie_vent_encoder_big.png'
+						},
+
+						//"e": true, "v": "Встроенный вентилятор с питанием 380В (V2)", "b": "Тормоз (питание 220В) с независимым питанием и ручным растормаживающим устройством (ED1ED2)"
+						{
+									i: 13,
+									path: frameSize <= 159 ? 'tormoz_nezavisimoe_pitanie_ruchka_vent_encoder.png' : 'tormoz_nezavisimoe_pitanie_ruchka_vent_encoder_big.png'
+						},
+
+						//"e": true, "v": "Встроенный вентилятор с питанием 380В (V2)", "b": "Тормоз (питание 380В) с независимым питанием и ручным растормаживающим устройством(ET1ET2)"
+						{
+									i: 14,
+									path: frameSize <= 159 ? 'tormoz_nezavisimoe_pitanie_ruchka_vent_encoder.png' : 'tormoz_nezavisimoe_pitanie_ruchka_vent_encoder_big.png'
+						},
+
+						//"e": true, "v": "Пристроенный вентилятор (наездник) с питанием 220В (V3)", "b": "-"
+						{ i: 15, path: 'encoder.png' },
+
+						//"e": true, "v": "Пристроенный вентилятор (наездник) с питанием 220В (V3)", "b": "Тормоз (питание 220В) с независимым питанием (ED1)"
+						{ i: 16, path: 'tormoz_nezavisimoe_pitanie_encoder.png' },
+
+						//"e": true, "v": "Пристроенный вентилятор (наездник) с питанием 220В (V3)", "b": "Тормоз (питание 380В) с независимым питанием(ET1)"
+						{ i: 17, path: 'tormoz_nezavisimoe_pitanie_encoder.png' },
+
+						//"e": true, "v": "Пристроенный вентилятор (наездник) с питанием 220В (V3)", "b": "Тормоз (питание 220В) с независимым питанием и ручным растормаживающим устройством (ED1ED2)"
+						{ i: 18, path: 'tormoz_nezavisimoe_pitanie_ruchka_encoder.png' },
+
+						//"e": true, "v": "Пристроенный вентилятор (наездник) с питанием 220В (V3)", "b": "Тормоз (питание 380В) с независимым питанием и ручным растормаживающим устройством(ET1ET2)"
+						{ i: 19, path: 'tormoz_nezavisimoe_pitanie_ruchka_encoder.png' },
+
+						//"e": true, "v": "Пристроенный вентилятор (наездник) с питанием 380В (V4)", "b": "-"
+						{ i: 20, path: 'encoder.png' },
+
+						//"e": true, "v": "Пристроенный вентилятор (наездник) с питанием 380В (V4)", "b": "Тормоз (питание 220В) с независимым питанием (ED1)"
+						{ i: 21, path: 'tormoz_nezavisimoe_pitanie_encoder.png' },
+
+						//"e": true, "v": "Пристроенный вентилятор (наездник) с питанием 380В (V4)", "b": "Тормоз (питание 380В) с независимым питанием(ET1)"
+						{ i: 22, path: 'tormoz_nezavisimoe_pitanie_encoder.png' },
+
+						//"e": true, "v": "Пристроенный вентилятор (наездник) с питанием 380В (V4)", "b": "Тормоз (питание 220В) с независимым питанием и ручным растормаживающим устройством (ED1ED2)"
+						{ i: 23, path: 'tormoz_nezavisimoe_pitanie_ruchka_encoder.png' },
+
+						//"e": true, "v": "Пристроенный вентилятор (наездник) с питанием 380В (V4)", "b": "Тормоз (питание 380В) с независимым питанием и ручным растормаживающим устройством(ET1ET2)"
+						{ i: 24, path: 'tormoz_nezavisimoe_pitanie_ruchka_encoder.png' },
+
+						//"e": false, "v": "-", "b": "-"
+						{ i: 25, path: '' },
+
+						//"e": false, "v": "-", "b": "Тормоз (питание 220В) с независимым питанием (ED1)"
+						{ i: 26, path: 'tormoz_nezavisimoe_pitanie.png' },
+
+						//"e": false, "v": "-", "b": "Тормоз (питание 380В) с независимым питанием(ET1)"
+						{ i: 27, path: 'tormoz_nezavisimoe_pitanie.png' },
+
+						//"e": false, "v": "-", "b": "Тормоз (питание 220В) с независимым питанием и ручным растормаживающим устройством (ED1ED2)"
+						{ i: 28, path: 'tormoz_nezavisimoe_pitanie_ruchka.png' },
+
+						//"e": false, "v": "-", "b": "Тормоз (питание 380В) с независимым питанием и ручным растормаживающим устройством(ET1ET2)"
+						{ i: 29, path: 'tormoz_nezavisimoe_pitanie_ruchka.png' },
+
+						//"e": false, "v": "Встроенный вентилятор с питанием 220В (V1)", "b": "-"
+						{ i: 30, path: frameSize <= 159 ? 'vent.png' : 'vent_big.png' },
+
+						//"e": false, "v": "Встроенный вентилятор с питанием 220В (V1)", "b": "Тормоз (питание 220В) с независимым питанием (ED1)"
+						{ i: 31, path: frameSize <= 159 ? 'tormoz_nezavisimoe_pitanie_vent.png' : 'tormoz_nezavisimoe_pitanie_vent_big.png' },
+
+						//"e": false, "v": "Встроенный вентилятор с питанием 220В (V1)", "b": "Тормоз (питание 380В) с независимым питанием(ET1)"
+						{ i: 32, path: frameSize <= 159 ? 'tormoz_nezavisimoe_pitanie_vent.png' : 'tormoz_nezavisimoe_pitanie_vent_big.png' },
+
+						//"e": false, "v": "Встроенный вентилятор с питанием 220В (V1)", "b": "Тормоз (питание 220В) с независимым питанием и ручным растормаживающим устройством (ED1ED2)"
+						{
+									i: 33,
+									path: frameSize <= 159 ? 'tormoz_nezavisimoe_pitanie_ruchka_vent.png' : 'tormoz_nezavisimoe_pitanie_ruchka_vent_big.png'
+						},
+
+						//"e": false, "v": "Встроенный вентилятор с питанием 220В (V1)", "b": "Тормоз (питание 380В) с независимым питанием и ручным растормаживающим устройством(ET1ET2)"
+						{
+									i: 34,
+									path: frameSize <= 159 ? 'tormoz_nezavisimoe_pitanie_ruchka_vent.png' : 'tormoz_nezavisimoe_pitanie_ruchka_vent_big.png'
+						},
+
+						//"e": false, "v": "Встроенный вентилятор с питанием 380В (V2)", "b": "-"
+						{ i: 35, path: frameSize <= 159 ? 'vent.png' : 'vent_big.png' },
+
+						//"e": false, "v": "Встроенный вентилятор с питанием 380В (V2)", "b": "Тормоз (питание 220В) с независимым питанием (ED1)"
+						{ i: 36, path: frameSize <= 159 ? 'tormoz_nezavisimoe_pitanie_vent.png' : 'tormoz_nezavisimoe_pitanie_vent_big.png' },
+
+						//"e": false, "v": "Встроенный вентилятор с питанием 380В (V2)", "b": "Тормоз (питание 380В) с независимым питанием(ET1)"
+						{ i: 37, path: frameSize <= 159 ? 'tormoz_nezavisimoe_pitanie_vent.png' : 'tormoz_nezavisimoe_pitanie_vent_big.png' },
+
+						//"e": false, "v": "Встроенный вентилятор с питанием 380В (V2)", "b": "Тормоз (питание 220В) с независимым питанием и ручным растормаживающим устройством (ED1ED2)"
+						{
+									i: 38,
+									path: frameSize <= 159 ? 'tormoz_nezavisimoe_pitanie_ruchka_vent.png' : 'tormoz_nezavisimoe_pitanie_ruchka_vent_big.png'
+						},
+
+						//"e": false, "v": "Встроенный вентилятор с питанием 380В (V2)", "b": "Тормоз (питание 380В) с независимым питанием и ручным растормаживающим устройством(ET1ET2)"
+						{
+									i: 39,
+									path: frameSize <= 159 ? 'tormoz_nezavisimoe_pitanie_ruchka_vent.png' : 'tormoz_nezavisimoe_pitanie_ruchka_vent_big.png'
+						},
+
+						//"e": false, "v": "Пристроенный вентилятор (наездник) с питанием 220В (V3)", "b": "-"
+						{ i: 40, path: 'self.png' },
+
+						//"e": false, "v": "Пристроенный вентилятор (наездник) с питанием 220В (V3)", "b": "Тормоз (питание 220В) с независимым питанием (ED1)"
+						{ i: 41, path: 'tormoz_nezavisimoe_pitanie.png' },
+
+						//"e": false, "v": "Пристроенный вентилятор (наездник) с питанием 220В (V3)", "b": "Тормоз (питание 380В) с независимым питанием(ET1)"
+						{ i: 42, path: 'tormoz_nezavisimoe_pitanie.png' },
+
+						//"e": false, "v": "Пристроенный вентилятор (наездник) с питанием 220В (V3)", "b": "Тормоз (питание 220В) с независимым питанием и ручным растормаживающим устройством (ED1ED2)"
+						{ i: 43, path: 'tormoz_nezavisimoe_pitanie_ruchka.png' },
+
+						//"e": false, "v": "Пристроенный вентилятор (наездник) с питанием 220В (V3)", "b": "Тормоз (питание 380В) с независимым питанием и ручным растормаживающим устройством(ET1ET2)"
+						{ i: 44, path: 'tormoz_nezavisimoe_pitanie_ruchka.png' },
+
+						//"e": false, "v": "Пристроенный вентилятор (наездник) с питанием 380В (V4)", "b": "-"
+						{ i: 45, path: 'self.png' },
+
+						//"e": false, "v": "Пристроенный вентилятор (наездник) с питанием 380В (V4)", "b": "Тормоз (питание 220В) с независимым питанием (ED1)"
+						{ i: 46, path: 'tormoz_nezavisimoe_pitanie.png' },
+
+						//"e": false, "v": "Пристроенный вентилятор (наездник) с питанием 380В (V4)", "b": "Тормоз (питание 380В) с независимым питанием(ET1)"
+						{ i: 47, path: 'tormoz_nezavisimoe_pitanie.png' },
+
+						//"e": false, "v": "Пристроенный вентилятор (наездник) с питанием 380В (V4)", "b": "Тормоз (питание 220В) с независимым питанием и ручным растормаживающим устройством (ED1ED2)"
+						{ i: 48, path: 'tormoz_nezavisimoe_pitanie_ruchka.png' },
+
+						//"e": false, "v": "Пристроенный вентилятор (наездник) с питанием 380В (V4)", "b": "Тормоз (питание 380В) с независимым питанием и ручным растормаживающим устройством(ET1ET2)"
+						{ i: 49, path: 'tormoz_nezavisimoe_pitanie_ruchka.png' }];
+			} else {
+						imgSrcData.data = [
+						//e: false, v: '-', b: '-'
+						{ i: 0, path: frameSize < 200 || !conicShaftIsChecked ? '' : 'self.png' },
+						//e: false, v: '-', b: 'Тормоз (питание 220В)'
+						{ i: 1, path: 'tormoz.png' },
+						//e: false, v: '-', b: 'Тормоз (питание 380В)
+						{ i: 2, path: 'tormoz.png' },
+						//e: false, v: '-', b: 'Тормоз (питание 220В) с независимым питанием
+						{ i: 3, path: 'tormoz_nezavisimoe_pitanie.png' },
+						//e: false, v: '-', b: 'Тормоз (питание 380В) с независимым питанием
+						{ i: 4, path: 'tormoz_nezavisimoe_pitanie.png' },
+						//e: false, v: '-', b: 'Тормоз (питание 220В)  с ручным растормаживающим устройством
+						{ i: 5, path: 'tormoz_ruchka.png' },
+						//e: false, v: '-', b: 'Тормоз (питание 38В)  с ручным растормаживающим устройством
+						{ i: 6, path: 'tormoz_ruchka.png' },
+						//b: "Тормоз (питание 220В) с независимым питанием и…ным растормаживающим устройством" e: false v: "-"'
+						{ i: 7, path: 'tormoz_nezavisimoe_pitanie_ruchka.png' },
+						//b: "Тормоз (питание 380В) с независимым питанием и…ным растормаживающим устройством" e: false v: "-"'
+						{ i: 8, path: 'tormoz_nezavisimoe_pitanie_ruchka.png' }];
+			}
+};
 
 /***/ })
 /******/ ]);

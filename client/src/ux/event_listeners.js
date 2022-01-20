@@ -15,31 +15,31 @@ export function globeEvHandler() {
 	selectorPower.onchange = selectorRpm.onchange = (e) => searchModel(e);
 
 	//selecting a motor model:
-	selectorModel.addEventListener('change', (e) => {
-		getOptions([selectorBrakes, selectorPaws, selectorVentSystem]);
+	selectorModel.addEventListener('change', () => {
+		getOptions([selectorBrakes, selectorPaws, selectorVentSystem], 'populateOptionsList');
 	});
 	//selecting a paw type:
-	selectorPaws.addEventListener('change', (e) => {
+	selectorPaws.addEventListener('change', () => {
 		getOptions(null);
 	});
 
 	//selecting a breaks type:
-	selectorBrakes.addEventListener('change', (e) => {
-		getOptions(null);
+	selectorBrakes.addEventListener('change', () => {
+		getOptions([selectorVentSystem], 'resetOptionsList');
 	});
 
 	//selecting vent system type:
 	selectorVentSystem.addEventListener('change', () => {
-		getOptions([selectorBrakes]);
+		getOptions([selectorBrakes], 'resetOptionsList');
 	});
 
 	//choosing encoder:
-	checkboxEncoder.addEventListener('change', (e) => {
-		getOptions([selectorBrakes]);
+	checkboxEncoder.addEventListener('change', () => {
+		getOptions([selectorBrakes], 'resetOptionsList');
 	});
 
 	//chosing conic shaft:
-	checkboxConicShaft.addEventListener('change', (e) => {
+	checkboxConicShaft.addEventListener('change', () => {
 		getOptions(null);
 	});
 }
