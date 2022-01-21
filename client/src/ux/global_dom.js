@@ -10,3 +10,4 @@ export const selectorVentSystem = document.getElementById('selector-ventSystem')
 export const imageDrawing = document.getElementById('img-drawing');
 export const chart_connectionParams = document.getElementById('chart-connectionParams');
 export const chart_connectionValues = document.getElementById('chart-connectionValues');
+export const areaSelection = document.getElementById('area-selection').firstElementChild;

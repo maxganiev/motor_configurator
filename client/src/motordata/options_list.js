@@ -5,7 +5,7 @@ export const fillExtraOptions = function (motorFrameSize, encoderIsChecked, vent
 	optionsConfig.tempDataSensors = [
 		{
 			id: 'Б1',
-			group: 'Датчики температуры обмотки статора',
+			group: 'Датчики температуры обмотки',
 			type: 'Биметаллические датчики',
 			description: 'Укомплектован датчиками защиты обмотки статора (три биметаллических датчика)',
 			selectable: true,
@@ -13,7 +13,7 @@ export const fillExtraOptions = function (motorFrameSize, encoderIsChecked, vent
 
 		{
 			id: 'Б3',
-			group: 'Датчики температуры обмотки статора',
+			group: 'Датчики температуры обмотки',
 			type: 'Датчики РТС',
 			description: 'Укомплектован датчиками защиты обмотки статора (три терморезистивных датчика PTС)',
 			selectable: true,
@@ -21,7 +21,7 @@ export const fillExtraOptions = function (motorFrameSize, encoderIsChecked, vent
 
 		{
 			id: 'Б5',
-			group: 'Датчики температуры обмотки статора',
+			group: 'Датчики температуры обмотки',
 			type: 'Датчики РТ-100',
 			description: 'Укомплектован датчиками защиты обмотки статора (терморезистивный датчик PT100)',
 			selectable: true,

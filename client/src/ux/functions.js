@@ -30,7 +30,7 @@ export function searchModel(e) {
 		checkboxEncoder.checked = checkboxConicShaft.checked = false;
 	}
 
-	//cleaning up selector options list while typing:
+	//cleaning up selector options list while typing or re-selecting:
 	Array.from(selectorBrakes.children).forEach((child, index) => index !== 0 && child.remove());
 	Array.from(selectorVentSystem.children).forEach((child, index) => index !== 0 && child.remove());
 	Array.from(selectorPaws.children).forEach((child) => child.remove());
@@ -155,6 +155,12 @@ export function getModel(query, targetArr) {
 			selectorModel.appendChild(option);
 		});
 
+		//автопроставление модели и опций для нее при поиске, если модель найдена и опция подружена в селект:
+		if (selectorModel.children[1] !== undefined && typeof selectorModel.children[1] !== undefined) {
+			selectorModel.children[1].selected = true;
+			getOptions([selectorBrakes, selectorPaws, selectorVentSystem], 'populateOptionsList');
+		}
+
 		if (
 			(typeof query === 'string' && query.length < 4 && !query.match(regex)) ||
 			(typeof query === 'object' && Array.isArray(query) && query.some((param) => param === '-'))
@@ -256,6 +262,8 @@ const chartSelOptions = [
 ];
 export function setChartConnectionDims(frameSize, brakeType, pawType, ventSystemOptionValue, encoderIsChecked) {
 	let connectionParams = [];
+
+	//will be fetched
 	let connectionValues = [];
 
 	const currSelectionIndex = chartSelOptions.findIndex(
@@ -320,4 +328,9 @@ export function setChartConnectionDims(frameSize, brakeType, pawType, ventSystem
 	});
 
 	chart_connectionParams.style.borderBottom = '0.5px #000 solid';
+}
+
+//заливка доступного для габарита опционала при выборе модели двигателя:
+function setupBaseOptions() {
+	//to be called inside optionsSelector.setOptionsList() after fillExtraOptions(...)
 }

@@ -3947,6 +3947,7 @@ var selectorVentSystem = exports.selectorVentSystem = document.getElementById('s
 var imageDrawing = exports.imageDrawing = document.getElementById('img-drawing');
 var chart_connectionParams = exports.chart_connectionParams = document.getElementById('chart-connectionParams');
 var chart_connectionValues = exports.chart_connectionValues = document.getElementById('chart-connectionValues');
+var areaSelection = exports.areaSelection = document.getElementById('area-selection').firstElementChild;
 
 /***/ }),
 /* 131 */
@@ -9629,7 +9630,7 @@ function searchModel(e) {
 		_global_dom.checkboxEncoder.checked = _global_dom.checkboxConicShaft.checked = false;
 	}
 
-	//cleaning up selector options list while typing:
+	//cleaning up selector options list while typing or re-selecting:
 	Array.from(_global_dom.selectorBrakes.children).forEach(function (child, index) {
 		return index !== 0 && child.remove();
 	});
@@ -9776,6 +9777,12 @@ function getModel(query, targetArr) {
 			_global_dom.selectorModel.appendChild(option);
 		});
 
+		//автопроставление модели и опций для нее при поиске, если модель найдена и опция подружена в селект:
+		if (_global_dom.selectorModel.children[1] !== undefined && _typeof(_global_dom.selectorModel.children[1]) !== undefined) {
+			_global_dom.selectorModel.children[1].selected = true;
+			getOptions([_global_dom.selectorBrakes, _global_dom.selectorPaws, _global_dom.selectorVentSystem], 'populateOptionsList');
+		}
+
 		if (typeof query === 'string' && query.length < 4 && !query.match(_global_vars.regex) || (typeof query === 'undefined' ? 'undefined' : _typeof(query)) === 'object' && Array.isArray(query) && query.some(function (param) {
 			return param === '-';
 		})) {
@@ -9837,6 +9844,8 @@ function setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValu
 var chartSelOptions = [{ b: false, v: false, naezV: false, e: false }, { b: true, v: false, naezV: false, e: false }, { b: false, v: true, naezV: false, e: false }, { b: false, v: false, naezV: true, e: false }, { b: false, v: false, naezV: false, e: true }, { b: true, v: false, naezV: false, e: true }, { b: true, v: true, naezV: false, e: false }, { b: true, v: false, naezV: true, e: false }, { b: false, v: true, naezV: false, e: true }, { b: false, v: false, naezV: true, e: true }, { b: true, v: true, naezV: false, e: true }, { b: true, v: false, naezV: true, e: true }];
 function setChartConnectionDims(frameSize, brakeType, pawType, ventSystemOptionValue, encoderIsChecked) {
 	var connectionParams = [];
+
+	//will be fetched
 	var connectionValues = [];
 
 	var currSelectionIndex = chartSelOptions.findIndex(function (option) {
@@ -9903,6 +9912,11 @@ function setChartConnectionDims(frameSize, brakeType, pawType, ventSystemOptionV
 	_global_dom.chart_connectionParams.style.borderBottom = '0.5px #000 solid';
 }
 
+//заливка доступного для габарита опционала при выборе модели двигателя:
+function setupBaseOptions() {
+	//to be called inside optionsSelector.setOptionsList() after fillExtraOptions(...)
+}
+
 /***/ }),
 /* 337 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -9919,19 +9933,19 @@ var fillExtraOptions = exports.fillExtraOptions = function fillExtraOptions(moto
 	//термодатчики (UI: button):
 	optionsConfig.tempDataSensors = [{
 		id: 'Б1',
-		group: 'Датчики температуры обмотки статора',
+		group: 'Датчики температуры обмотки',
 		type: 'Биметаллические датчики',
 		description: 'Укомплектован датчиками защиты обмотки статора (три биметаллических датчика)',
 		selectable: true
 	}, {
 		id: 'Б3',
-		group: 'Датчики температуры обмотки статора',
+		group: 'Датчики температуры обмотки',
 		type: 'Датчики РТС',
 		description: 'Укомплектован датчиками защиты обмотки статора (три терморезистивных датчика PTС)',
 		selectable: true
 	}, {
 		id: 'Б5',
-		group: 'Датчики температуры обмотки статора',
+		group: 'Датчики температуры обмотки',
 		type: 'Датчики РТ-100',
 		description: 'Укомплектован датчиками защиты обмотки статора (терморезистивный датчик PT100)',
 		selectable: true
@@ -10186,8 +10200,7 @@ var motorData = [{
 		power: [0.09, 0.06, 0.12, 0.09],
 		voltage: '220/380',
 		rpm: [3000, 1500, 3000, 1500],
-		statorCurrent: ['0.52/0.3', '0.47/0.27', '0.64/0.37', '0.68/0.39'],
-		chartParams: [[], [], [], []]
+		statorCurrent: ['0.52/0.3', '0.47/0.27', '0.64/0.37', '0.68/0.39']
 	}
 }, {
 	standard: '5АИ',
@@ -10197,22 +10210,7 @@ var motorData = [{
 		power: [0.37, 0.25, 0.18, 0.55, 0.37, 0.25],
 		voltage: '220/380',
 		rpm: [3000, 1500, 1000, 3000, 1500, 1000],
-		statorCurrent: ['1.6/0.92', '1.44/0.83', '1.33/0.77', '2.27/1.31', '2.04/1.18', '1.65/0.95'],
-		chartParams: [[{
-			def: ['231', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16'],
-			l30_tormoz: ['319', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16', 'М5х0.8', '20'],
-			l30_vent: ['367', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16', 'М5х0.8', '20'],
-			naezd_l30_vent: [],
-			l30_encoder: ['323', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16', 'М5х0.8', '20'],
-			l30_tormoz_encoder: ['472', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16', 'М5х0.8', '20'],
-			naezd_h31: [],
-			l30_tormoz_vent: ['400', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16', 'М5х0.8', '20'],
-			naezd_l30_tormoz_vent: [],
-			l30_vent_encoder: ['424', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16', 'М5х0.8', '20'],
-			naezd_l30_vent_encoder: [],
-			l30_tormoz_vent_encoder: ['472', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16', 'М5х0.8', '20'],
-			naezd_l30_tormoz_vent_encoder: []
-		}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}], [], [], [], [], []]
+		statorCurrent: ['1.6/0.92', '1.44/0.83', '1.33/0.77', '2.27/1.31', '2.04/1.18', '1.65/0.95']
 	}
 }, {
 	standard: '5АИ',
@@ -10222,8 +10220,7 @@ var motorData = [{
 		power: [37, 37, 22, 18.5, 45, 45, 30, 22],
 		voltage: '380/660',
 		rpm: [3000, 1500, 1000, 750, 3000, 1500, 1000, 750],
-		statorCurrent: ['69.52/40.03', '68.37/39.36', '44.27/25.49', '39.04/22.48', '82.67/47.6', '83.15/47.87', '59.65/34.35', '45.91/26.43'],
-		chartParams: [[], [], [], [], [], [], [], []]
+		statorCurrent: ['69.52/40.03', '68.37/39.36', '44.27/25.49', '39.04/22.48', '82.67/47.6', '83.15/47.87', '59.65/34.35', '45.91/26.43']
 	}
 }];
 
@@ -10244,8 +10241,7 @@ motorData.forEach(function (motorObject) {
 	    frameSize = _motorObject$techData.frameSize,
 	    power = _motorObject$techData.power,
 	    rpm = _motorObject$techData.rpm,
-	    voltage = _motorObject$techData.voltage,
-	    chartParams = _motorObject$techData.chartParams;
+	    voltage = _motorObject$techData.voltage;
 
 
 	motorsAllSeries.push(motorObject.names.map(function (name, index) {
@@ -10254,14 +10250,12 @@ motorData.forEach(function (motorObject) {
 			frameSize: frameSize,
 			power: power[index],
 			rpm: rpm[index],
-			voltage: voltage,
-			chartParams: chartParams[index]
+			voltage: voltage
 		};
 	}));
 });
 
 var motorsAllSeriesFlatten = exports.motorsAllSeriesFlatten = motorsAllSeries.flat(Infinity);
-console.log(motorsAllSeriesFlatten);
 
 /***/ }),
 /* 340 */
