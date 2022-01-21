@@ -13,6 +13,8 @@ import { motorsAllSeriesFlatten } from '../motordata/models';
 import { imageDrawing } from './global_dom';
 import { imgSrcData } from '../motordata/imgSrcData';
 import { setImgSrcData } from '../motordata/imgSrcData';
+import { chart_connectionParams } from './global_dom';
+import { chart_connectionValues } from './global_dom';
 
 //получение списка моделей и очистка UI:
 export function searchModel(e) {
@@ -53,10 +55,17 @@ export const optionsSelector = {
 		fillExtraOptions(this.frameSize, this.encoderIsChecked, this.ventSystemOptionValue, this.brakeType);
 
 		const _this = this;
-		this.currSelection = {
+		this.currSelectionToGetImg = {
 			e: _this.encoderIsChecked,
 			v: _this.ventSystemOptionValue,
 			b: _this.brakeType,
+		};
+
+		this.currSelectionToGetChartDims = {
+			b: _this.brakeType !== '-',
+			v: _this.ventSystemOptionValue.includes('Встроенный вентилятор'),
+			naezV: _this.ventSystemOptionValue.includes('Пристроенный вентилятор'),
+			e: _this.encoderIsChecked,
 		};
 	},
 };
@@ -86,6 +95,8 @@ export function getOptions(selectorsId, operationType) {
 		setImgSrcData(frameSize, encoderIsChecked, ventSystemOptionValue, conicShaftIsChecked);
 
 		setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValue, conicShaftIsChecked, pawType);
+
+		setChartConnectionDims(frameSize, brakeType, pawType, ventSystemOptionValue, encoderIsChecked);
 	}
 }
 
@@ -220,10 +231,93 @@ function setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValu
 	}
 
 	const currSelectionIndex = optionsConfig.options.findIndex(
-		(optionObj) => JSON.stringify(optionObj) === JSON.stringify(optionsSelector.currSelection)
+		(optionObj) => JSON.stringify(optionObj) === JSON.stringify(optionsSelector.currSelectionToGetImg)
 	);
 
 	completePath = `${pathStart}${restPath}${imgSrcData.data[currSelectionIndex].path}`;
 
 	imageDrawing.setAttribute('src', completePath);
+}
+
+//создание табличной части с присеоед. размерами и подтягивание размеров:
+const chartSelOptions = [
+	{ b: false, v: false, naezV: false, e: false },
+	{ b: true, v: false, naezV: false, e: false },
+	{ b: false, v: true, naezV: false, e: false },
+	{ b: false, v: false, naezV: true, e: false },
+	{ b: false, v: false, naezV: false, e: true },
+	{ b: true, v: false, naezV: false, e: true },
+	{ b: true, v: true, naezV: false, e: false },
+	{ b: true, v: false, naezV: true, e: false },
+	{ b: false, v: true, naezV: false, e: true },
+	{ b: false, v: false, naezV: true, e: true },
+	{ b: true, v: true, naezV: false, e: true },
+	{ b: true, v: false, naezV: true, e: true },
+];
+export function setChartConnectionDims(frameSize, brakeType, pawType, ventSystemOptionValue, encoderIsChecked) {
+	let connectionParams = [];
+	let connectionValues = [];
+
+	const currSelectionIndex = chartSelOptions.findIndex(
+		(option) => JSON.stringify(option) === JSON.stringify(optionsSelector.currSelectionToGetChartDims)
+	);
+
+	switch (pawType) {
+		case 'Лапы (1001/1081)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'l1', 'l10', 'l31', 'd1', 'd10', 'b1', 'b10', 'h1', 'h10', 'h', 'h5', 'd4', 'l4'];
+			} else {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'l1', 'l10', 'l31', 'd1', 'd10', 'b1', 'b10', 'h1', 'h10', 'h', 'h5']
+			}
+
+			break;
+
+		case 'Лапы + Фланец (2001/2081)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5', 'd4', 'l4']
+			} else {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5']
+			}
+
+			break;
+
+		case 'Фланец (3081)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'd1', 'd20', 'd22', 'd25', 'b1', 'h1', 'h', 'h5', 'd4', 'l4']
+			} else {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'd1', 'd20', 'd22', 'd25', 'b1', 'h1', 'h', 'h5']
+			}
+
+			break;
+
+		case 'Лапы + Малый фланец (2181)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5', 'd4', 'l4']
+			} else {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5']
+			}
+
+			break;
+	}
+
+	while (chart_connectionParams.firstElementChild) {
+		chart_connectionParams.removeChild(chart_connectionParams.firstElementChild);
+	}
+
+	connectionParams.forEach((param) => {
+		const listItem = document.createElement('li');
+		listItem.innerHTML = param;
+
+		chart_connectionParams.appendChild(listItem);
+	});
+
+	chart_connectionParams.style.borderBottom = '0.5px #000 solid';
 }

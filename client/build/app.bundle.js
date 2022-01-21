@@ -3945,6 +3945,8 @@ var checkboxEncoder = exports.checkboxEncoder = document.getElementById('checkbo
 var checkboxConicShaft = exports.checkboxConicShaft = document.getElementById('checkbox-conicShaft');
 var selectorVentSystem = exports.selectorVentSystem = document.getElementById('selector-ventSystem');
 var imageDrawing = exports.imageDrawing = document.getElementById('img-drawing');
+var chart_connectionParams = exports.chart_connectionParams = document.getElementById('chart-connectionParams');
+var chart_connectionValues = exports.chart_connectionValues = document.getElementById('chart-connectionValues');
 
 /***/ }),
 /* 131 */
@@ -9601,6 +9603,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 exports.searchModel = searchModel;
 exports.getOptions = getOptions;
 exports.getModel = getModel;
+exports.setChartConnectionDims = setChartConnectionDims;
 
 var _global_dom = __webpack_require__(130);
 
@@ -9656,10 +9659,17 @@ var optionsSelector = exports.optionsSelector = {
 		(0, _options_list.fillExtraOptions)(this.frameSize, this.encoderIsChecked, this.ventSystemOptionValue, this.brakeType);
 
 		var _this = this;
-		this.currSelection = {
+		this.currSelectionToGetImg = {
 			e: _this.encoderIsChecked,
 			v: _this.ventSystemOptionValue,
 			b: _this.brakeType
+		};
+
+		this.currSelectionToGetChartDims = {
+			b: _this.brakeType !== '-',
+			v: _this.ventSystemOptionValue.includes('Встроенный вентилятор'),
+			naezV: _this.ventSystemOptionValue.includes('Пристроенный вентилятор'),
+			e: _this.encoderIsChecked
 		};
 	}
 };
@@ -9698,6 +9708,8 @@ function getOptions(selectorsId, operationType) {
 		(0, _imgSrcData.setImgSrcData)(frameSize, encoderIsChecked, ventSystemOptionValue, conicShaftIsChecked);
 
 		setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValue, conicShaftIsChecked, pawType);
+
+		setChartConnectionDims(frameSize, brakeType, pawType, ventSystemOptionValue, encoderIsChecked);
 	}
 }
 
@@ -9813,12 +9825,82 @@ function setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValu
 	}
 
 	var currSelectionIndex = _options_list.optionsConfig.options.findIndex(function (optionObj) {
-		return JSON.stringify(optionObj) === JSON.stringify(optionsSelector.currSelection);
+		return JSON.stringify(optionObj) === JSON.stringify(optionsSelector.currSelectionToGetImg);
 	});
 
 	completePath = '' + pathStart + restPath + _imgSrcData.imgSrcData.data[currSelectionIndex].path;
 
 	_global_dom.imageDrawing.setAttribute('src', completePath);
+}
+
+//создание табличной части с присеоед. размерами и подтягивание размеров:
+var chartSelOptions = [{ b: false, v: false, naezV: false, e: false }, { b: true, v: false, naezV: false, e: false }, { b: false, v: true, naezV: false, e: false }, { b: false, v: false, naezV: true, e: false }, { b: false, v: false, naezV: false, e: true }, { b: true, v: false, naezV: false, e: true }, { b: true, v: true, naezV: false, e: false }, { b: true, v: false, naezV: true, e: false }, { b: false, v: true, naezV: false, e: true }, { b: false, v: false, naezV: true, e: true }, { b: true, v: true, naezV: false, e: true }, { b: true, v: false, naezV: true, e: true }];
+function setChartConnectionDims(frameSize, brakeType, pawType, ventSystemOptionValue, encoderIsChecked) {
+	var connectionParams = [];
+	var connectionValues = [];
+
+	var currSelectionIndex = chartSelOptions.findIndex(function (option) {
+		return JSON.stringify(option) === JSON.stringify(optionsSelector.currSelectionToGetChartDims);
+	});
+
+	switch (pawType) {
+		case 'Лапы (1001/1081)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'l1', 'l10', 'l31', 'd1', 'd10', 'b1', 'b10', 'h1', 'h10', 'h', 'h5', 'd4', 'l4'];
+			} else {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'l1', 'l10', 'l31', 'd1', 'd10', 'b1', 'b10', 'h1', 'h10', 'h', 'h5'];
+			}
+
+			break;
+
+		case 'Лапы + Фланец (2001/2081)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5', 'd4', 'l4'];
+			} else {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5'];
+			}
+
+			break;
+
+		case 'Фланец (3081)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'd1', 'd20', 'd22', 'd25', 'b1', 'h1', 'h', 'h5', 'd4', 'l4'];
+			} else {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'd1', 'd20', 'd22', 'd25', 'b1', 'h1', 'h', 'h5'];
+			}
+
+			break;
+
+		case 'Лапы + Малый фланец (2181)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5', 'd4', 'l4'];
+			} else {
+				//prettier-ignore
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5'];
+			}
+
+			break;
+	}
+
+	while (_global_dom.chart_connectionParams.firstElementChild) {
+		_global_dom.chart_connectionParams.removeChild(_global_dom.chart_connectionParams.firstElementChild);
+	}
+
+	connectionParams.forEach(function (param) {
+		var listItem = document.createElement('li');
+		listItem.innerHTML = param;
+
+		_global_dom.chart_connectionParams.appendChild(listItem);
+	});
+
+	_global_dom.chart_connectionParams.style.borderBottom = '0.5px #000 solid';
 }
 
 /***/ }),
@@ -10104,7 +10186,8 @@ var motorData = [{
 		power: [0.09, 0.06, 0.12, 0.09],
 		voltage: '220/380',
 		rpm: [3000, 1500, 3000, 1500],
-		statorCurrent: ['0.52/0.3', '0.47/0.27', '0.64/0.37', '0.68/0.39']
+		statorCurrent: ['0.52/0.3', '0.47/0.27', '0.64/0.37', '0.68/0.39'],
+		chartParams: [[], [], [], []]
 	}
 }, {
 	standard: '5АИ',
@@ -10114,7 +10197,22 @@ var motorData = [{
 		power: [0.37, 0.25, 0.18, 0.55, 0.37, 0.25],
 		voltage: '220/380',
 		rpm: [3000, 1500, 1000, 3000, 1500, 1000],
-		statorCurrent: ['1.6/0.92', '1.44/0.83', '1.33/0.77', '2.27/1.31', '2.04/1.18', '1.65/0.95']
+		statorCurrent: ['1.6/0.92', '1.44/0.83', '1.33/0.77', '2.27/1.31', '2.04/1.18', '1.65/0.95'],
+		chartParams: [[{
+			def: ['231', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16'],
+			l30_tormoz: ['319', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16', 'М5х0.8', '20'],
+			l30_vent: ['367', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16', 'М5х0.8', '20'],
+			naezd_l30_vent: [],
+			l30_encoder: ['323', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16', 'М5х0.8', '20'],
+			l30_tormoz_encoder: ['472', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16', 'М5х0.8', '20'],
+			naezd_h31: [],
+			l30_tormoz_vent: ['400', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16', 'М5х0.8', '20'],
+			naezd_l30_tormoz_vent: [],
+			l30_vent_encoder: ['424', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16', 'М5х0.8', '20'],
+			naezd_l30_vent_encoder: [],
+			l30_tormoz_vent_encoder: ['472', '180', '30', '80', '40', '14', '5.8', '5', '100', '5', '8', '63', '16', 'М5х0.8', '20'],
+			naezd_l30_tormoz_vent_encoder: []
+		}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}], [], [], [], [], []]
 	}
 }, {
 	standard: '5АИ',
@@ -10124,7 +10222,8 @@ var motorData = [{
 		power: [37, 37, 22, 18.5, 45, 45, 30, 22],
 		voltage: '380/660',
 		rpm: [3000, 1500, 1000, 750, 3000, 1500, 1000, 750],
-		statorCurrent: ['69.52/40.03', '68.37/39.36', '44.27/25.49', '39.04/22.48', '82.67/47.6', '83.15/47.87', '59.65/34.35', '45.91/26.43']
+		statorCurrent: ['69.52/40.03', '68.37/39.36', '44.27/25.49', '39.04/22.48', '82.67/47.6', '83.15/47.87', '59.65/34.35', '45.91/26.43'],
+		chartParams: [[], [], [], [], [], [], [], []]
 	}
 }];
 
@@ -10145,7 +10244,8 @@ motorData.forEach(function (motorObject) {
 	    frameSize = _motorObject$techData.frameSize,
 	    power = _motorObject$techData.power,
 	    rpm = _motorObject$techData.rpm,
-	    voltage = _motorObject$techData.voltage;
+	    voltage = _motorObject$techData.voltage,
+	    chartParams = _motorObject$techData.chartParams;
 
 
 	motorsAllSeries.push(motorObject.names.map(function (name, index) {
@@ -10154,12 +10254,14 @@ motorData.forEach(function (motorObject) {
 			frameSize: frameSize,
 			power: power[index],
 			rpm: rpm[index],
-			voltage: voltage
+			voltage: voltage,
+			chartParams: chartParams[index]
 		};
 	}));
 });
 
 var motorsAllSeriesFlatten = exports.motorsAllSeriesFlatten = motorsAllSeries.flat(Infinity);
+console.log(motorsAllSeriesFlatten);
 
 /***/ }),
 /* 340 */

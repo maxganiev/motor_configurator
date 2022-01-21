@@ -8,3 +8,5 @@ export const checkboxEncoder = document.getElementById('checkbox-encoder');
 export const checkboxConicShaft = document.getElementById('checkbox-conicShaft');
 export const selectorVentSystem = document.getElementById('selector-ventSystem');
 export const imageDrawing = document.getElementById('img-drawing');
+export const chart_connectionParams = document.getElementById('chart-connectionParams');
+export const chart_connectionValues = document.getElementById('chart-connectionValues');
