@@ -6,6 +6,20 @@
   box-sizing: border-box;
   font-family: 'Montserrat' !important; }
 
+.btn-option-selected {
+  background-color: #017987;
+  color: #fff; }
+
+.flex-row {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: row !important; }
+
+.btn-option-non-selected {
+  background-color: transparent;
+  color: #000; }
+
 body {
   width: 100%;
   height: 100%;
@@ -34,29 +48,33 @@ body {
       border-bottom: 1px solid #eee; }
       body main .area-filter .list {
         display: flex;
-        justify-content: space-evenly;
-        align-items: center;
+        justify-content: space-between;
+        align-items: flex-end;
         width: inherit;
         text-align: center; }
         body main .area-filter .list li {
           display: flex;
-          flex-direction: column; }
+          flex-direction: column;
+          padding: 0% 2%; }
+          body main .area-filter .list li:first-child {
+            flex: 2; }
+          body main .area-filter .list li:nth-child(2), body main .area-filter .list li:nth-child(3) {
+            flex: 1; }
     body main .area-selection {
-      max-width: 40%;
+      max-width: 50%;
       overflow-x: hidden;
       margin-left: 4%; }
       body main .area-selection .list {
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
-        height: 100%; }
+        height: 100%;
+        visibility: hidden; }
         body main .area-selection .list li {
           display: flex;
           flex-direction: column; }
-    body main .flex-row {
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center; }
+    body main .area-render {
+      visibility: hidden; }
     body main .chart-connectionParams {
       width: 80%;
       margin: 0 auto; }

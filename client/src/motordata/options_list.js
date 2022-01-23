@@ -1,6 +1,13 @@
 export const optionsConfig = {};
 
-export const fillExtraOptions = function (motorFrameSize, encoderIsChecked, ventSystemOptionValue, brakeType) {
+export const fillExtraOptions = function (
+	motorFrameSize,
+	encoderIsChecked,
+	ventSystemOptionValue,
+	brakeType,
+	f2BearingIsChecked,
+	s12BearingIsChecked
+) {
 	//термодатчики (UI: button):
 	optionsConfig.tempDataSensors = [
 		{
@@ -59,14 +66,14 @@ export const fillExtraOptions = function (motorFrameSize, encoderIsChecked, vent
 	optionsConfig.encoderIsDisabled = brakeType.includes('независимым питанием') || brakeType === '-' ? true : false;
 
 	//вибродатчики (UI: checkbox):
-	optionsConfig.tempDataSensors = {
+	optionsConfig.vibroSensors = {
 		id: 'W1',
 		type: 'Вибродатчики',
 		description: 'Укомплектован вибродатчиком трех-координатных ВК-310С на переднем подшипниковом щите',
 		selectable: motorFrameSize >= 200 ? true : false,
 	};
 
-	//антиконденсатный подогрев:
+	//антиконденсатный подогрев (UI: checkbox):
 	optionsConfig.antiCondensingHeater = {
 		id: 'H',
 		type: 'Антиконденсатный подогрев',
@@ -74,16 +81,18 @@ export const fillExtraOptions = function (motorFrameSize, encoderIsChecked, vent
 		selectable: motorFrameSize >= 132 ? true : false,
 	};
 
-	//!должен быть выставлен по умолчанию
+	//!должен быть выставлен по умолчанию, начиная с 200 габарита
 	//токоизолированный подшипник (UI: checkbox):
 	optionsConfig.currentInsulatingBearing = {
 		id: 'F2',
 		type: 'Токоизолированный подшипник',
 		description: 'Заменен задний штатный подшипник на токоизолированный (производства SKF/NSK/KOYO/FAG)',
-		selectable: motorFrameSize >= 200 ? true : false,
+		selectable: motorFrameSize >= 200 && !s12BearingIsChecked ? true : false,
+		checked: motorFrameSize >= 200 ? true : false,
+		warning: 'Элком рекомендует установку токоизолированных подшипников на двигатели выше 200 габарита',
 	};
 
-	//!выбор S12 должен автоматически исключать возможность выбора F2 и наоборот (выставить ограничения со стороны UI):
+	//!выбор S12 должен автоматически исключать возможность выбора F2 и наоборот:
 	//импортные подшипники (UI: select):
 	optionsConfig.importBearings = [
 		{
@@ -101,7 +110,7 @@ export const fillExtraOptions = function (motorFrameSize, encoderIsChecked, vent
 			type: 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)',
 			description:
 				'Заменены передний и задний штатные подшипники на подшипники повышенной надежности шариковые (производства SKF/NSK/KOYO/FAG)',
-			selectable: true,
+			selectable: f2BearingIsChecked ? false : true,
 		},
 	];
 

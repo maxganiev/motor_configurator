@@ -15,6 +15,8 @@ import { imgSrcData } from '../motordata/imgSrcData';
 import { setImgSrcData } from '../motordata/imgSrcData';
 import { chart_connectionParams } from './global_dom';
 import { chart_connectionValues } from './global_dom';
+import { areaSelection } from './global_dom';
+import { areaRender } from './global_dom';
 
 //получение списка моделей и очистка UI:
 export function searchModel(e) {
@@ -52,7 +54,9 @@ export const optionsSelector = {
 		this.conicShaftIsChecked = checkboxConicShaft.checked;
 		this.pawType = selectorPaws.value === '' ? 'Лапы (1001/1081)' : selectorPaws.value;
 
+		//!add +2 params : f2BearingIsChecked, s12BearingIsChecked)
 		fillExtraOptions(this.frameSize, this.encoderIsChecked, this.ventSystemOptionValue, this.brakeType);
+		setupBaseOptions();
 
 		const _this = this;
 		this.currSelectionToGetImg = {
@@ -159,6 +163,9 @@ export function getModel(query, targetArr) {
 		if (selectorModel.children[1] !== undefined && typeof selectorModel.children[1] !== undefined) {
 			selectorModel.children[1].selected = true;
 			getOptions([selectorBrakes, selectorPaws, selectorVentSystem], 'populateOptionsList');
+
+			areaRender.style.visibility = 'visible';
+			areaSelection.style.visibility = 'visible';
 		}
 
 		if (
@@ -166,6 +173,8 @@ export function getModel(query, targetArr) {
 			(typeof query === 'object' && Array.isArray(query) && query.some((param) => param === '-'))
 		) {
 			Array.from(selectorModel.children).forEach((child, index) => index !== 0 && child.remove());
+			areaRender.style.visibility = 'hidden';
+			areaSelection.style.visibility = 'hidden';
 		}
 	}, 400);
 }
@@ -332,5 +341,89 @@ export function setChartConnectionDims(frameSize, brakeType, pawType, ventSystem
 
 //заливка доступного для габарита опционала при выборе модели двигателя:
 function setupBaseOptions() {
-	//to be called inside optionsSelector.setOptionsList() after fillExtraOptions(...)
+	//cleaning up DOM rendered DOM elems:
+	Array.from(areaSelection.children).forEach((child, index) => index > 5 && child.remove());
+
+	const { tempDataSensors, vibroSensors, antiCondensingHeater, currentInsulatingBearing, importBearings } = optionsConfig;
+
+	//чекбокс для выбора вибродатчиков:
+	const listItem0 = document.createElement('li');
+	createCheckBoxes(listItem0, 'checkbox-vibrosensors', !vibroSensors.selectable, vibroSensors.type, null);
+
+	//чекбокс для выбора антиконденсатного подогрева:
+	const listItem1 = document.createElement('li');
+	createCheckBoxes(listItem1, 'checkbox-antiCondenseHeater', !antiCondensingHeater.selectable, antiCondensingHeater.type, null);
+
+	//чекбокс для выбора токоизолированного подшипника:
+	const listItem2 = document.createElement('li');
+	createCheckBoxes(
+		listItem2,
+		'checkbox-currentInsulatingBearing',
+		!currentInsulatingBearing.selectable,
+		currentInsulatingBearing.type,
+		currentInsulatingBearing.checked
+	);
+
+	//селект для выбора импортных подшипников:
+	const listItem3 = document.createElement('li');
+	const selectorImportBearings = document.createElement('select');
+	selectorImportBearings.id = 'selector-importBearings';
+
+	const label = document.createElement('label');
+	label.htmlFor = 'selector-importBearings';
+	label.innerHTML = importBearings[0].group;
+
+	listItem3.insertAdjacentElement('afterbegin', label);
+	listItem3.appendChild(selectorImportBearings);
+
+	populateOptionsList([selectorImportBearings], [importBearings], 'populateOptionsList');
+
+	//заливка кнопок для выбора датчиков температуры:
+	const listItem4 = document.createElement('li');
+	const column_WindingSensors = document.createElement('ul');
+	const column_BearingSensors = document.createElement('ul');
+
+	tempDataSensors.forEach((obj, index) => {
+		const listItem = document.createElement('li');
+
+		const btn = document.createElement('button');
+		btn.classList.add('btn-option-non-selected');
+		btn.disabled = !obj.selectable;
+		btn.innerHTML = obj.type;
+
+		obj.group === 'Датчики температуры обмотки'
+			? column_WindingSensors.appendChild(listItem)
+			: column_BearingSensors.appendChild(listItem);
+		listItem.appendChild(btn);
+
+		//описание подгруппы датчиков (текст вставляем только раз для каждой подгруппы, поэтому использую индексы):
+		index === 0 && column_WindingSensors.insertAdjacentText('afterbegin', obj.group);
+		index === 3 && column_BearingSensors.insertAdjacentText('afterbegin', obj.group);
+	});
+
+	listItem4.appendChild(column_WindingSensors);
+	listItem4.appendChild(column_BearingSensors);
+
+	listItem4.classList.add('flex-row');
+
+	areaSelection.appendChild(listItem3);
+	areaSelection.appendChild(listItem4);
+}
+
+//func to create checkboxes:
+function createCheckBoxes(parentElem, checkboxId, checkboxIsSelectable, checkboxLabelInnerHtml, checkboxIsCheckedByDefault) {
+	const checkbox = document.createElement('input');
+	checkbox.setAttribute('type', 'checkbox');
+	checkbox.setAttribute('id', checkboxId);
+	checkbox.disabled = checkboxIsSelectable;
+	checkbox.checked = checkboxIsCheckedByDefault !== null && checkboxIsCheckedByDefault;
+
+	const label = document.createElement('label');
+	label.htmlFor = checkboxId;
+	label.innerHTML = checkboxLabelInnerHtml;
+
+	parentElem.appendChild(label);
+	parentElem.appendChild(checkbox);
+
+	areaSelection.appendChild(parentElem);
 }
