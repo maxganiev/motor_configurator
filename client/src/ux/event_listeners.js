@@ -9,9 +9,11 @@ import { checkboxConicShaft } from './global_dom';
 import { selectorVentSystem } from './global_dom';
 import { searchModel } from './functions';
 import { getOptions } from './functions';
+import { optionsSelector } from './functions';
 
 export function globeEvHandler() {
 	inputModel.oninput = (e) => searchModel(e);
+
 	selectorPower.onchange = selectorRpm.onchange = (e) => searchModel(e);
 
 	//selecting a motor model:
@@ -41,5 +43,12 @@ export function globeEvHandler() {
 	//chosing conic shaft:
 	checkboxConicShaft.addEventListener('change', () => {
 		getOptions(null);
+	});
+
+	//обработчики с делегированием:
+	document.body.addEventListener('change', (e) => {
+		if (e.target.id === 'checkbox-currentInsulatingBearing' || e.target.id === 'selector-importBearings') {
+			optionsSelector.setOptionsList();
+		}
 	});
 }

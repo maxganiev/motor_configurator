@@ -6,8 +6,8 @@ import { selectorPaws } from './global_dom';
 import { checkboxEncoder } from './global_dom';
 import { checkboxConicShaft } from './global_dom';
 import { selectorVentSystem } from './global_dom';
-import { fillExtraOptions } from '../motordata/options_list';
-import { optionsConfig } from '../motordata/options_list';
+import { fillBaseOptions } from '../motordata/base_options_list';
+import { optionsConfig } from '../motordata/base_options_list';
 import { regex } from './global_vars';
 import { motorsAllSeriesFlatten } from '../motordata/models';
 import { imageDrawing } from './global_dom';
@@ -17,6 +17,7 @@ import { chart_connectionParams } from './global_dom';
 import { chart_connectionValues } from './global_dom';
 import { areaSelection } from './global_dom';
 import { areaRender } from './global_dom';
+import { fillExtraOptions } from '../motordata/extra_options_list';
 
 //получение списка моделей и очистка UI:
 export function searchModel(e) {
@@ -36,6 +37,11 @@ export function searchModel(e) {
 	Array.from(selectorBrakes.children).forEach((child, index) => index !== 0 && child.remove());
 	Array.from(selectorVentSystem.children).forEach((child, index) => index !== 0 && child.remove());
 	Array.from(selectorPaws.children).forEach((child) => child.remove());
+
+	//cleaning up encoder options list if it was not unchecked before typing for a new model:
+	Array.from(areaSelection.children).some((child) => child.id.includes('encoder-group-id') && child.remove());
+	//cleaning up all dynamically rendered elements (not hardcoded in html)
+	//Array.from(areaSelection.children).forEach((child, index) => index > 5 && child.remove());
 }
 
 //селективный объект для получения опций:
@@ -53,10 +59,28 @@ export const optionsSelector = {
 		this.encoderIsChecked = checkboxEncoder.checked;
 		this.conicShaftIsChecked = checkboxConicShaft.checked;
 		this.pawType = selectorPaws.value === '' ? 'Лапы (1001/1081)' : selectorPaws.value;
+		this.currentInsulatingBearingIsChecked =
+			document.getElementById('checkbox-currentInsulatingBearing') === null && this.frameSize >= 200
+				? true
+				: document.getElementById('checkbox-currentInsulatingBearing') === null && this.frameSize < 200
+				? false
+				: document.getElementById('checkbox-currentInsulatingBearing').checked;
 
-		//!add +2 params : f2BearingIsChecked, s12BearingIsChecked)
-		fillExtraOptions(this.frameSize, this.encoderIsChecked, this.ventSystemOptionValue, this.brakeType);
-		setupBaseOptions();
+		this.importBearingsValue =
+			document.getElementById('selector-importBearings') === null
+				? '-'
+				: document.getElementById('selector-importBearings').value;
+
+		fillBaseOptions(
+			this.frameSize,
+			this.encoderIsChecked,
+			this.ventSystemOptionValue,
+			this.brakeType,
+			this.currentInsulatingBearingIsChecked,
+			this.importBearingsValue
+		);
+
+		fillExtraOptions();
 
 		const _this = this;
 		this.currSelectionToGetImg = {
@@ -92,6 +116,9 @@ export function getOptions(selectorsId, operationType) {
 				}
 			}
 		}
+
+		//resetting checkboxes:
+		checkboxEncoder.disabled = !optionsConfig.encoderIsDisabled;
 		checkboxConicShaft.disabled = optionsConfig.conicShaftDisabled;
 
 		const { frameSize, brakeType, encoderIsChecked, ventSystemOptionValue, conicShaftIsChecked, pawType } = optionsSelector;
@@ -105,7 +132,7 @@ export function getOptions(selectorsId, operationType) {
 }
 
 //функция для наполнения списка опций:
-function populateOptionsList(selectorsId, srcData, operationType) {
+export function populateOptionsList(selectorsId, srcData, operationType) {
 	selectorsId !== null && selectorsId.forEach((selector, index) => fillOptions(selector, srcData[index]));
 
 	function fillOptions(parentSelector, srcData) {
@@ -131,8 +158,6 @@ function populateOptionsList(selectorsId, srcData, operationType) {
 			Array.from(selectorsId[0].children).forEach((child, index) => {
 				child.disabled = !srcData[index].selectable;
 			});
-
-			checkboxEncoder.disabled = !optionsConfig.encoderIsDisabled;
 		}
 	}
 }
@@ -164,8 +189,8 @@ export function getModel(query, targetArr) {
 			selectorModel.children[1].selected = true;
 			getOptions([selectorBrakes, selectorPaws, selectorVentSystem], 'populateOptionsList');
 
-			areaRender.style.visibility = 'visible';
-			areaSelection.style.visibility = 'visible';
+			// areaRender.style.visibility = 'visible';
+			// areaSelection.style.visibility = 'visible';
 		}
 
 		if (
@@ -173,8 +198,8 @@ export function getModel(query, targetArr) {
 			(typeof query === 'object' && Array.isArray(query) && query.some((param) => param === '-'))
 		) {
 			Array.from(selectorModel.children).forEach((child, index) => index !== 0 && child.remove());
-			areaRender.style.visibility = 'hidden';
-			areaSelection.style.visibility = 'hidden';
+			// areaRender.style.visibility = 'hidden';
+			// areaSelection.style.visibility = 'hidden';
 		}
 	}, 400);
 }
@@ -337,93 +362,4 @@ export function setChartConnectionDims(frameSize, brakeType, pawType, ventSystem
 	});
 
 	chart_connectionParams.style.borderBottom = '0.5px #000 solid';
-}
-
-//заливка доступного для габарита опционала при выборе модели двигателя:
-function setupBaseOptions() {
-	//cleaning up DOM rendered DOM elems:
-	Array.from(areaSelection.children).forEach((child, index) => index > 5 && child.remove());
-
-	const { tempDataSensors, vibroSensors, antiCondensingHeater, currentInsulatingBearing, importBearings } = optionsConfig;
-
-	//чекбокс для выбора вибродатчиков:
-	const listItem0 = document.createElement('li');
-	createCheckBoxes(listItem0, 'checkbox-vibrosensors', !vibroSensors.selectable, vibroSensors.type, null);
-
-	//чекбокс для выбора антиконденсатного подогрева:
-	const listItem1 = document.createElement('li');
-	createCheckBoxes(listItem1, 'checkbox-antiCondenseHeater', !antiCondensingHeater.selectable, antiCondensingHeater.type, null);
-
-	//чекбокс для выбора токоизолированного подшипника:
-	const listItem2 = document.createElement('li');
-	createCheckBoxes(
-		listItem2,
-		'checkbox-currentInsulatingBearing',
-		!currentInsulatingBearing.selectable,
-		currentInsulatingBearing.type,
-		currentInsulatingBearing.checked
-	);
-
-	//селект для выбора импортных подшипников:
-	const listItem3 = document.createElement('li');
-	const selectorImportBearings = document.createElement('select');
-	selectorImportBearings.id = 'selector-importBearings';
-
-	const label = document.createElement('label');
-	label.htmlFor = 'selector-importBearings';
-	label.innerHTML = importBearings[0].group;
-
-	listItem3.insertAdjacentElement('afterbegin', label);
-	listItem3.appendChild(selectorImportBearings);
-
-	populateOptionsList([selectorImportBearings], [importBearings], 'populateOptionsList');
-
-	//заливка кнопок для выбора датчиков температуры:
-	const listItem4 = document.createElement('li');
-	const column_WindingSensors = document.createElement('ul');
-	const column_BearingSensors = document.createElement('ul');
-
-	tempDataSensors.forEach((obj, index) => {
-		const listItem = document.createElement('li');
-
-		const btn = document.createElement('button');
-		btn.classList.add('btn-option-non-selected');
-		btn.disabled = !obj.selectable;
-		btn.innerHTML = obj.type;
-
-		obj.group === 'Датчики температуры обмотки'
-			? column_WindingSensors.appendChild(listItem)
-			: column_BearingSensors.appendChild(listItem);
-		listItem.appendChild(btn);
-
-		//описание подгруппы датчиков (текст вставляем только раз для каждой подгруппы, поэтому использую индексы):
-		index === 0 && column_WindingSensors.insertAdjacentText('afterbegin', obj.group);
-		index === 3 && column_BearingSensors.insertAdjacentText('afterbegin', obj.group);
-	});
-
-	listItem4.appendChild(column_WindingSensors);
-	listItem4.appendChild(column_BearingSensors);
-
-	listItem4.classList.add('flex-row');
-
-	areaSelection.appendChild(listItem3);
-	areaSelection.appendChild(listItem4);
-}
-
-//func to create checkboxes:
-function createCheckBoxes(parentElem, checkboxId, checkboxIsSelectable, checkboxLabelInnerHtml, checkboxIsCheckedByDefault) {
-	const checkbox = document.createElement('input');
-	checkbox.setAttribute('type', 'checkbox');
-	checkbox.setAttribute('id', checkboxId);
-	checkbox.disabled = checkboxIsSelectable;
-	checkbox.checked = checkboxIsCheckedByDefault !== null && checkboxIsCheckedByDefault;
-
-	const label = document.createElement('label');
-	label.htmlFor = checkboxId;
-	label.innerHTML = checkboxLabelInnerHtml;
-
-	parentElem.appendChild(label);
-	parentElem.appendChild(checkbox);
-
-	areaSelection.appendChild(parentElem);
 }

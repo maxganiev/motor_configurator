@@ -103,7 +103,7 @@ body {
 					flex-direction: column;
 					justify-content: space-evenly;
 					height: 100%;
-					visibility: hidden;
+					// visibility: hidden;
 
 					li {
 						display: flex;
@@ -112,9 +112,9 @@ body {
 				}
 			}
 
-			&-render {
-				visibility: hidden;
-			}
+			// &-render {
+			// 	visibility: hidden;
+			// }
 		}
 
 		.chart {

@@ -1,13 +1,14 @@
 export const optionsConfig = {};
 
-export const fillExtraOptions = function (
+export const fillBaseOptions = function (
 	motorFrameSize,
 	encoderIsChecked,
 	ventSystemOptionValue,
 	brakeType,
-	f2BearingIsChecked,
-	s12BearingIsChecked
+	currentInsulatingBearingIsChecked,
+	importBearingsValue
 ) {
+	console.log(currentInsulatingBearingIsChecked, importBearingsValue);
 	//термодатчики (UI: button):
 	optionsConfig.tempDataSensors = [
 		{
@@ -65,6 +66,26 @@ export const fillExtraOptions = function (
 	//энкодер:
 	optionsConfig.encoderIsDisabled = brakeType.includes('независимым питанием') || brakeType === '-' ? true : false;
 
+	//опции энкодера, если энкодер включен:
+	optionsConfig.encoderParams = {
+		//ui: input (type: num)
+		resolution: { id: 'resol', type: 'Разрешение(имп/об)' },
+
+		//ui: select
+		powerVolt: [
+			{ id: 'default', group: 'Напряжение питания', type: '-' },
+			{ id: '5V', group: 'Напряжение питания', type: '+5В' },
+			{ id: '10_30V', group: 'Напряжение питания', type: '+10...30В' },
+		],
+
+		//ui: select
+		outputSignal: [
+			{ id: 'default', group: 'Тип выходного сигнала', type: '-' },
+			{ id: 'ttl', group: 'Тип выходного сигнала', type: 'TTL/RS422, 6 каналов' },
+			{ id: 'htl', group: 'Тип выходного сигнала', type: 'HTL/push pull, 6 каналов' },
+		],
+	};
+
 	//вибродатчики (UI: checkbox):
 	optionsConfig.vibroSensors = {
 		id: 'W1',
@@ -87,14 +108,21 @@ export const fillExtraOptions = function (
 		id: 'F2',
 		type: 'Токоизолированный подшипник',
 		description: 'Заменен задний штатный подшипник на токоизолированный (производства SKF/NSK/KOYO/FAG)',
-		selectable: motorFrameSize >= 200 && !s12BearingIsChecked ? true : false,
-		checked: motorFrameSize >= 200 ? true : false,
+		selectable:
+			motorFrameSize >= 200 && importBearingsValue !== 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)'
+				? true
+				: false,
+		checked:
+			motorFrameSize >= 200 && importBearingsValue !== 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)'
+				? true
+				: false,
 		warning: 'Элком рекомендует установку токоизолированных подшипников на двигатели выше 200 габарита',
 	};
 
 	//!выбор S12 должен автоматически исключать возможность выбора F2 и наоборот:
 	//импортные подшипники (UI: select):
 	optionsConfig.importBearings = [
+		{ id: 'default', group: 'Импортные подшипники', type: '-', description: '-', selectable: true },
 		{
 			id: 'S1',
 			group: 'Импортные подшипники',
@@ -110,7 +138,7 @@ export const fillExtraOptions = function (
 			type: 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)',
 			description:
 				'Заменены передний и задний штатные подшипники на подшипники повышенной надежности шариковые (производства SKF/NSK/KOYO/FAG)',
-			selectable: f2BearingIsChecked ? false : true,
+			selectable: currentInsulatingBearingIsChecked ? false : true,
 		},
 	];
 
@@ -284,6 +312,20 @@ export const fillExtraOptions = function (
 			description: 'Укомплектован узлом независимой вентиляции (пристроенный вентилятор (наездник) с питанием 380В)',
 			selectable: motorFrameSize >= 225 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
 		},
+	];
+
+	//климатическое исполнение (UI: select):
+	optionsConfig.climateCat = [
+		{ id: 'У2', group: 'Климатическое исполнение', type: 'У2', selectable: true },
+		{ id: 'У1', group: 'Климатическое исполнение', type: 'У1', selectable: true },
+		{ id: 'УХЛ1', group: 'Климатическое исполнение', type: 'УХЛ1', selectable: true },
+		{ id: 'УХЛ2', group: 'Климатическое исполнение', type: 'УХЛ2', selectable: true },
+	];
+
+	//степень защиты (UI: select):
+	optionsConfig.ipVersion = [
+		{ id: 'IP55', group: 'Степень защиты', type: 'IP55', selectable: true },
+		{ id: 'IP54', group: 'Степень защиты', type: 'IP54', selectable: true },
 	];
 
 	const options = [];

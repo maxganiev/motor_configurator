@@ -68,13 +68,10 @@ body {
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
-        height: 100%;
-        visibility: hidden; }
+        height: 100%; }
         body main .area-selection .list li {
           display: flex;
           flex-direction: column; }
-    body main .area-render {
-      visibility: hidden; }
     body main .chart-connectionParams {
       width: 80%;
       margin: 0 auto; }
