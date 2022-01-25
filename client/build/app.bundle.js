@@ -10329,6 +10329,13 @@ function globeEvHandler() {
 				return className.includes('btn-option-non-selected');
 			})) {
 				e.target.classList.replace('btn-option-non-selected', 'btn-option-selected');
+
+				var list = e.target.parentElement.parentElement;
+
+				Array.from(list.children).forEach(function (child) {
+					var btn = child.firstElementChild;
+					btn.id !== e.target.id && btn.classList.replace('btn-option-selected', 'btn-option-non-selected');
+				});
 			} else if (Array.from(e.target.classList).some(function (className) {
 				return className.includes('btn-option-selected');
 			})) {
