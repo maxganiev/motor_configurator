@@ -108,6 +108,13 @@ export function globeEvHandler() {
 		if (e.target.id.includes('btn-options-sensors-id')) {
 			if (Array.from(e.target.classList).some((className) => className.includes('btn-option-non-selected'))) {
 				e.target.classList.replace('btn-option-non-selected', 'btn-option-selected');
+
+				const list = e.target.parentElement.parentElement;
+
+				Array.from(list.children).forEach((child) => {
+					const btn = child.firstElementChild;
+					btn.id !== e.target.id && btn.classList.replace('btn-option-selected', 'btn-option-non-selected');
+				});
 			} else if (Array.from(e.target.classList).some((className) => className.includes('btn-option-selected'))) {
 				e.target.classList.replace('btn-option-selected', 'btn-option-non-selected');
 			}
