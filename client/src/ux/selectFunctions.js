@@ -18,6 +18,8 @@ import { chart_connectionValues } from './global_dom';
 import { areaSelection } from './global_dom';
 import { areaRender } from './global_dom';
 import { fillExtraOptions } from '../motordata/extra_options_list';
+import { setTransforms } from '../ui/ui';
+import { showWarning } from '../motordata/extra_options_list';
 
 //получение списка моделей и очистка UI:
 export function searchModel(e) {
@@ -40,8 +42,11 @@ export function searchModel(e) {
 
 	//cleaning up encoder options list if it was not unchecked before typing for a new model:
 	Array.from(areaSelection.children).some((child) => child.id.includes('encoder-group-id') && child.remove());
-	//cleaning up all dynamically rendered elements (not hardcoded in html)
-	//Array.from(areaSelection.children).forEach((child, index) => index > 5 && child.remove());
+
+	//setting btn UI used for tempDataSensors selection back to default while typing:
+	Array.from(document.querySelectorAll('.btn-option-selected')).forEach((btn) =>
+		btn.classList.replace('btn-option-selected', 'btn-option-non-selected')
+	);
 }
 
 //селективный объект для получения опций:
@@ -59,14 +64,16 @@ export const optionsSelector = {
 		this.encoderIsChecked = checkboxEncoder.checked;
 		this.conicShaftIsChecked = checkboxConicShaft.checked;
 		this.pawType = selectorPaws.value === '' ? 'Лапы (1001/1081)' : selectorPaws.value;
-		this.currentInsulatingBearingIsChecked =
+
+		//elements temporarily unacceccisble with initial render:
+		const checkboxCurrentInsulatingBearing =
 			document.getElementById('checkbox-currentInsulatingBearing') === null && this.frameSize >= 200
 				? true
 				: document.getElementById('checkbox-currentInsulatingBearing') === null && this.frameSize < 200
 				? false
 				: document.getElementById('checkbox-currentInsulatingBearing').checked;
 
-		this.importBearingsValue =
+		const selectorImportBearings =
 			document.getElementById('selector-importBearings') === null
 				? '-'
 				: document.getElementById('selector-importBearings').value;
@@ -76,11 +83,18 @@ export const optionsSelector = {
 			this.encoderIsChecked,
 			this.ventSystemOptionValue,
 			this.brakeType,
-			this.currentInsulatingBearingIsChecked,
-			this.importBearingsValue
+			checkboxCurrentInsulatingBearing,
+			selectorImportBearings
 		);
 
 		fillExtraOptions();
+
+		setTransforms(areaSelection.parentElement, '0px', 'Y');
+		setTransforms(areaRender, '0px', 'Y');
+
+		setTimeout(() => {
+			setModelNameAndDescription();
+		}, 450);
 
 		const _this = this;
 		this.currSelectionToGetImg = {
@@ -189,8 +203,51 @@ export function getModel(query, targetArr) {
 			selectorModel.children[1].selected = true;
 			getOptions([selectorBrakes, selectorPaws, selectorVentSystem], 'populateOptionsList');
 
-			// areaRender.style.visibility = 'visible';
-			// areaSelection.style.visibility = 'visible';
+			//refilling options UI for currentIsol. and import bearings while typing for a new model:
+			setTimeout(() => {
+				const checkboxCurrentInsulatingBearing = document.getElementById('checkbox-currentInsulatingBearing');
+				const selectorImportBearings = document.getElementById('selector-importBearings');
+
+				if (
+					Array.from(checkboxCurrentInsulatingBearing.classList).some((className) => className.includes('-checked')) &&
+					optionsSelector.frameSize < 200
+				) {
+					checkboxCurrentInsulatingBearing.checked = false;
+
+					checkboxCurrentInsulatingBearing.classList.replace(
+						'checkbox-currentInsulatingBearing-checked',
+						'checkbox-currentInsulatingBearing-unchecked'
+					);
+
+					Array.from(selectorImportBearings.children).forEach((child) => {
+						child.disabled = false;
+					});
+				} else if (
+					Array.from(checkboxCurrentInsulatingBearing.classList).some((className) =>
+						className.includes('-unchecked')
+					) &&
+					optionsSelector.frameSize >= 200
+				) {
+					if (
+						selectorImportBearings.value ===
+						'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)'
+					) {
+						checkboxCurrentInsulatingBearing.checked = false;
+						selectorImportBearings.children[1].disabled = true;
+					} else {
+						checkboxCurrentInsulatingBearing.checked = true;
+						checkboxCurrentInsulatingBearing.classList.replace(
+							'checkbox-currentInsulatingBearing-unchecked',
+							'checkbox-currentInsulatingBearing-checked'
+						);
+						selectorImportBearings.children[1].disabled = false;
+						selectorImportBearings.children[2].disabled = true;
+					}
+				}
+
+				//вывод предупреждения при отсутствии выбора токоиз. подшипника для двигателей >= 200 габ.:
+				showWarning();
+			}, 50);
 		}
 
 		if (
@@ -198,8 +255,6 @@ export function getModel(query, targetArr) {
 			(typeof query === 'object' && Array.isArray(query) && query.some((param) => param === '-'))
 		) {
 			Array.from(selectorModel.children).forEach((child, index) => index !== 0 && child.remove());
-			// areaRender.style.visibility = 'hidden';
-			// areaSelection.style.visibility = 'hidden';
 		}
 	}, 400);
 }
@@ -362,4 +417,15 @@ export function setChartConnectionDims(frameSize, brakeType, pawType, ventSystem
 	});
 
 	chart_connectionParams.style.borderBottom = '0.5px #000 solid';
+}
+
+//формирование наименования двигателя и описательной части к чертежу:
+function setModelNameAndDescription() {
+	const { frameSize, model, ventSystemOptionValue, brakeType, encoderIsChecked, conicShaftIsChecked, pawType } = optionsSelector;
+
+	let modelName = model;
+
+	const checkboxCurrentInsulatingBearing = document.getElementById('checkbox-currentInsulatingBearing');
+
+	console.log(model, optionsSelector, checkboxCurrentInsulatingBearing.checked);
 }

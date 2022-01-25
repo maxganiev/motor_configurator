@@ -8,7 +8,6 @@ export const fillBaseOptions = function (
 	currentInsulatingBearingIsChecked,
 	importBearingsValue
 ) {
-	console.log(currentInsulatingBearingIsChecked, importBearingsValue);
 	//термодатчики (UI: button):
 	optionsConfig.tempDataSensors = [
 		{
@@ -109,13 +108,12 @@ export const fillBaseOptions = function (
 		type: 'Токоизолированный подшипник',
 		description: 'Заменен задний штатный подшипник на токоизолированный (производства SKF/NSK/KOYO/FAG)',
 		selectable:
-			motorFrameSize >= 200 && importBearingsValue !== 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)'
-				? true
-				: false,
-		checked:
-			motorFrameSize >= 200 && importBearingsValue !== 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)'
-				? true
-				: false,
+			motorFrameSize >= 200 && importBearingsValue === 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)'
+				? false
+				: motorFrameSize >= 200 && importBearingsValue === 'Передний шариковый подшипник (производства SKF/NSK/KOYO/FAG)'
+				? false
+				: true,
+		checked: motorFrameSize >= 200 ? true : false,
 		warning: 'Элком рекомендует установку токоизолированных подшипников на двигатели выше 200 габарита',
 	};
 
@@ -129,7 +127,7 @@ export const fillBaseOptions = function (
 			type: 'Передний шариковый подшипник (производства SKF/NSK/KOYO/FAG)',
 			description:
 				'Заменен передний штатный подшипник на подшипник повышенной надежности шариковый (производства SKF/NSK/KOYO/FAG)',
-			selectable: true,
+			selectable: motorFrameSize < 200 ? true : motorFrameSize >= 200 && currentInsulatingBearingIsChecked ? true : false,
 		},
 
 		{
@@ -326,6 +324,7 @@ export const fillBaseOptions = function (
 	optionsConfig.ipVersion = [
 		{ id: 'IP55', group: 'Степень защиты', type: 'IP55', selectable: true },
 		{ id: 'IP54', group: 'Степень защиты', type: 'IP54', selectable: true },
+		{ id: 'IP66', group: 'Степень защиты', type: 'IP66', selectable: true },
 	];
 
 	const options = [];

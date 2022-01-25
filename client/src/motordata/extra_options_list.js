@@ -1,7 +1,7 @@
 import { areaSelection } from '../ux/global_dom';
 import { optionsConfig } from './base_options_list';
-import { populateOptionsList } from '../ux/functions';
-import { optionsSelector } from '../ux/functions';
+import { populateOptionsList } from '../ux/selectFunctions';
+import { optionsSelector } from '../ux/selectFunctions';
 import { checkboxConicShaft } from '../ux/global_dom';
 
 //заливка доступного для габарита опционала при выборе модели двигателя:
@@ -33,7 +33,7 @@ export function fillExtraOptions() {
 		);
 
 		//селект для выбора импортных подшипников:
-		createSelects(areaSelection, 'selector-importBearings', importBearings[0].group, importBearings);
+		createSelects(areaSelection, 'selector-importBearings', importBearings);
 
 		//заливка кнопок для выбора датчиков температуры:
 		const listItem = document.createElement('li');
@@ -69,10 +69,10 @@ export function fillExtraOptions() {
 		areaSelection.appendChild(listItem);
 
 		//выбор климатического исполнения:
-		createSelects(areaSelection, 'selector-climateCat', climateCat[0].group, climateCat);
+		createSelects(areaSelection, 'selector-climateCat', climateCat);
 
 		//выбор IP:
-		createSelects(areaSelection, 'selector-ip', ipVersion[0].group, ipVersion);
+		createSelects(areaSelection, 'selector-ip', ipVersion);
 
 		//статический чекбокс для выбора упаковки:
 		createCheckBoxes(areaSelection, 'checkbox-package', false, 'Дополнительная упаковка оборудования', false);
@@ -81,11 +81,16 @@ export function fillExtraOptions() {
 	else {
 		document.getElementById('checkbox-vibrosensors').disabled = !vibroSensors.selectable;
 		document.getElementById('checkbox-antiCondenseHeater').disabled = !antiCondensingHeater.selectable;
-		document.getElementById('checkbox-currentInsulatingBearing').disabled = !currentInsulatingBearing.selectable;
+
+		const checkboxCurrentInsulatingBearing = document.getElementById('checkbox-currentInsulatingBearing');
+		checkboxCurrentInsulatingBearing.disabled = !currentInsulatingBearing.selectable;
 
 		populateOptionsList([document.getElementById('selector-importBearings')], [importBearings], 'resetOptionsList');
 		populateOptionsList([document.getElementById('selector-climateCat')], [climateCat], 'resetOptionsList');
 		populateOptionsList([document.getElementById('selector-ip')], [ipVersion], 'resetOptionsList');
+
+		//вывод предупреждения при отсутствии выбора токоиз. подшипника для двигателей >= 200 габ.:
+		showWarning();
 
 		Array.from(document.getElementById('list-windingSensors').children).forEach(
 			(child, index) => (child.firstElementChild.disabled = !tempDataSensors.slice(0, 3)[index].selectable)
@@ -173,10 +178,16 @@ function createCheckBoxes(parentElem, checkboxId, checkboxIsSelectable, checkbox
 	listItem.appendChild(checkbox);
 
 	parentElem.appendChild(listItem);
+
+	if (checkbox.checked) {
+		checkbox.classList.add(`${checkboxId}-checked`);
+	} else {
+		checkbox.classList.add(`${checkboxId}-unchecked`);
+	}
 }
 
 //func to create selects for baseOptions function:
-function createSelects(parentElem, selectId, selectLabelInnerHtml, srcDataToFillOptions) {
+function createSelects(parentElem, selectId, srcDataToFillOptions) {
 	const listItem = document.createElement('li');
 	const selector = document.createElement('select');
 	selector.id = selectId;
@@ -191,4 +202,30 @@ function createSelects(parentElem, selectId, selectLabelInnerHtml, srcDataToFill
 	populateOptionsList([selector], [srcDataToFillOptions], 'populateOptionsList');
 
 	parentElem.appendChild(listItem);
+}
+
+//вывод предупреждения при отсутствии выбора токоиз. подшипника для двигателей >= 200 габ.:
+export function showWarning() {
+	setTimeout(() => {
+		const checkboxCurrentInsulatingBearing = document.getElementById('checkbox-currentInsulatingBearing');
+		const selectorImportBearings = document.getElementById('selector-importBearings');
+
+		if (
+			optionsSelector.frameSize >= 200 &&
+			!checkboxCurrentInsulatingBearing.checked &&
+			selectorImportBearings.value !== 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)'
+		) {
+			Array.from(checkboxCurrentInsulatingBearing.parentElement.childNodes).forEach(
+				(node, index) => index === 2 && node.remove()
+			);
+			checkboxCurrentInsulatingBearing.parentElement.insertAdjacentText(
+				'beforeend',
+				optionsConfig.currentInsulatingBearing.warning
+			);
+		} else {
+			Array.from(checkboxCurrentInsulatingBearing.parentElement.childNodes).forEach(
+				(node, index) => index === 2 && node.remove()
+			);
+		}
+	}, 0);
 }
