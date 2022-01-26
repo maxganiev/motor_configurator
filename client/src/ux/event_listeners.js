@@ -10,6 +10,7 @@ import { selectorVentSystem } from './global_dom';
 import { searchModel } from './selectFunctions';
 import { getOptions } from './selectFunctions';
 import { optionsSelector } from './selectFunctions';
+import { setModelNameAndDescription, fillUpgradesChart } from './selectFunctions';
 
 export function globeEvHandler() {
 	inputModel.oninput = (e) => searchModel(e);
@@ -28,6 +29,7 @@ export function globeEvHandler() {
 	//selecting a breaks type:
 	selectorBrakes.addEventListener('change', () => {
 		getOptions([selectorVentSystem], 'resetOptionsList');
+		fillUpgradesChart();
 	});
 
 	//selecting vent system type:
@@ -41,18 +43,32 @@ export function globeEvHandler() {
 	});
 
 	//chosing conic shaft:
-	checkboxConicShaft.addEventListener('change', () => {
+	checkboxConicShaft.addEventListener('change', (e) => {
 		getOptions(null);
+
+		if (e.target.checked) {
+			setModelNameAndDescription('addData', 'conicShaft', e.target.id);
+		} else {
+			setModelNameAndDescription('removeData', null, e.target.id);
+		}
 	});
 
 	//обработчики с делегированием:
 	document.body.addEventListener('change', (e) => {
 		if (e.target.id === 'checkbox-vibrosensors') {
-			console.log('checkbox-vibrosensors', e.target.value);
+			if (e.target.checked) {
+				setModelNameAndDescription('addData', 'vibroSensors', e.target.id);
+			} else {
+				setModelNameAndDescription('removeData', null, e.target.id);
+			}
 		}
 
 		if (e.target.id === 'checkbox-antiCondenseHeater') {
-			console.log('checkbox-antiCondenseHeater', e.target.value);
+			if (e.target.checked) {
+				setModelNameAndDescription('addData', 'antiCondensingHeater', e.target.id);
+			} else {
+				setModelNameAndDescription('removeData', null, e.target.id);
+			}
 		}
 
 		////encoder group:
@@ -115,8 +131,20 @@ export function globeEvHandler() {
 					const btn = child.firstElementChild;
 					btn.id !== e.target.id && btn.classList.replace('btn-option-selected', 'btn-option-non-selected');
 				});
+
+				setModelNameAndDescription(
+					'addData',
+					'tempDataSensors',
+					Array.from(e.target.classList).find((cl) => cl.includes('Б'))
+				);
 			} else if (Array.from(e.target.classList).some((className) => className.includes('btn-option-selected'))) {
 				e.target.classList.replace('btn-option-selected', 'btn-option-non-selected');
+
+				setModelNameAndDescription(
+					'removeData',
+					null,
+					Array.from(e.target.classList).find((cl) => cl.includes('Б'))
+				);
 			}
 		}
 	});

@@ -1,25 +1,25 @@
-import { selectorModel } from './global_dom';
-import { selectorRpm } from './global_dom';
-import { selectorPower } from './global_dom';
-import { selectorBrakes } from './global_dom';
-import { selectorPaws } from './global_dom';
-import { checkboxEncoder } from './global_dom';
-import { checkboxConicShaft } from './global_dom';
-import { selectorVentSystem } from './global_dom';
-import { fillBaseOptions } from '../motordata/base_options_list';
-import { optionsConfig } from '../motordata/base_options_list';
+import {
+	selectorModel,
+	selectorRpm,
+	selectorPower,
+	selectorBrakes,
+	selectorPaws,
+	checkboxEncoder,
+	checkboxConicShaft,
+	selectorVentSystem,
+	imageDrawing,
+	chart_connectionParams,
+	chart_connectionValues,
+	areaSelection,
+	areaRender,
+	listItemUpgrades,
+} from './global_dom';
+import { fillBaseOptions, optionsConfig } from '../motordata/base_options_list';
 import { regex } from './global_vars';
 import { motorsAllSeriesFlatten } from '../motordata/models';
-import { imageDrawing } from './global_dom';
-import { imgSrcData } from '../motordata/imgSrcData';
-import { setImgSrcData } from '../motordata/imgSrcData';
-import { chart_connectionParams } from './global_dom';
-import { chart_connectionValues } from './global_dom';
-import { areaSelection } from './global_dom';
-import { areaRender } from './global_dom';
-import { fillExtraOptions } from '../motordata/extra_options_list';
+import { imgSrcData, setImgSrcData } from '../motordata/imgSrcData';
+import { fillExtraOptions, showWarning } from '../motordata/extra_options_list';
 import { setTransforms } from '../ui/ui';
-import { showWarning } from '../motordata/extra_options_list';
 
 //получение списка моделей и очистка UI:
 export function searchModel(e) {
@@ -47,6 +47,9 @@ export function searchModel(e) {
 	Array.from(document.querySelectorAll('.btn-option-selected')).forEach((btn) =>
 		btn.classList.replace('btn-option-selected', 'btn-option-non-selected')
 	);
+
+	//setting upgrades chart to default while typing:
+	Array.from(listItemUpgrades.children).forEach((child) => child.remove());
 }
 
 //селективный объект для получения опций:
@@ -91,10 +94,6 @@ export const optionsSelector = {
 
 		setTransforms(areaSelection.parentElement, '0px', 'Y');
 		setTransforms(areaRender, '0px', 'Y');
-
-		setTimeout(() => {
-			setModelNameAndDescription();
-		}, 450);
 
 		const _this = this;
 		this.currSelectionToGetImg = {
@@ -420,12 +419,125 @@ export function setChartConnectionDims(frameSize, brakeType, pawType, ventSystem
 }
 
 //формирование наименования двигателя и описательной части к чертежу:
-function setModelNameAndDescription() {
-	const { frameSize, model, ventSystemOptionValue, brakeType, encoderIsChecked, conicShaftIsChecked, pawType } = optionsSelector;
+export function setModelNameAndDescription(operationType, typeofDataToFill, htmlElemRef) {
+	if (operationType === 'addData') {
+		let modelName = optionsSelector.model;
 
-	let modelName = model;
+		const text = Array.isArray(optionsConfig[typeofDataToFill])
+			? optionsConfig[typeofDataToFill].find((data) => data.id === htmlElemRef).description
+			: optionsConfig[typeofDataToFill].description;
 
-	const checkboxCurrentInsulatingBearing = document.getElementById('checkbox-currentInsulatingBearing');
+		addDescription(text, htmlElemRef);
+	}
 
-	console.log(model, optionsSelector, checkboxCurrentInsulatingBearing.checked);
+	if (operationType === 'removeData') {
+		removeDescription(htmlElemRef);
+	}
+
+	function addDescription(text, htmlElemRef) {
+		if (htmlElemRef.includes('Б1') || htmlElemRef.includes('Б3') || htmlElemRef.includes('Б5')) {
+			//listItem_wearingSensors.innerHTML = text;
+			createListItem('wearing-sensors-description', text);
+		}
+
+		if (htmlElemRef.includes('Б2') || htmlElemRef.includes('Б4') || htmlElemRef.includes('Б6')) {
+			//listItem_bearingSensors.innerHTML = text;
+			createListItem('bearing-sensors-description', text);
+		}
+
+		if (htmlElemRef.includes('checkbox-conicShaft')) {
+			createListItem('conicShaft', text);
+		}
+
+		if (htmlElemRef.includes('checkbox-vibrosensors')) {
+			createListItem('vibrosensors', text);
+		}
+
+		if (htmlElemRef.includes('checkbox-antiCondenseHeater')) {
+			createListItem('antiCondenseHeater', text);
+		}
+	}
+
+	function removeDescription(htmlElemRef) {
+		const list = areaRender.lastElementChild;
+
+		if (htmlElemRef.includes('Б1') || htmlElemRef.includes('Б3') || htmlElemRef.includes('Б5')) {
+			document.querySelector('.wearing-sensors-description').innerHTML = '';
+			Array.from(list.children).forEach((child) => child.className.includes('wearing-sensors-description') && child.remove());
+		}
+
+		if (htmlElemRef.includes('Б2') || htmlElemRef.includes('Б4') || htmlElemRef.includes('Б6')) {
+			document.querySelector('.bearing-sensors-description').innerHTML = '';
+			Array.from(list.children).forEach((child) => child.className.includes('bearing-sensors-description') && child.remove());
+		}
+
+		if (htmlElemRef.includes('checkbox-conicShaft')) {
+			document.querySelector('.conicShaft').innerHTML = '';
+			Array.from(list.children).forEach((child) => child.className.includes('conicShaft') && child.remove());
+		}
+
+		if (htmlElemRef.includes('checkbox-vibrosensors')) {
+			document.querySelector('.vibrosensors').innerHTML = '';
+			Array.from(list.children).forEach((child) => child.className.includes('vibrosensors') && child.remove());
+		}
+
+		if (htmlElemRef.includes('checkbox-antiCondenseHeater')) {
+			document.querySelector('.antiCondenseHeater').innerHTML = '';
+			Array.from(list.children).forEach((child) => child.className.includes('antiCondenseHeater') && child.remove());
+		}
+	}
+
+	function createListItem(newClassName, innerHtml) {
+		const list = areaRender.lastElementChild;
+
+		Array.from(list.children).forEach((child) => child.className.includes(newClassName) && child.remove());
+
+		const listItem = document.createElement('li');
+		listItem.className = newClassName;
+		listItem.innerHTML = innerHtml;
+
+		list.insertBefore(listItem, listItemUpgrades);
+	}
+}
+
+//наполнение секции доп. доработок в случае выбора энкодера и/ или системы вентиляции и/ или тормозов:
+export function fillUpgradesChart() {
+	const { frameSize, brakeType, encoderIsChecked, ventSystemOptionValue } = optionsSelector;
+	const { upgradesData, electroMagneticBreak } = optionsConfig;
+
+	if (brakeType !== '-') {
+		Array.from(listItemUpgrades.children).forEach(
+			(ul) => Array.from(ul.classList).some((classname) => classname.includes('list-brakeupgrades')) && ul.remove()
+		);
+
+		const list = document.createElement('ul');
+		list.classList.add('list', 'list-brakeupgrades');
+		list.insertAdjacentText('afterbegin', 'Электромагнитный тормоз');
+
+		const upgradeObj = upgradesData.find((upg) => upg.id === frameSize);
+		const { brakeMoment, brake_consumedPower, reactionTime } = upgradeObj;
+		const power = electroMagneticBreak.find((opt) => opt.type === brakeType).power;
+
+		const upgradesList = [brakeMoment, brake_consumedPower, reactionTime];
+
+		Array.from(list.children).forEach((child) => child.remove());
+
+		upgradesList.forEach((upg) => {
+			const listItem = document.createElement('li');
+			listItem.innerHTML = `${upg.description}: ${upg.data}`;
+
+			list.appendChild(listItem);
+		});
+
+		const listItem = document.createElement('li');
+		listItem.innerHTML = `Потребляемая мощность: ${power}кВт`;
+
+		list.appendChild(listItem);
+
+		listItemUpgrades.appendChild(list);
+	} else {
+		Array.from(listItemUpgrades.children).forEach(
+			(ul) => Array.from(ul.classList).some((classname) => classname.includes('list-brakeupgrades')) && ul.remove()
+		);
+	}
 }

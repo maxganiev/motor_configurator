@@ -2950,6 +2950,7 @@ var chart_connectionParams = exports.chart_connectionParams = document.getElemen
 var chart_connectionValues = exports.chart_connectionValues = document.getElementById('chart-connectionValues');
 var areaSelection = exports.areaSelection = document.getElementById('area-selection').firstElementChild;
 var areaRender = exports.areaRender = document.getElementById('area-render');
+var listItemUpgrades = exports.listItemUpgrades = document.getElementById('listItem-upgrades');
 
 /***/ }),
 /* 94 */
@@ -3969,6 +3970,8 @@ exports.getOptions = getOptions;
 exports.populateOptionsList = populateOptionsList;
 exports.getModel = getModel;
 exports.setChartConnectionDims = setChartConnectionDims;
+exports.setModelNameAndDescription = setModelNameAndDescription;
+exports.fillUpgradesChart = fillUpgradesChart;
 
 var _global_dom = __webpack_require__(93);
 
@@ -4018,6 +4021,11 @@ function searchModel(e) {
 	Array.from(document.querySelectorAll('.btn-option-selected')).forEach(function (btn) {
 		return btn.classList.replace('btn-option-selected', 'btn-option-non-selected');
 	});
+
+	//setting upgrades chart to default while typing:
+	Array.from(_global_dom.listItemUpgrades.children).forEach(function (child) {
+		return child.remove();
+	});
 }
 
 //селективный объект для получения опций:
@@ -4046,10 +4054,6 @@ var optionsSelector = exports.optionsSelector = {
 
 		(0, _ui.setTransforms)(_global_dom.areaSelection.parentElement, '0px', 'Y');
 		(0, _ui.setTransforms)(_global_dom.areaRender, '0px', 'Y');
-
-		setTimeout(function () {
-			setModelNameAndDescription();
-		}, 450);
 
 		var _this = this;
 		this.currSelectionToGetImg = {
@@ -4339,21 +4343,157 @@ function setChartConnectionDims(frameSize, brakeType, pawType, ventSystemOptionV
 }
 
 //формирование наименования двигателя и описательной части к чертежу:
-function setModelNameAndDescription() {
+function setModelNameAndDescription(operationType, typeofDataToFill, htmlElemRef) {
+	if (operationType === 'addData') {
+		var modelName = optionsSelector.model;
+
+		var text = Array.isArray(_base_options_list.optionsConfig[typeofDataToFill]) ? _base_options_list.optionsConfig[typeofDataToFill].find(function (data) {
+			return data.id === htmlElemRef;
+		}).description : _base_options_list.optionsConfig[typeofDataToFill].description;
+
+		addDescription(text, htmlElemRef);
+	}
+
+	if (operationType === 'removeData') {
+		removeDescription(htmlElemRef);
+	}
+
+	function addDescription(text, htmlElemRef) {
+		if (htmlElemRef.includes('Б1') || htmlElemRef.includes('Б3') || htmlElemRef.includes('Б5')) {
+			//listItem_wearingSensors.innerHTML = text;
+			createListItem('wearing-sensors-description', text);
+		}
+
+		if (htmlElemRef.includes('Б2') || htmlElemRef.includes('Б4') || htmlElemRef.includes('Б6')) {
+			//listItem_bearingSensors.innerHTML = text;
+			createListItem('bearing-sensors-description', text);
+		}
+
+		if (htmlElemRef.includes('checkbox-conicShaft')) {
+			createListItem('conicShaft', text);
+		}
+
+		if (htmlElemRef.includes('checkbox-vibrosensors')) {
+			createListItem('vibrosensors', text);
+		}
+
+		if (htmlElemRef.includes('checkbox-antiCondenseHeater')) {
+			createListItem('antiCondenseHeater', text);
+		}
+	}
+
+	function removeDescription(htmlElemRef) {
+		var list = _global_dom.areaRender.lastElementChild;
+
+		if (htmlElemRef.includes('Б1') || htmlElemRef.includes('Б3') || htmlElemRef.includes('Б5')) {
+			document.querySelector('.wearing-sensors-description').innerHTML = '';
+			Array.from(list.children).forEach(function (child) {
+				return child.className.includes('wearing-sensors-description') && child.remove();
+			});
+		}
+
+		if (htmlElemRef.includes('Б2') || htmlElemRef.includes('Б4') || htmlElemRef.includes('Б6')) {
+			document.querySelector('.bearing-sensors-description').innerHTML = '';
+			Array.from(list.children).forEach(function (child) {
+				return child.className.includes('bearing-sensors-description') && child.remove();
+			});
+		}
+
+		if (htmlElemRef.includes('checkbox-conicShaft')) {
+			document.querySelector('.conicShaft').innerHTML = '';
+			Array.from(list.children).forEach(function (child) {
+				return child.className.includes('conicShaft') && child.remove();
+			});
+		}
+
+		if (htmlElemRef.includes('checkbox-vibrosensors')) {
+			document.querySelector('.vibrosensors').innerHTML = '';
+			Array.from(list.children).forEach(function (child) {
+				return child.className.includes('vibrosensors') && child.remove();
+			});
+		}
+
+		if (htmlElemRef.includes('checkbox-antiCondenseHeater')) {
+			document.querySelector('.antiCondenseHeater').innerHTML = '';
+			Array.from(list.children).forEach(function (child) {
+				return child.className.includes('antiCondenseHeater') && child.remove();
+			});
+		}
+	}
+
+	function createListItem(newClassName, innerHtml) {
+		var list = _global_dom.areaRender.lastElementChild;
+
+		Array.from(list.children).forEach(function (child) {
+			return child.className.includes(newClassName) && child.remove();
+		});
+
+		var listItem = document.createElement('li');
+		listItem.className = newClassName;
+		listItem.innerHTML = innerHtml;
+
+		list.insertBefore(listItem, _global_dom.listItemUpgrades);
+	}
+}
+
+//наполнение секции доп. доработок в случае выбора энкодера и/ или системы вентиляции и/ или тормозов:
+function fillUpgradesChart() {
 	var frameSize = optionsSelector.frameSize,
-	    model = optionsSelector.model,
-	    ventSystemOptionValue = optionsSelector.ventSystemOptionValue,
 	    brakeType = optionsSelector.brakeType,
 	    encoderIsChecked = optionsSelector.encoderIsChecked,
-	    conicShaftIsChecked = optionsSelector.conicShaftIsChecked,
-	    pawType = optionsSelector.pawType;
+	    ventSystemOptionValue = optionsSelector.ventSystemOptionValue;
+	var upgradesData = _base_options_list.optionsConfig.upgradesData,
+	    electroMagneticBreak = _base_options_list.optionsConfig.electroMagneticBreak;
 
 
-	var modelName = model;
+	if (brakeType !== '-') {
+		Array.from(_global_dom.listItemUpgrades.children).forEach(function (ul) {
+			return Array.from(ul.classList).some(function (classname) {
+				return classname.includes('list-brakeupgrades');
+			}) && ul.remove();
+		});
 
-	var checkboxCurrentInsulatingBearing = document.getElementById('checkbox-currentInsulatingBearing');
+		var list = document.createElement('ul');
+		list.classList.add('list', 'list-brakeupgrades');
+		list.insertAdjacentText('afterbegin', 'Электромагнитный тормоз');
 
-	console.log(model, optionsSelector, checkboxCurrentInsulatingBearing.checked);
+		var upgradeObj = upgradesData.find(function (upg) {
+			return upg.id === frameSize;
+		});
+		var brakeMoment = upgradeObj.brakeMoment,
+		    brake_consumedPower = upgradeObj.brake_consumedPower,
+		    reactionTime = upgradeObj.reactionTime;
+
+		var power = electroMagneticBreak.find(function (opt) {
+			return opt.type === brakeType;
+		}).power;
+
+		var upgradesList = [brakeMoment, brake_consumedPower, reactionTime];
+
+		Array.from(list.children).forEach(function (child) {
+			return child.remove();
+		});
+
+		upgradesList.forEach(function (upg) {
+			var listItem = document.createElement('li');
+			listItem.innerHTML = upg.description + ': ' + upg.data;
+
+			list.appendChild(listItem);
+		});
+
+		var listItem = document.createElement('li');
+		listItem.innerHTML = '\u041F\u043E\u0442\u0440\u0435\u0431\u043B\u044F\u0435\u043C\u0430\u044F \u043C\u043E\u0449\u043D\u043E\u0441\u0442\u044C: ' + power + '\u043A\u0412\u0442';
+
+		list.appendChild(listItem);
+
+		_global_dom.listItemUpgrades.appendChild(list);
+	} else {
+		Array.from(_global_dom.listItemUpgrades.children).forEach(function (ul) {
+			return Array.from(ul.classList).some(function (classname) {
+				return classname.includes('list-brakeupgrades');
+			}) && ul.remove();
+		});
+	}
 }
 
 /***/ }),
@@ -4410,6 +4550,10 @@ var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFr
 
 	//конический вал (UI: checkbox):
 	optionsConfig.conicShaftDisabled = motorFrameSize < 200 ? true : false;
+	optionsConfig.conicShaft = {
+		id: 'checkbox-conicShaft',
+		description: 'Конический вал в соответствии с ГОСТ 12081-72'
+	};
 
 	//энкодер:
 	optionsConfig.encoderIsDisabled = brakeType.includes('независимым питанием') || brakeType === '-' ? true : false;
@@ -4423,7 +4567,7 @@ var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFr
 		powerVolt: [{ id: 'default', group: 'Напряжение питания', type: '-' }, { id: '5V', group: 'Напряжение питания', type: '+5В' }, { id: '10_30V', group: 'Напряжение питания', type: '+10...30В' }],
 
 		//ui: select
-		outputSignal: [{ id: 'default', group: 'Тип выходного сигнала', type: '-' }, { id: 'ttl', group: 'Тип выходного сигнала', type: 'TTL/RS422, 6 каналов' }, { id: 'htl', group: 'Тип выходного сигнала', type: 'HTL/push pull, 6 каналов' }]
+		outputSignal: [{ id: 'default', group: 'Тип выходного сигнала', type: '-' }, { id: '3', group: 'Тип выходного сигнала', type: 'TTL/RS422, 6 каналов' }, { id: '4', group: 'Тип выходного сигнала', type: 'HTL/push pull, 6 каналов' }]
 	};
 
 	//вибродатчики (UI: checkbox):
@@ -4448,7 +4592,7 @@ var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFr
 		id: 'F2',
 		type: 'Токоизолированный подшипник',
 		description: 'Заменен задний штатный подшипник на токоизолированный (производства SKF/NSK/KOYO/FAG)',
-		selectable: motorFrameSize >= 200 && importBearingsValue === 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)' ? false : motorFrameSize >= 200 && importBearingsValue === 'Передний шариковый подшипник (производства SKF/NSK/KOYO/FAG)' ? false : true,
+		selectable: motorFrameSize >= 200 && importBearingsValue !== '-' ? false : motorFrameSize < 200 ? false : true,
 		checked: motorFrameSize >= 200 ? true : false,
 		warning: 'Элком рекомендует установку токоизолированных подшипников на двигатели выше 200 габарита'
 	};
@@ -4475,55 +4619,179 @@ var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFr
 		group: 'Встроенный электромагнитный тормоз',
 		type: '-',
 		description: '-',
-		selectable: true
+		selectable: true,
+		power: null
 	}, {
 		id: 'ED',
 		group: 'Встроенный электромагнитный тормоз',
 		type: 'Тормоз (питание 220В)',
 		description: 'Укомплектован встроенным электромагнитным тормозом (питание 220В)',
-		selectable: motorFrameSize <= 100 && !encoderIsChecked && ventSystemOptionValue === '-' ? true : false
+		selectable: motorFrameSize <= 100 && !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
+		power: 220
 	}, {
 		id: 'ET',
 		group: 'Встроенный электромагнитный тормоз',
 		type: 'Тормоз (питание 380В)',
 		description: 'Укомплектован встроенным электромагнитным тормозом (питание 380В)',
-		selectable: !encoderIsChecked && ventSystemOptionValue === '-' ? true : false
+		selectable: !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
+		power: 380
 	}, {
 		id: 'ED1',
 		group: 'Встроенный электромагнитный тормоз',
 		type: 'Тормоз (питание 220В) с независимым питанием',
 		description: 'Укомплектован встроенным электромагнитным тормозом (питание 220В) с независимым питанием',
-		selectable: motorFrameSize <= 100 ? true : false
+		selectable: motorFrameSize <= 100 ? true : false,
+		power: 220
 	}, {
 		id: 'ET1',
 		group: 'Встроенный электромагнитный тормоз',
 		type: 'Тормоз (питание 380В) с независимым питанием',
 		description: 'Укомплектован встроенным электромагнитным тормозом (питание 380В) с независимым питанием',
-		selectable: true
+		selectable: true,
+		power: 380
 	}, {
 		id: 'ED2',
 		group: 'Встроенный электромагнитный тормоз',
 		type: 'Тормоз (питание 220В)  с ручным растормаживающим устройством',
 		description: 'Укомплектован встроенным электромагнитным тормозом (питание 220В) с ручным растормаживающим устройством',
-		selectable: motorFrameSize <= 100 && !encoderIsChecked && ventSystemOptionValue === '-' ? true : false
+		selectable: motorFrameSize <= 100 && !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
+		power: 220
 	}, {
 		id: 'ET2',
 		group: 'Встроенный электромагнитный тормоз',
 		type: 'Тормоз (питание 380В) с ручным растормаживающим устройством',
 		description: 'Укомплектован встроенным электромагнитным тормозом (питание 380В) с ручным растормаживающим устройством',
-		selectable: motorFrameSize <= 200 && !encoderIsChecked && ventSystemOptionValue === '-' ? true : false
+		selectable: motorFrameSize <= 200 && !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
+		power: 380
 	}, {
 		id: 'ED1ED2',
 		group: 'Встроенный электромагнитный тормоз',
 		type: 'Тормоз (питание 220В) с независимым питанием и ручным растормаживающим устройством',
 		description: 'Укомплектован встроенным электромагнитным тормозом (питание 220В) с независимым питанием и ручным растормаживающим устройством',
-		selectable: motorFrameSize <= 100 ? true : false
+		selectable: motorFrameSize <= 100 ? true : false,
+		power: 220
 	}, {
 		id: 'ET1ET2',
 		group: 'Встроенный электромагнитный тормоз',
 		type: 'Тормоз (питание 380В) с независимым питанием и ручным растормаживающим устройством',
 		description: 'Укомплектован встроенным электромагнитным тормозом (питание 380В) с независимым питанием и ручным растормаживающим устройством',
-		selectable: motorFrameSize <= 200 ? true : false
+		selectable: motorFrameSize <= 200 ? true : false,
+		power: 380
+	}];
+
+	//данные для наполнения табличной части доработок при выборе тормозов и /или вентиляционной системы:
+	optionsConfig.upgradesData = [{
+		id: 56,
+		brakeMoment: { data: '2/4', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 25, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.18, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 14, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '0.085', description: 'Потребляемый ток, А' }
+	}, {
+		id: 63,
+		brakeMoment: { data: '2/4', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 25, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.18, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 14, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '0.085', description: 'Потребляемый ток, А' }
+	}, {
+		id: 71,
+		brakeMoment: { data: '4/6', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.18, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 16, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '0.1', description: 'Потребляемый ток, А' }
+	}, {
+		id: 80,
+		brakeMoment: { data: '7.5/9', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 45, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.2, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '0.2', description: 'Потребляемый ток, А' }
+	}, {
+		id: 90,
+		brakeMoment: { data: '15/17', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 50, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.2, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '0.2', description: 'Потребляемый ток, А' }
+	}, {
+		id: 100,
+		brakeMoment: { data: '30/35', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 65, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.2, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '0.2', description: 'Потребляемый ток, А' }
+	}, {
+		id: 112,
+		brakeMoment: { data: '40/50', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 70, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.25, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 36, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '0.3', description: 'Потребляемый ток, А' }
+	}, {
+		id: 132,
+		brakeMoment: { data: '75/85', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 95, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.25, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 36, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '0.3', description: 'Потребляемый ток, А' }
+	}, {
+		id: 160,
+		brakeMoment: { data: '150/160', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 110, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.35, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 80, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '0.37', description: 'Потребляемый ток, А' }
+	}, {
+		id: 180,
+		brakeMoment: { data: '200/220', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 150, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.35, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 80, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '0.37', description: 'Потребляемый ток, А' }
+	}, {
+		id: 200,
+		brakeMoment: { data: '300/330', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 200, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.45, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 150, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '0.7', description: 'Потребляемый ток, А' }
+	}, {
+		id: 225,
+		brakeMoment: { data: '450/500', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 200, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.45, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 180, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '0.8', description: 'Потребляемый ток, А' }
+	}, {
+		id: 250,
+		brakeMoment: { data: '600/660', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 210, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.5, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 250, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '1.15', description: 'Потребляемый ток, А' }
+	}, {
+		id: 280,
+		brakeMoment: { data: '850/940', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 340, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.6, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 400, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '0.7', description: 'Потребляемый ток, А' }
+	}, {
+		id: 315,
+		brakeMoment: { data: '2000/2200', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 400, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.7, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 500, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '0.95', description: 'Потребляемый ток, А' }
+	}, {
+		id: 355,
+		brakeMoment: { data: '4000/4400', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+		brake_consumedPower: { data: 480, description: 'Потребляемая мощность, Вт' },
+		reactionTime: { data: 0.85, description: 'Время срабатывания, мс' },
+		vent_consumedPower: { data: 800, description: 'Потребляемая мощность, Вт' },
+		vent_consumedCurrent: { data: '1.55', description: 'Потребляемый ток, А' }
 	}];
 
 	//лапы и фланцы (UI: select):
@@ -4563,31 +4831,36 @@ var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFr
 		group: 'Независимая вентиляция',
 		type: '-',
 		description: '-',
-		selectable: true
+		selectable: true,
+		power: null
 	}, {
 		id: 'V1',
 		group: 'Независимая вентиляция',
 		type: 'Встроенный вентилятор с питанием 220В',
 		description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 220В)',
-		selectable: motorFrameSize <= 250 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false
+		selectable: motorFrameSize <= 250 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
+		power: 220
 	}, {
 		id: 'V2',
 		group: 'Независимая вентиляция',
 		type: 'Встроенный вентилятор с питанием 380В',
 		description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 380В)',
-		selectable: motorFrameSize >= 132 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false
+		selectable: motorFrameSize >= 132 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
+		power: 380
 	}, {
 		id: 'V3',
 		group: 'Независимая вентиляция',
 		type: 'Пристроенный вентилятор (наездник) с питанием 220В',
 		description: 'Укомплектован узлом независимой вентиляции (пристроенный вентилятор (наездник) с питанием 220В)',
-		selectable: motorFrameSize >= 112 && (motorFrameSize <= 200 && brakeType.includes('независимым питанием') || brakeType === '-') ? true : false
+		selectable: motorFrameSize >= 112 && (motorFrameSize <= 200 && brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
+		power: 220
 	}, {
 		id: 'V4',
 		group: 'Независимая вентиляция',
 		type: 'Пристроенный вентилятор (наездник) с питанием 380В',
 		description: 'Укомплектован узлом независимой вентиляции (пристроенный вентилятор (наездник) с питанием 380В)',
-		selectable: motorFrameSize >= 225 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false
+		selectable: motorFrameSize >= 225 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
+		power: 380
 	}];
 
 	//климатическое исполнение (UI: select):
@@ -10249,6 +10522,7 @@ function globeEvHandler() {
 	//selecting a breaks type:
 	_global_dom.selectorBrakes.addEventListener('change', function () {
 		(0, _selectFunctions.getOptions)([_global_dom.selectorVentSystem], 'resetOptionsList');
+		(0, _selectFunctions.fillUpgradesChart)();
 	});
 
 	//selecting vent system type:
@@ -10262,18 +10536,32 @@ function globeEvHandler() {
 	});
 
 	//chosing conic shaft:
-	_global_dom.checkboxConicShaft.addEventListener('change', function () {
+	_global_dom.checkboxConicShaft.addEventListener('change', function (e) {
 		(0, _selectFunctions.getOptions)(null);
+
+		if (e.target.checked) {
+			(0, _selectFunctions.setModelNameAndDescription)('addData', 'conicShaft', e.target.id);
+		} else {
+			(0, _selectFunctions.setModelNameAndDescription)('removeData', null, e.target.id);
+		}
 	});
 
 	//обработчики с делегированием:
 	document.body.addEventListener('change', function (e) {
 		if (e.target.id === 'checkbox-vibrosensors') {
-			console.log('checkbox-vibrosensors', e.target.value);
+			if (e.target.checked) {
+				(0, _selectFunctions.setModelNameAndDescription)('addData', 'vibroSensors', e.target.id);
+			} else {
+				(0, _selectFunctions.setModelNameAndDescription)('removeData', null, e.target.id);
+			}
 		}
 
 		if (e.target.id === 'checkbox-antiCondenseHeater') {
-			console.log('checkbox-antiCondenseHeater', e.target.value);
+			if (e.target.checked) {
+				(0, _selectFunctions.setModelNameAndDescription)('addData', 'antiCondensingHeater', e.target.id);
+			} else {
+				(0, _selectFunctions.setModelNameAndDescription)('removeData', null, e.target.id);
+			}
 		}
 
 		////encoder group:
@@ -10336,10 +10624,18 @@ function globeEvHandler() {
 					var btn = child.firstElementChild;
 					btn.id !== e.target.id && btn.classList.replace('btn-option-selected', 'btn-option-non-selected');
 				});
+
+				(0, _selectFunctions.setModelNameAndDescription)('addData', 'tempDataSensors', Array.from(e.target.classList).find(function (cl) {
+					return cl.includes('Б');
+				}));
 			} else if (Array.from(e.target.classList).some(function (className) {
 				return className.includes('btn-option-selected');
 			})) {
 				e.target.classList.replace('btn-option-selected', 'btn-option-non-selected');
+
+				(0, _selectFunctions.setModelNameAndDescription)('removeData', null, Array.from(e.target.classList).find(function (cl) {
+					return cl.includes('Б');
+				}));
 			}
 		}
 	});
@@ -10719,6 +11015,7 @@ function fillExtraOptions() {
 			var btn = document.createElement('button');
 			btn.classList.add('btn-option-non-selected');
 			btn.id = 'btn-options-sensors-id' + index;
+			btn.classList.add(obj.id);
 			btn.disabled = !obj.selectable;
 			btn.innerHTML = obj.type;
 

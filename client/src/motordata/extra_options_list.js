@@ -49,6 +49,7 @@ export function fillExtraOptions() {
 			const btn = document.createElement('button');
 			btn.classList.add('btn-option-non-selected');
 			btn.id = `btn-options-sensors-id${index}`;
+			btn.classList.add(obj.id);
 			btn.disabled = !obj.selectable;
 			btn.innerHTML = obj.type;
 

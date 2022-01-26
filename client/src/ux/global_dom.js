@@ -12,3 +12,4 @@ export const chart_connectionParams = document.getElementById('chart-connectionP
 export const chart_connectionValues = document.getElementById('chart-connectionValues');
 export const areaSelection = document.getElementById('area-selection').firstElementChild;
 export const areaRender = document.getElementById('area-render');
+export const listItemUpgrades = document.getElementById('listItem-upgrades');

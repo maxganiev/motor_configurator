@@ -61,6 +61,10 @@ export const fillBaseOptions = function (
 
 	//конический вал (UI: checkbox):
 	optionsConfig.conicShaftDisabled = motorFrameSize < 200 ? true : false;
+	optionsConfig.conicShaft = {
+		id: 'checkbox-conicShaft',
+		description: 'Конический вал в соответствии с ГОСТ 12081-72',
+	};
 
 	//энкодер:
 	optionsConfig.encoderIsDisabled = brakeType.includes('независимым питанием') || brakeType === '-' ? true : false;
@@ -80,8 +84,8 @@ export const fillBaseOptions = function (
 		//ui: select
 		outputSignal: [
 			{ id: 'default', group: 'Тип выходного сигнала', type: '-' },
-			{ id: 'ttl', group: 'Тип выходного сигнала', type: 'TTL/RS422, 6 каналов' },
-			{ id: 'htl', group: 'Тип выходного сигнала', type: 'HTL/push pull, 6 каналов' },
+			{ id: '3', group: 'Тип выходного сигнала', type: 'TTL/RS422, 6 каналов' },
+			{ id: '4', group: 'Тип выходного сигнала', type: 'HTL/push pull, 6 каналов' },
 		],
 	};
 
@@ -107,12 +111,7 @@ export const fillBaseOptions = function (
 		id: 'F2',
 		type: 'Токоизолированный подшипник',
 		description: 'Заменен задний штатный подшипник на токоизолированный (производства SKF/NSK/KOYO/FAG)',
-		selectable:
-			motorFrameSize >= 200 && importBearingsValue === 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)'
-				? false
-				: motorFrameSize >= 200 && importBearingsValue === 'Передний шариковый подшипник (производства SKF/NSK/KOYO/FAG)'
-				? false
-				: true,
+		selectable: motorFrameSize >= 200 && importBearingsValue !== '-' ? false : motorFrameSize < 200 ? false : true,
 		checked: motorFrameSize >= 200 ? true : false,
 		warning: 'Элком рекомендует установку токоизолированных подшипников на двигатели выше 200 габарита',
 	};
@@ -148,6 +147,7 @@ export const fillBaseOptions = function (
 			type: '-',
 			description: '-',
 			selectable: true,
+			power: null,
 		},
 
 		{
@@ -156,6 +156,7 @@ export const fillBaseOptions = function (
 			type: 'Тормоз (питание 220В)',
 			description: 'Укомплектован встроенным электромагнитным тормозом (питание 220В)',
 			selectable: motorFrameSize <= 100 && !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
+			power: 220,
 		},
 
 		{
@@ -164,6 +165,7 @@ export const fillBaseOptions = function (
 			type: 'Тормоз (питание 380В)',
 			description: 'Укомплектован встроенным электромагнитным тормозом (питание 380В)',
 			selectable: !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
+			power: 380,
 		},
 
 		{
@@ -172,6 +174,7 @@ export const fillBaseOptions = function (
 			type: 'Тормоз (питание 220В) с независимым питанием',
 			description: 'Укомплектован встроенным электромагнитным тормозом (питание 220В) с независимым питанием',
 			selectable: motorFrameSize <= 100 ? true : false,
+			power: 220,
 		},
 
 		{
@@ -180,6 +183,7 @@ export const fillBaseOptions = function (
 			type: 'Тормоз (питание 380В) с независимым питанием',
 			description: 'Укомплектован встроенным электромагнитным тормозом (питание 380В) с независимым питанием',
 			selectable: true,
+			power: 380,
 		},
 
 		{
@@ -188,6 +192,7 @@ export const fillBaseOptions = function (
 			type: 'Тормоз (питание 220В)  с ручным растормаживающим устройством',
 			description: 'Укомплектован встроенным электромагнитным тормозом (питание 220В) с ручным растормаживающим устройством',
 			selectable: motorFrameSize <= 100 && !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
+			power: 220,
 		},
 
 		{
@@ -196,6 +201,7 @@ export const fillBaseOptions = function (
 			type: 'Тормоз (питание 380В) с ручным растормаживающим устройством',
 			description: 'Укомплектован встроенным электромагнитным тормозом (питание 380В) с ручным растормаживающим устройством',
 			selectable: motorFrameSize <= 200 && !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
+			power: 380,
 		},
 
 		{
@@ -205,6 +211,7 @@ export const fillBaseOptions = function (
 			description:
 				'Укомплектован встроенным электромагнитным тормозом (питание 220В) с независимым питанием и ручным растормаживающим устройством',
 			selectable: motorFrameSize <= 100 ? true : false,
+			power: 220,
 		},
 
 		{
@@ -214,6 +221,154 @@ export const fillBaseOptions = function (
 			description:
 				'Укомплектован встроенным электромагнитным тормозом (питание 380В) с независимым питанием и ручным растормаживающим устройством',
 			selectable: motorFrameSize <= 200 ? true : false,
+			power: 380,
+		},
+	];
+
+	//данные для наполнения табличной части доработок при выборе тормозов и /или вентиляционной системы:
+	optionsConfig.upgradesData = [
+		{
+			id: 56,
+			brakeMoment: { data: '2/4', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 25, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.18, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 14, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.085', description: 'Потребляемый ток, А' },
+		},
+
+		{
+			id: 63,
+			brakeMoment: { data: '2/4', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 25, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.18, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 14, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.085', description: 'Потребляемый ток, А' },
+		},
+
+		{
+			id: 71,
+			brakeMoment: { data: '4/6', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.18, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 16, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.1', description: 'Потребляемый ток, А' },
+		},
+
+		{
+			id: 80,
+			brakeMoment: { data: '7.5/9', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 45, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.2, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.2', description: 'Потребляемый ток, А' },
+		},
+
+		{
+			id: 90,
+			brakeMoment: { data: '15/17', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 50, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.2, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.2', description: 'Потребляемый ток, А' },
+		},
+
+		{
+			id: 100,
+			brakeMoment: { data: '30/35', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 65, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.2, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.2', description: 'Потребляемый ток, А' },
+		},
+
+		{
+			id: 112,
+			brakeMoment: { data: '40/50', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 70, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.25, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 36, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.3', description: 'Потребляемый ток, А' },
+		},
+
+		{
+			id: 132,
+			brakeMoment: { data: '75/85', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 95, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.25, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 36, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.3', description: 'Потребляемый ток, А' },
+		},
+
+		{
+			id: 160,
+			brakeMoment: { data: '150/160', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 110, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.35, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 80, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.37', description: 'Потребляемый ток, А' },
+		},
+
+		{
+			id: 180,
+			brakeMoment: { data: '200/220', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 150, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.35, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 80, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.37', description: 'Потребляемый ток, А' },
+		},
+
+		{
+			id: 200,
+			brakeMoment: { data: '300/330', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 200, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.45, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 150, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.7', description: 'Потребляемый ток, А' },
+		},
+
+		{
+			id: 225,
+			brakeMoment: { data: '450/500', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 200, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.45, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 180, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.8', description: 'Потребляемый ток, А' },
+		},
+
+		{
+			id: 250,
+			brakeMoment: { data: '600/660', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 210, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.5, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 250, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '1.15', description: 'Потребляемый ток, А' },
+		},
+
+		{
+			id: 280,
+			brakeMoment: { data: '850/940', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 340, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.6, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 400, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.7', description: 'Потребляемый ток, А' },
+		},
+
+		{
+			id: 315,
+			brakeMoment: { data: '2000/2200', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 400, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.7, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 500, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.95', description: 'Потребляемый ток, А' },
+		},
+
+		{
+			id: 355,
+			brakeMoment: { data: '4000/4400', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 480, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.85, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 800, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '1.55', description: 'Потребляемый ток, А' },
 		},
 	];
 
@@ -273,6 +428,7 @@ export const fillBaseOptions = function (
 			type: '-',
 			description: '-',
 			selectable: true,
+			power: null,
 		},
 
 		{
@@ -281,6 +437,7 @@ export const fillBaseOptions = function (
 			type: 'Встроенный вентилятор с питанием 220В',
 			description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 220В)',
 			selectable: motorFrameSize <= 250 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
+			power: 220,
 		},
 
 		{
@@ -289,6 +446,7 @@ export const fillBaseOptions = function (
 			type: 'Встроенный вентилятор с питанием 380В',
 			description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 380В)',
 			selectable: motorFrameSize >= 132 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
+			power: 380,
 		},
 
 		{
@@ -301,6 +459,7 @@ export const fillBaseOptions = function (
 				((motorFrameSize <= 200 && brakeType.includes('независимым питанием')) || brakeType === '-')
 					? true
 					: false,
+			power: 220,
 		},
 
 		{
@@ -309,6 +468,7 @@ export const fillBaseOptions = function (
 			type: 'Пристроенный вентилятор (наездник) с питанием 380В',
 			description: 'Укомплектован узлом независимой вентиляции (пристроенный вентилятор (наездник) с питанием 380В)',
 			selectable: motorFrameSize >= 225 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
+			power: 380,
 		},
 	];
 
