@@ -4999,7 +4999,7 @@ var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFr
 		group: 'Степень защиты',
 		type: 'IP54',
 		description: 'Степень защиты: IP54',
-		selectable: motorFrameSize >= 90 && !ventSystemOptionValue.includes('наездник') ? true : false,
+		selectable: motorFrameSize >= 90 && !ventSystemOptionValue.includes('наездник') && ventSystemOptionValue !== '-' ? true : false,
 		selectedByDefault: motorFrameSize >= 90 && !ventSystemOptionValue.includes('наездник') && ventSystemOptionValue !== '-' ? true : false
 	}, {
 		id: 'IP65',
