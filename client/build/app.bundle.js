@@ -4048,7 +4048,9 @@ var optionsSelector = exports.optionsSelector = {
 
 		var selectorImportBearings = document.getElementById('selector-importBearings') === null ? '-' : document.getElementById('selector-importBearings').value;
 
-		(0, _base_options_list.fillBaseOptions)(this.frameSize, this.encoderIsChecked, this.ventSystemOptionValue, this.brakeType, checkboxCurrentInsulatingBearing, selectorImportBearings);
+		var selectorIp = document.getElementById('selector-ip') === null ? 'IP55' : document.getElementById('selector-ip').value;
+
+		(0, _base_options_list.fillBaseOptions)(this.frameSize, this.encoderIsChecked, this.ventSystemOptionValue, this.brakeType, checkboxCurrentInsulatingBearing, selectorImportBearings, selectorIp);
 
 		(0, _extra_options_list.fillExtraOptions)();
 
@@ -4139,10 +4141,14 @@ function populateOptionsList(selectorsId, srcData, operationType) {
 			});
 		}
 
-		//перезаливка свойств disabled:
+		//перезаливка свойств disabled и selected:
 		if (operationType === 'resetOptionsList') {
 			Array.from(selectorsId[0].children).forEach(function (child, index) {
 				child.disabled = !srcData[index].selectable;
+
+				if (srcData[index].selectedByDefault !== undefined || typeof srcData[index].selectedByDefault !== 'undefined') {
+					child.selected = srcData[index].selectedByDefault;
+				}
 			});
 		}
 	}
@@ -4194,6 +4200,9 @@ function getModel(query, targetArr) {
 					Array.from(selectorImportBearings.children).forEach(function (child) {
 						child.disabled = false;
 					});
+
+					//удаление описания для токоиз. подшипника (если он выбран) автоматически при выборе модели <= 200 габ.:
+					setModelNameAndDescription('removeData', null, 'checkbox-currentInsulatingBearing');
 				} else if (Array.from(checkboxCurrentInsulatingBearing.classList).some(function (className) {
 					return className.includes('-unchecked');
 				}) && optionsSelector.frameSize >= 200) {
@@ -4210,6 +4219,13 @@ function getModel(query, targetArr) {
 
 				//вывод предупреждения при отсутствии выбора токоиз. подшипника для двигателей >= 200 габ.:
 				(0, _extra_options_list.showWarning)();
+
+				//вывод описания для токоиз. подшипника автоматически при выборе модели >= 200 габ.:
+				if (Array.from(checkboxCurrentInsulatingBearing.classList).some(function (className) {
+					return className.includes('-checked');
+				}) && optionsSelector.frameSize >= 200) {
+					setModelNameAndDescription('addData', 'currentInsulatingBearing', 'checkbox-currentInsulatingBearing');
+				}
 			}, 50);
 		}
 
@@ -4380,6 +4396,26 @@ function setModelNameAndDescription(operationType, typeofDataToFill, htmlElemRef
 		if (htmlElemRef.includes('checkbox-antiCondenseHeater')) {
 			createListItem('antiCondenseHeater', text);
 		}
+
+		if (htmlElemRef.includes('checkbox-currentInsulatingBearing')) {
+			createListItem('currentInsulatingBearing', text);
+		}
+
+		if (htmlElemRef.includes('S1') && !htmlElemRef.includes('S12') || htmlElemRef.includes('S12')) {
+			createListItem('importBearings', text);
+		}
+
+		if (htmlElemRef.includes('V1') || htmlElemRef.includes('V2') || htmlElemRef.includes('V3') || htmlElemRef.includes('V4')) {
+			createListItem('ventSystem', text);
+		}
+
+		if (htmlElemRef.includes('ED') || htmlElemRef.includes('ET') || htmlElemRef.includes('ED1') || htmlElemRef.includes('ET1') || htmlElemRef.includes('ED2') || htmlElemRef.includes('ET2') || htmlElemRef.includes('ED1ED2') || htmlElemRef.includes('ET1ET2')) {
+			createListItem('electroMagneticBreak', text);
+		}
+
+		if (htmlElemRef.includes('IP55') || htmlElemRef.includes('IP54') || htmlElemRef.includes('IP65') || htmlElemRef.includes('IP66')) {
+			createListItem('ipVersion', text);
+		}
 	}
 
 	function removeDescription(htmlElemRef) {
@@ -4419,6 +4455,34 @@ function setModelNameAndDescription(operationType, typeofDataToFill, htmlElemRef
 				return child.className.includes('antiCondenseHeater') && child.remove();
 			});
 		}
+
+		if (htmlElemRef.includes('checkbox-currentInsulatingBearing')) {
+			document.querySelector('.currentInsulatingBearing').innerHTML = '';
+			Array.from(list.children).forEach(function (child) {
+				return child.className.includes('currentInsulatingBearing') && child.remove();
+			});
+		}
+
+		if (htmlElemRef.includes('default-imp')) {
+			document.querySelector('.importBearings').innerHTML = '';
+			Array.from(list.children).forEach(function (child) {
+				return child.className.includes('importBearings') && child.remove();
+			});
+		}
+
+		if (htmlElemRef.includes('default-vent')) {
+			document.querySelector('.ventSystem').innerHTML = '';
+			Array.from(list.children).forEach(function (child) {
+				return child.className.includes('ventSystem') && child.remove();
+			});
+		}
+
+		if (htmlElemRef.includes('default-brakes')) {
+			document.querySelector('.electroMagneticBreak').innerHTML = '';
+			Array.from(list.children).forEach(function (child) {
+				return child.className.includes('electroMagneticBreak') && child.remove();
+			});
+		}
 	}
 
 	function createListItem(newClassName, innerHtml) {
@@ -4443,56 +4507,100 @@ function fillUpgradesChart() {
 	    encoderIsChecked = optionsSelector.encoderIsChecked,
 	    ventSystemOptionValue = optionsSelector.ventSystemOptionValue;
 	var upgradesData = _base_options_list.optionsConfig.upgradesData,
-	    electroMagneticBreak = _base_options_list.optionsConfig.electroMagneticBreak;
+	    electroMagneticBreak = _base_options_list.optionsConfig.electroMagneticBreak,
+	    ventSystem = _base_options_list.optionsConfig.ventSystem;
+
+
+	var upgradeObj = upgradesData.find(function (upg) {
+		return upg.id === frameSize;
+	});
+	var brakeMoment = upgradeObj.brakeMoment,
+	    brake_consumedPower = upgradeObj.brake_consumedPower,
+	    reactionTime = upgradeObj.reactionTime,
+	    vent_consumedPower = upgradeObj.vent_consumedPower,
+	    vent_consumedCurrent = upgradeObj.vent_consumedCurrent;
 
 
 	if (brakeType !== '-') {
-		Array.from(_global_dom.listItemUpgrades.children).forEach(function (ul) {
-			return Array.from(ul.classList).some(function (classname) {
-				return classname.includes('list-brakeupgrades');
-			}) && ul.remove();
-		});
-
-		var list = document.createElement('ul');
-		list.classList.add('list', 'list-brakeupgrades');
-		list.insertAdjacentText('afterbegin', 'Электромагнитный тормоз');
-
-		var upgradeObj = upgradesData.find(function (upg) {
-			return upg.id === frameSize;
-		});
-		var brakeMoment = upgradeObj.brakeMoment,
-		    brake_consumedPower = upgradeObj.brake_consumedPower,
-		    reactionTime = upgradeObj.reactionTime;
-
-		var power = electroMagneticBreak.find(function (opt) {
-			return opt.type === brakeType;
-		}).power;
-
-		var upgradesList = [brakeMoment, brake_consumedPower, reactionTime];
-
-		Array.from(list.children).forEach(function (child) {
-			return child.remove();
-		});
-
-		upgradesList.forEach(function (upg) {
-			var listItem = document.createElement('li');
-			listItem.innerHTML = upg.description + ': ' + upg.data;
-
-			list.appendChild(listItem);
-		});
-
-		var listItem = document.createElement('li');
-		listItem.innerHTML = '\u041F\u043E\u0442\u0440\u0435\u0431\u043B\u044F\u0435\u043C\u0430\u044F \u043C\u043E\u0449\u043D\u043E\u0441\u0442\u044C: ' + power + '\u043A\u0412\u0442';
-
-		list.appendChild(listItem);
-
-		_global_dom.listItemUpgrades.appendChild(list);
+		setCol('addCol', 'list-brakeupgrades', 'Электромагнитный тормоз', electroMagneticBreak, brakeType, [brakeMoment, brake_consumedPower, reactionTime], 'Потребляемая мощность');
 	} else {
-		Array.from(_global_dom.listItemUpgrades.children).forEach(function (ul) {
-			return Array.from(ul.classList).some(function (classname) {
-				return classname.includes('list-brakeupgrades');
-			}) && ul.remove();
+		setCol('removeCol', 'list-brakeupgrades');
+	}
+
+	if (ventSystemOptionValue !== '-') {
+		setCol('addCol', 'list-ventupgrades', 'Независимая вентиляция', ventSystem, ventSystemOptionValue, [vent_consumedPower, vent_consumedCurrent], 'Напряжение питания');
+
+		document.getElementById('selector-ip').value === 'IP54' && frameSize >= 90 ? document.querySelector('.list-ventupgrades').insertAdjacentHTML('afterbegin', '<span class="warning"> \u0414\u043E\u0441\u0442\u0443\u043F\u043D\u0430 \u0434\u043E\u0440\u0430\u0431\u043E\u0442\u043A\u0430 \u0434\u043E \u0441\u0442\u0435\u043F\u0435\u043D\u0438 \u0437\u0430\u0449\u0438\u0442\u044B IP55 </span>') : Array.from(document.querySelector('.list-ventupgrades').children).forEach(function (child) {
+			return child.className.includes('warning') && child.remove;
 		});
+	} else {
+		setCol('removeCol', 'list-ventupgrades');
+	}
+
+	if (encoderIsChecked) {
+		var encoderConfig = {
+			signalsStaticValue: { description: 'Выходные сигналы', data: 'А+, В+, R+, А-, В-, R-' },
+			voltageParam: { description: 'Напряжение питания, В', data: document.getElementById('selector-encoderVoltage').value },
+			signalParam: { description: 'Тип выхода', data: document.getElementById('selector-outputSignal').value },
+			resolutionParam: {
+				description: 'Разрешение, имп/об.',
+				data: document.getElementById('input-encoderResOptions').value
+			}
+		};
+
+		var encoderData = Object.values(encoderConfig).map(function (object) {
+			return object;
+		});
+		setCol('addCol', 'list-encoderOptions', 'Энкодер', null, null, encoderData, null);
+	} else {
+		setCol('removeCol', 'list-encoderOptions');
+	}
+
+	function setCol(operationType, listId, colName, optionsConfigPropToFindValue, valueToSearch, upgradeObjData, textForPower) {
+		if (operationType === 'addCol') {
+			Array.from(_global_dom.listItemUpgrades.children).forEach(function (ul) {
+				return Array.from(ul.classList).some(function (classname) {
+					return classname.includes(listId);
+				}) && ul.remove();
+			});
+
+			var list = document.createElement('ul');
+			list.classList.add('list', listId);
+
+			var power = optionsConfigPropToFindValue !== null && optionsConfigPropToFindValue.find(function (opt) {
+				return opt.type === valueToSearch;
+			}).power;
+
+			var upgradesList = upgradeObjData;
+
+			Array.from(list.children).forEach(function (child) {
+				return child.remove();
+			});
+
+			list.insertAdjacentHTML('afterbegin', '<li> <span style="font-weight: 900;"> ' + colName + ' </span> </li>');
+
+			upgradesList.forEach(function (upg) {
+				var listItem = document.createElement('li');
+				listItem.innerHTML = upg.description + ': ' + upg.data;
+
+				list.appendChild(listItem);
+			});
+
+			if (optionsConfigPropToFindValue !== null) {
+				var listItem = document.createElement('li');
+				listItem.innerHTML = textForPower + ': ' + power + '\u043A\u0412\u0442';
+
+				list.appendChild(listItem);
+			}
+
+			_global_dom.listItemUpgrades.appendChild(list);
+		} else {
+			Array.from(_global_dom.listItemUpgrades.children).forEach(function (ul) {
+				return Array.from(ul.classList).some(function (classname) {
+					return classname.includes(listId);
+				}) && ul.remove();
+			});
+		}
 	}
 }
 
@@ -4508,7 +4616,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var optionsConfig = exports.optionsConfig = {};
 
-var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFrameSize, encoderIsChecked, ventSystemOptionValue, brakeType, currentInsulatingBearingIsChecked, importBearingsValue) {
+var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFrameSize, encoderIsChecked, ventSystemOptionValue, brakeType, currentInsulatingBearingIsChecked, importBearingsValue, IPvalue) {
 	//термодатчики (UI: button):
 	optionsConfig.tempDataSensors = [{
 		id: 'Б1',
@@ -4564,10 +4672,10 @@ var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFr
 		resolution: { id: 'resol', type: 'Разрешение(имп/об)' },
 
 		//ui: select
-		powerVolt: [{ id: 'default', group: 'Напряжение питания', type: '-' }, { id: '5V', group: 'Напряжение питания', type: '+5В' }, { id: '10_30V', group: 'Напряжение питания', type: '+10...30В' }],
+		powerVolt: [{ id: 'default-encod-powe', group: 'Напряжение питания', type: '-' }, { id: '5V', group: 'Напряжение питания', type: '+5В' }, { id: '10_30V', group: 'Напряжение питания', type: '+10...30В' }],
 
 		//ui: select
-		outputSignal: [{ id: 'default', group: 'Тип выходного сигнала', type: '-' }, { id: '3', group: 'Тип выходного сигнала', type: 'TTL/RS422, 6 каналов' }, { id: '4', group: 'Тип выходного сигнала', type: 'HTL/push pull, 6 каналов' }]
+		outputSignal: [{ id: 'default-encod-signal', group: 'Тип выходного сигнала', type: '-' }, { id: '3', group: 'Тип выходного сигнала', type: 'TTL/RS422, 6 каналов' }, { id: '4', group: 'Тип выходного сигнала', type: 'HTL/push pull, 6 каналов' }]
 	};
 
 	//вибродатчики (UI: checkbox):
@@ -4599,7 +4707,7 @@ var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFr
 
 	//!выбор S12 должен автоматически исключать возможность выбора F2 и наоборот:
 	//импортные подшипники (UI: select):
-	optionsConfig.importBearings = [{ id: 'default', group: 'Импортные подшипники', type: '-', description: '-', selectable: true }, {
+	optionsConfig.importBearings = [{ id: 'default-imp', group: 'Импортные подшипники', type: '-', description: '-', selectable: true }, {
 		id: 'S1',
 		group: 'Импортные подшипники',
 		type: 'Передний шариковый подшипник (производства SKF/NSK/KOYO/FAG)',
@@ -4615,7 +4723,7 @@ var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFr
 
 	//электромагнитный тормоз (UI: select):
 	optionsConfig.electroMagneticBreak = [{
-		id: 'default',
+		id: 'default-brakes',
 		group: 'Встроенный электромагнитный тормоз',
 		type: '-',
 		description: '-',
@@ -4827,7 +4935,7 @@ var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFr
 
 	//тип системы вентиляции (UI: select)
 	optionsConfig.ventSystem = [{
-		id: 'default',
+		id: 'default-vent',
 		group: 'Независимая вентиляция',
 		type: '-',
 		description: '-',
@@ -4838,14 +4946,14 @@ var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFr
 		group: 'Независимая вентиляция',
 		type: 'Встроенный вентилятор с питанием 220В',
 		description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 220В)',
-		selectable: motorFrameSize <= 250 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
+		selectable: motorFrameSize <= 250 && (brakeType.includes('независимым питанием') || brakeType === '-') && Number(IPvalue.slice(2)) <= 55 ? true : false,
 		power: 220
 	}, {
 		id: 'V2',
 		group: 'Независимая вентиляция',
 		type: 'Встроенный вентилятор с питанием 380В',
 		description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 380В)',
-		selectable: motorFrameSize >= 132 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
+		selectable: motorFrameSize >= 132 && (brakeType.includes('независимым питанием') || brakeType === '-') && Number(IPvalue.slice(2)) <= 55 ? true : false,
 		power: 380
 	}, {
 		id: 'V3',
@@ -4864,10 +4972,50 @@ var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFr
 	}];
 
 	//климатическое исполнение (UI: select):
-	optionsConfig.climateCat = [{ id: 'У2', group: 'Климатическое исполнение', type: 'У2', selectable: true }, { id: 'У1', group: 'Климатическое исполнение', type: 'У1', selectable: true }, { id: 'УХЛ1', group: 'Климатическое исполнение', type: 'УХЛ1', selectable: true }, { id: 'УХЛ2', group: 'Климатическое исполнение', type: 'УХЛ2', selectable: true }];
+	optionsConfig.climateCat = [{ id: 'У2', group: 'Климатическое исполнение', type: 'У2', description: 'Климатическое исполнение: У2', selectable: true }, { id: 'У1', group: 'Климатическое исполнение', type: 'У1', description: 'Климатическое исполнение: У1', selectable: true }, {
+		id: 'УХЛ1',
+		group: 'Климатическое исполнение',
+		type: 'УХЛ1',
+		description: 'Климатическое исполнение: УХЛ1',
+		selectable: true
+	}, {
+		id: 'УХЛ2',
+		group: 'Климатическое исполнение',
+		type: 'УХЛ2',
+		description: 'Климатическое исполнение: УХЛ2',
+		selectable: true
+	}];
 
 	//степень защиты (UI: select):
-	optionsConfig.ipVersion = [{ id: 'IP55', group: 'Степень защиты', type: 'IP55', selectable: true }, { id: 'IP54', group: 'Степень защиты', type: 'IP54', selectable: true }, { id: 'IP66', group: 'Степень защиты', type: 'IP66', selectable: true }];
+	optionsConfig.ipVersion = [{
+		id: 'IP55',
+		group: 'Степень защиты',
+		type: 'IP55',
+		description: 'Степень защиты: IP55',
+		selectable: true,
+		selectedByDefault: motorFrameSize >= 90 && (ventSystemOptionValue.includes('наездник') || ventSystemOptionValue === '-') || motorFrameSize < 90 ? true : false
+	}, {
+		id: 'IP54',
+		group: 'Степень защиты',
+		type: 'IP54',
+		description: 'Степень защиты: IP54',
+		selectable: motorFrameSize >= 90 && !ventSystemOptionValue.includes('наездник') ? true : false,
+		selectedByDefault: motorFrameSize >= 90 && !ventSystemOptionValue.includes('наездник') && ventSystemOptionValue !== '-' ? true : false
+	}, {
+		id: 'IP65',
+		group: 'Степень защиты',
+		type: 'IP65',
+		description: 'Степень защиты: IP65',
+		selectable: motorFrameSize >= 90 && ventSystemOptionValue.includes('наездник') || ventSystemOptionValue === '-' ? true : false,
+		selectedByDefault: false
+	}, {
+		id: 'IP66',
+		group: 'Степень защиты',
+		type: 'IP66',
+		description: 'Степень защиты: IP66',
+		selectable: motorFrameSize >= 90 && ventSystemOptionValue.includes('наездник') || ventSystemOptionValue === '-' ? true : false,
+		selectedByDefault: false
+	}];
 
 	var options = [];
 	var encoderOptions = [true, false];
@@ -10520,19 +10668,43 @@ function globeEvHandler() {
 	});
 
 	//selecting a breaks type:
-	_global_dom.selectorBrakes.addEventListener('change', function () {
+	_global_dom.selectorBrakes.addEventListener('change', function (e) {
 		(0, _selectFunctions.getOptions)([_global_dom.selectorVentSystem], 'resetOptionsList');
+
+		var selOptionId = Array.from(e.target.children).find(function (child) {
+			return child.innerText === e.target.value;
+		}).getAttribute('data-itemid');
+
+		if (e.target.value !== '-') {
+			(0, _selectFunctions.setModelNameAndDescription)('addData', 'electroMagneticBreak', selOptionId);
+		} else {
+			(0, _selectFunctions.setModelNameAndDescription)('removeData', null, selOptionId);
+		}
+
 		(0, _selectFunctions.fillUpgradesChart)();
 	});
 
 	//selecting vent system type:
-	_global_dom.selectorVentSystem.addEventListener('change', function () {
+	_global_dom.selectorVentSystem.addEventListener('change', function (e) {
 		(0, _selectFunctions.getOptions)([_global_dom.selectorBrakes], 'resetOptionsList');
+
+		var selOptionId = Array.from(e.target.children).find(function (child) {
+			return child.innerText === e.target.value;
+		}).getAttribute('data-itemid');
+
+		if (e.target.value !== '-') {
+			(0, _selectFunctions.setModelNameAndDescription)('addData', 'ventSystem', selOptionId);
+		} else {
+			(0, _selectFunctions.setModelNameAndDescription)('removeData', null, selOptionId);
+		}
+
+		(0, _selectFunctions.fillUpgradesChart)();
 	});
 
 	//choosing encoder:
 	_global_dom.checkboxEncoder.addEventListener('change', function () {
 		(0, _selectFunctions.getOptions)([_global_dom.selectorBrakes], 'resetOptionsList');
+		(0, _selectFunctions.fillUpgradesChart)();
 	});
 
 	//chosing conic shaft:
@@ -10566,11 +10738,11 @@ function globeEvHandler() {
 
 		////encoder group:
 		if (e.target.id === 'selector-encoderVoltage') {
-			console.log('selector-encoderVoltage', e.target.value);
+			(0, _selectFunctions.fillUpgradesChart)();
 		}
 
 		if (e.target.id === 'selector-outputSignal') {
-			console.log('selector-outputSignal', e.target.value);
+			(0, _selectFunctions.fillUpgradesChart)();
 		}
 		////
 
@@ -10583,19 +10755,29 @@ function globeEvHandler() {
 				e.target.checked = false;
 
 				e.target.classList.replace('checkbox-currentInsulatingBearing-checked', 'checkbox-currentInsulatingBearing-unchecked');
+				(0, _selectFunctions.setModelNameAndDescription)('removeData', null, e.target.id);
 			} else if (Array.from(e.target.classList).some(function (className) {
 				return className.includes('-unchecked');
 			})) {
 				e.target.checked = true;
 
 				e.target.classList.replace('checkbox-currentInsulatingBearing-unchecked', 'checkbox-currentInsulatingBearing-checked');
+				(0, _selectFunctions.setModelNameAndDescription)('addData', 'currentInsulatingBearing', e.target.id);
 			}
-
-			console.log('currentInsulatingBearing', e.target.checked);
 		}
 
 		if (e.target.id === 'selector-importBearings') {
 			_selectFunctions.optionsSelector.setOptionsList();
+
+			var selOptionId = Array.from(e.target.children).find(function (child) {
+				return child.innerText === e.target.value;
+			}).getAttribute('data-itemid');
+
+			if (e.target.value !== '-') {
+				(0, _selectFunctions.setModelNameAndDescription)('addData', 'importBearings', selOptionId);
+			} else {
+				(0, _selectFunctions.setModelNameAndDescription)('removeData', null, selOptionId);
+			}
 		}
 
 		if (e.target.id === 'selector-climateCat') {
@@ -10603,7 +10785,12 @@ function globeEvHandler() {
 		}
 
 		if (e.target.id === 'selector-ip') {
-			console.log('selector-ip', e.target.value);
+			var _selOptionId = Array.from(e.target.children).find(function (child) {
+				return child.innerText === e.target.value;
+			}).getAttribute('data-itemid');
+
+			//getOptions([selectorVentSystem], 'resetOptionsList');
+			(0, _selectFunctions.setModelNameAndDescription)('addData', 'ipVersion', _selOptionId);
 		}
 
 		if (e.target.id === 'checkbox-package') {
@@ -10643,7 +10830,7 @@ function globeEvHandler() {
 
 document.body.addEventListener('input', function (e) {
 	if (e.target.id === 'input-encoderResOptions') {
-		console.log(e.target.value);
+		(0, _selectFunctions.fillUpgradesChart)();
 	}
 });
 
@@ -11162,7 +11349,7 @@ function createSelects(parentElem, selectId, srcDataToFillOptions) {
 	selector.id = selectId;
 
 	var label = document.createElement('label');
-	label.htmlFor = 'selectId';
+	label.htmlFor = selectId;
 	label.innerHTML = srcDataToFillOptions[0].group;
 
 	listItem.insertAdjacentElement('afterbegin', label);
@@ -11175,21 +11362,19 @@ function createSelects(parentElem, selectId, srcDataToFillOptions) {
 
 //вывод предупреждения при отсутствии выбора токоиз. подшипника для двигателей >= 200 габ.:
 function showWarning() {
-	setTimeout(function () {
-		var checkboxCurrentInsulatingBearing = document.getElementById('checkbox-currentInsulatingBearing');
-		var selectorImportBearings = document.getElementById('selector-importBearings');
+	var checkboxCurrentInsulatingBearing = document.getElementById('checkbox-currentInsulatingBearing');
+	var selectorImportBearings = document.getElementById('selector-importBearings');
 
-		if (_selectFunctions.optionsSelector.frameSize >= 200 && !checkboxCurrentInsulatingBearing.checked && selectorImportBearings.value !== 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)') {
-			Array.from(checkboxCurrentInsulatingBearing.parentElement.childNodes).forEach(function (node, index) {
-				return index === 2 && node.remove();
-			});
-			checkboxCurrentInsulatingBearing.parentElement.insertAdjacentText('beforeend', _base_options_list.optionsConfig.currentInsulatingBearing.warning);
-		} else {
-			Array.from(checkboxCurrentInsulatingBearing.parentElement.childNodes).forEach(function (node, index) {
-				return index === 2 && node.remove();
-			});
-		}
-	}, 0);
+	if (_selectFunctions.optionsSelector.frameSize >= 200 && !checkboxCurrentInsulatingBearing.checked && selectorImportBearings.value !== 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)') {
+		Array.from(checkboxCurrentInsulatingBearing.parentElement.childNodes).forEach(function (node, index) {
+			return index === 2 && node.remove();
+		});
+		checkboxCurrentInsulatingBearing.parentElement.insertAdjacentText('beforeend', _base_options_list.optionsConfig.currentInsulatingBearing.warning);
+	} else {
+		Array.from(checkboxCurrentInsulatingBearing.parentElement.childNodes).forEach(function (node, index) {
+			return index === 2 && node.remove();
+		});
+	}
 }
 
 /***/ }),

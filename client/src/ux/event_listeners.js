@@ -27,19 +27,43 @@ export function globeEvHandler() {
 	});
 
 	//selecting a breaks type:
-	selectorBrakes.addEventListener('change', () => {
+	selectorBrakes.addEventListener('change', (e) => {
 		getOptions([selectorVentSystem], 'resetOptionsList');
+
+		const selOptionId = Array.from(e.target.children)
+			.find((child) => child.innerText === e.target.value)
+			.getAttribute('data-itemid');
+
+		if (e.target.value !== '-') {
+			setModelNameAndDescription('addData', 'electroMagneticBreak', selOptionId);
+		} else {
+			setModelNameAndDescription('removeData', null, selOptionId);
+		}
+
 		fillUpgradesChart();
 	});
 
 	//selecting vent system type:
-	selectorVentSystem.addEventListener('change', () => {
+	selectorVentSystem.addEventListener('change', (e) => {
 		getOptions([selectorBrakes], 'resetOptionsList');
+
+		const selOptionId = Array.from(e.target.children)
+			.find((child) => child.innerText === e.target.value)
+			.getAttribute('data-itemid');
+
+		if (e.target.value !== '-') {
+			setModelNameAndDescription('addData', 'ventSystem', selOptionId);
+		} else {
+			setModelNameAndDescription('removeData', null, selOptionId);
+		}
+
+		fillUpgradesChart();
 	});
 
 	//choosing encoder:
 	checkboxEncoder.addEventListener('change', () => {
 		getOptions([selectorBrakes], 'resetOptionsList');
+		fillUpgradesChart();
 	});
 
 	//chosing conic shaft:
@@ -73,11 +97,11 @@ export function globeEvHandler() {
 
 		////encoder group:
 		if (e.target.id === 'selector-encoderVoltage') {
-			console.log('selector-encoderVoltage', e.target.value);
+			fillUpgradesChart();
 		}
 
 		if (e.target.id === 'selector-outputSignal') {
-			console.log('selector-outputSignal', e.target.value);
+			fillUpgradesChart();
 		}
 		////
 
@@ -91,6 +115,7 @@ export function globeEvHandler() {
 					'checkbox-currentInsulatingBearing-checked',
 					'checkbox-currentInsulatingBearing-unchecked'
 				);
+				setModelNameAndDescription('removeData', null, e.target.id);
 			} else if (Array.from(e.target.classList).some((className) => className.includes('-unchecked'))) {
 				e.target.checked = true;
 
@@ -98,13 +123,22 @@ export function globeEvHandler() {
 					'checkbox-currentInsulatingBearing-unchecked',
 					'checkbox-currentInsulatingBearing-checked'
 				);
+				setModelNameAndDescription('addData', 'currentInsulatingBearing', e.target.id);
 			}
-
-			console.log('currentInsulatingBearing', e.target.checked);
 		}
 
 		if (e.target.id === 'selector-importBearings') {
 			optionsSelector.setOptionsList();
+
+			const selOptionId = Array.from(e.target.children)
+				.find((child) => child.innerText === e.target.value)
+				.getAttribute('data-itemid');
+
+			if (e.target.value !== '-') {
+				setModelNameAndDescription('addData', 'importBearings', selOptionId);
+			} else {
+				setModelNameAndDescription('removeData', null, selOptionId);
+			}
 		}
 
 		if (e.target.id === 'selector-climateCat') {
@@ -112,7 +146,12 @@ export function globeEvHandler() {
 		}
 
 		if (e.target.id === 'selector-ip') {
-			console.log('selector-ip', e.target.value);
+			const selOptionId = Array.from(e.target.children)
+				.find((child) => child.innerText === e.target.value)
+				.getAttribute('data-itemid');
+
+			//getOptions([selectorVentSystem], 'resetOptionsList');
+			setModelNameAndDescription('addData', 'ipVersion', selOptionId);
 		}
 
 		if (e.target.id === 'checkbox-package') {
@@ -152,6 +191,6 @@ export function globeEvHandler() {
 
 document.body.addEventListener('input', (e) => {
 	if (e.target.id === 'input-encoderResOptions') {
-		console.log(e.target.value);
+		fillUpgradesChart();
 	}
 });

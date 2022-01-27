@@ -194,7 +194,7 @@ function createSelects(parentElem, selectId, srcDataToFillOptions) {
 	selector.id = selectId;
 
 	const label = document.createElement('label');
-	label.htmlFor = 'selectId';
+	label.htmlFor = selectId;
 	label.innerHTML = srcDataToFillOptions[0].group;
 
 	listItem.insertAdjacentElement('afterbegin', label);
@@ -207,26 +207,17 @@ function createSelects(parentElem, selectId, srcDataToFillOptions) {
 
 //вывод предупреждения при отсутствии выбора токоиз. подшипника для двигателей >= 200 габ.:
 export function showWarning() {
-	setTimeout(() => {
-		const checkboxCurrentInsulatingBearing = document.getElementById('checkbox-currentInsulatingBearing');
-		const selectorImportBearings = document.getElementById('selector-importBearings');
+	const checkboxCurrentInsulatingBearing = document.getElementById('checkbox-currentInsulatingBearing');
+	const selectorImportBearings = document.getElementById('selector-importBearings');
 
-		if (
-			optionsSelector.frameSize >= 200 &&
-			!checkboxCurrentInsulatingBearing.checked &&
-			selectorImportBearings.value !== 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)'
-		) {
-			Array.from(checkboxCurrentInsulatingBearing.parentElement.childNodes).forEach(
-				(node, index) => index === 2 && node.remove()
-			);
-			checkboxCurrentInsulatingBearing.parentElement.insertAdjacentText(
-				'beforeend',
-				optionsConfig.currentInsulatingBearing.warning
-			);
-		} else {
-			Array.from(checkboxCurrentInsulatingBearing.parentElement.childNodes).forEach(
-				(node, index) => index === 2 && node.remove()
-			);
-		}
-	}, 0);
+	if (
+		optionsSelector.frameSize >= 200 &&
+		!checkboxCurrentInsulatingBearing.checked &&
+		selectorImportBearings.value !== 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)'
+	) {
+		Array.from(checkboxCurrentInsulatingBearing.parentElement.childNodes).forEach((node, index) => index === 2 && node.remove());
+		checkboxCurrentInsulatingBearing.parentElement.insertAdjacentText('beforeend', optionsConfig.currentInsulatingBearing.warning);
+	} else {
+		Array.from(checkboxCurrentInsulatingBearing.parentElement.childNodes).forEach((node, index) => index === 2 && node.remove());
+	}
 }

@@ -6,7 +6,8 @@ export const fillBaseOptions = function (
 	ventSystemOptionValue,
 	brakeType,
 	currentInsulatingBearingIsChecked,
-	importBearingsValue
+	importBearingsValue,
+	IPvalue
 ) {
 	//термодатчики (UI: button):
 	optionsConfig.tempDataSensors = [
@@ -76,14 +77,14 @@ export const fillBaseOptions = function (
 
 		//ui: select
 		powerVolt: [
-			{ id: 'default', group: 'Напряжение питания', type: '-' },
+			{ id: 'default-encod-powe', group: 'Напряжение питания', type: '-' },
 			{ id: '5V', group: 'Напряжение питания', type: '+5В' },
 			{ id: '10_30V', group: 'Напряжение питания', type: '+10...30В' },
 		],
 
 		//ui: select
 		outputSignal: [
-			{ id: 'default', group: 'Тип выходного сигнала', type: '-' },
+			{ id: 'default-encod-signal', group: 'Тип выходного сигнала', type: '-' },
 			{ id: '3', group: 'Тип выходного сигнала', type: 'TTL/RS422, 6 каналов' },
 			{ id: '4', group: 'Тип выходного сигнала', type: 'HTL/push pull, 6 каналов' },
 		],
@@ -119,7 +120,7 @@ export const fillBaseOptions = function (
 	//!выбор S12 должен автоматически исключать возможность выбора F2 и наоборот:
 	//импортные подшипники (UI: select):
 	optionsConfig.importBearings = [
-		{ id: 'default', group: 'Импортные подшипники', type: '-', description: '-', selectable: true },
+		{ id: 'default-imp', group: 'Импортные подшипники', type: '-', description: '-', selectable: true },
 		{
 			id: 'S1',
 			group: 'Импортные подшипники',
@@ -142,7 +143,7 @@ export const fillBaseOptions = function (
 	//электромагнитный тормоз (UI: select):
 	optionsConfig.electroMagneticBreak = [
 		{
-			id: 'default',
+			id: 'default-brakes',
 			group: 'Встроенный электромагнитный тормоз',
 			type: '-',
 			description: '-',
@@ -423,7 +424,7 @@ export const fillBaseOptions = function (
 	//тип системы вентиляции (UI: select)
 	optionsConfig.ventSystem = [
 		{
-			id: 'default',
+			id: 'default-vent',
 			group: 'Независимая вентиляция',
 			type: '-',
 			description: '-',
@@ -436,7 +437,12 @@ export const fillBaseOptions = function (
 			group: 'Независимая вентиляция',
 			type: 'Встроенный вентилятор с питанием 220В',
 			description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 220В)',
-			selectable: motorFrameSize <= 250 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
+			selectable:
+				motorFrameSize <= 250 &&
+				(brakeType.includes('независимым питанием') || brakeType === '-') &&
+				Number(IPvalue.slice(2)) <= 55
+					? true
+					: false,
 			power: 220,
 		},
 
@@ -445,7 +451,12 @@ export const fillBaseOptions = function (
 			group: 'Независимая вентиляция',
 			type: 'Встроенный вентилятор с питанием 380В',
 			description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 380В)',
-			selectable: motorFrameSize >= 132 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
+			selectable:
+				motorFrameSize >= 132 &&
+				(brakeType.includes('независимым питанием') || brakeType === '-') &&
+				Number(IPvalue.slice(2)) <= 55
+					? true
+					: false,
 			power: 380,
 		},
 
@@ -474,17 +485,69 @@ export const fillBaseOptions = function (
 
 	//климатическое исполнение (UI: select):
 	optionsConfig.climateCat = [
-		{ id: 'У2', group: 'Климатическое исполнение', type: 'У2', selectable: true },
-		{ id: 'У1', group: 'Климатическое исполнение', type: 'У1', selectable: true },
-		{ id: 'УХЛ1', group: 'Климатическое исполнение', type: 'УХЛ1', selectable: true },
-		{ id: 'УХЛ2', group: 'Климатическое исполнение', type: 'УХЛ2', selectable: true },
+		{ id: 'У2', group: 'Климатическое исполнение', type: 'У2', description: 'Климатическое исполнение: У2', selectable: true },
+		{ id: 'У1', group: 'Климатическое исполнение', type: 'У1', description: 'Климатическое исполнение: У1', selectable: true },
+		{
+			id: 'УХЛ1',
+			group: 'Климатическое исполнение',
+			type: 'УХЛ1',
+			description: 'Климатическое исполнение: УХЛ1',
+			selectable: true,
+		},
+		{
+			id: 'УХЛ2',
+			group: 'Климатическое исполнение',
+			type: 'УХЛ2',
+			description: 'Климатическое исполнение: УХЛ2',
+			selectable: true,
+		},
 	];
 
 	//степень защиты (UI: select):
 	optionsConfig.ipVersion = [
-		{ id: 'IP55', group: 'Степень защиты', type: 'IP55', selectable: true },
-		{ id: 'IP54', group: 'Степень защиты', type: 'IP54', selectable: true },
-		{ id: 'IP66', group: 'Степень защиты', type: 'IP66', selectable: true },
+		{
+			id: 'IP55',
+			group: 'Степень защиты',
+			type: 'IP55',
+			description: 'Степень защиты: IP55',
+			selectable: true,
+			selectedByDefault:
+				(motorFrameSize >= 90 && (ventSystemOptionValue.includes('наездник') || ventSystemOptionValue === '-')) ||
+				motorFrameSize < 90
+					? true
+					: false,
+		},
+		{
+			id: 'IP54',
+			group: 'Степень защиты',
+			type: 'IP54',
+			description: 'Степень защиты: IP54',
+			selectable: motorFrameSize >= 90 && !ventSystemOptionValue.includes('наездник') ? true : false,
+			selectedByDefault:
+				motorFrameSize >= 90 && !ventSystemOptionValue.includes('наездник') && ventSystemOptionValue !== '-' ? true : false,
+		},
+		{
+			id: 'IP65',
+			group: 'Степень защиты',
+			type: 'IP65',
+			description: 'Степень защиты: IP65',
+			selectable:
+				(motorFrameSize >= 90 && ventSystemOptionValue.includes('наездник')) || ventSystemOptionValue === '-'
+					? true
+					: false,
+			selectedByDefault: false,
+		},
+		{
+			id: 'IP66',
+			group: 'Степень защиты',
+			type: 'IP66',
+			description: 'Степень защиты: IP66',
+			selectable:
+				(motorFrameSize >= 90 && ventSystemOptionValue.includes('наездник')) || ventSystemOptionValue === '-'
+					? true
+					: false,
+			selectedByDefault: false,
+		},
 	];
 
 	const options = [];
