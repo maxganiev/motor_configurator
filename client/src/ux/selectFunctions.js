@@ -501,27 +501,22 @@ export function setModelNameAndDescription(operationType, typeofDataToFill, html
 	const ipValue = document.getElementById('selector-ip').value;
 	const climateCatValue = document.getElementById('selector-climateCat').value;
 
-	// const wiringSensorsCode = Array.from(document.querySelector('.btn-option-selected').children).find((classname) =>
-	// 	classname.includes('Б')
-	// ).classList;
+	const temp_arr_ws = Array.from(document.getElementById('list-windingSensors').children);
+	const temp_arr_bs = Array.from(document.getElementById('list-bearingSensors').children);
 
-	// console.log(wiringSensorsCode);
+	const wiringSensorsCode = temp_arr_ws.some((child) => !child.firstElementChild.getAttribute('class').includes('non-selected'))
+		? temp_arr_ws
+				.find((child) => !child.firstElementChild.getAttribute('class').includes('non-selected'))
+				.firstElementChild.getAttribute('class')
+				.split(' ')[1]
+		: '';
 
-	const wiringSensorsCode =
-		document.querySelector('.btn-option-selected') !== null
-			? Array.from(document.getElementById('list-windingSensors').children)
-					.find((child) => !child.firstElementChild.getAttribute('class').includes('non-selected'))
-					.firstElementChild.getAttribute('class')
-					.split(' ')[1]
-			: '';
-
-	const bearingSensorsCode =
-		document.querySelector('.btn-option-selected') !== null
-			? Array.from(document.getElementById('list-bearingSensors').children)
-					.find((child) => !child.firstElementChild.getAttribute('class').includes('non-selected'))
-					.firstElementChild.getAttribute('class')
-					.split(' ')[1]
-			: '';
+	const bearingSensorsCode = temp_arr_bs.some((child) => !child.firstElementChild.getAttribute('class').includes('non-selected'))
+		? temp_arr_bs
+				.find((child) => !child.firstElementChild.getAttribute('class').includes('non-selected'))
+				.firstElementChild.getAttribute('class')
+				.split(' ')[1]
+		: '';
 
 	console.log(wiringSensorsCode, bearingSensorsCode);
 
