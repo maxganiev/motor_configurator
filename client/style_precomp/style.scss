@@ -64,6 +64,14 @@ body {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		overflow-y: hidden;
+		position: relative;
+
+		.mask {
+			position: absolute;
+			width: 100%;
+			background-color: rgba(0, 0, 0, 0.7);
+			z-index: 10;
+		}
 
 		.area {
 			&-filter {

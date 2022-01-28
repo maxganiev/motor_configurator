@@ -1,16 +1,25 @@
-import { inputModel } from './global_dom';
-import { selectorModel } from './global_dom';
-import { selectorRpm } from './global_dom';
-import { selectorPower } from './global_dom';
-import { selectorBrakes } from './global_dom';
-import { selectorPaws } from './global_dom';
-import { checkboxEncoder } from './global_dom';
-import { checkboxConicShaft } from './global_dom';
-import { selectorVentSystem } from './global_dom';
-import { searchModel } from './selectFunctions';
-import { getOptions } from './selectFunctions';
-import { optionsSelector } from './selectFunctions';
-import { setModelNameAndDescription, fillUpgradesChart } from './selectFunctions';
+import {
+	inputModel,
+	selectorModel,
+	selectorRpm,
+	selectorPower,
+	selectorBrakes,
+	selectorPaws,
+	checkboxEncoder,
+	checkboxConicShaft,
+	selectorVentSystem,
+	areaFilter,
+} from './global_dom';
+import {
+	searchModel,
+	getOptions,
+	optionsSelector,
+	setModelNameAndDescription,
+	fillUpgradesChart,
+	populateOptionsList,
+} from './selectFunctions';
+import { fillBaseOptions, optionsConfig } from '../motordata/base_options_list';
+import { mask } from '../ui/ui';
 
 export function globeEvHandler() {
 	inputModel.oninput = (e) => searchModel(e);
@@ -47,6 +56,14 @@ export function globeEvHandler() {
 	selectorVentSystem.addEventListener('change', (e) => {
 		getOptions([selectorBrakes], 'resetOptionsList');
 
+		//перезаливка свойств selected для ip:
+		const selectorIp = document.getElementById('selector-ip');
+
+		e.target.value !== '-' &&
+			Array.from(selectorIp.children).forEach((child, index) => {
+				child.selected = optionsConfig.ipVersion[index].selectedByDefault;
+			});
+
 		const selOptionId = Array.from(e.target.children)
 			.find((child) => child.innerText === e.target.value)
 			.getAttribute('data-itemid');
@@ -58,6 +75,13 @@ export function globeEvHandler() {
 		}
 
 		fillUpgradesChart();
+
+		//refilling ip description when choosing a new type of vent:
+		const selOptionIdOptionIP = Array.from(selectorIp.children)
+			.find((child) => child.innerText === selectorIp.value)
+			.getAttribute('data-itemid');
+
+		setModelNameAndDescription('addData', 'ipVersion', selOptionIdOptionIP);
 	});
 
 	//choosing encoder:
@@ -81,16 +105,24 @@ export function globeEvHandler() {
 	document.body.addEventListener('change', (e) => {
 		if (e.target.id === 'checkbox-vibrosensors') {
 			if (e.target.checked) {
+				e.target.classList.replace('checkbox-vibrosensors-unchecked', 'checkbox-vibrosensors-checked');
+
 				setModelNameAndDescription('addData', 'vibroSensors', e.target.id);
 			} else {
+				e.target.classList.replace('checkbox-vibrosensors-checked', 'checkbox-vibrosensors-unchecked');
+
 				setModelNameAndDescription('removeData', null, e.target.id);
 			}
 		}
 
 		if (e.target.id === 'checkbox-antiCondenseHeater') {
 			if (e.target.checked) {
+				e.target.classList.replace('checkbox-antiCondenseHeater-unchecked', 'checkbox-antiCondenseHeater-checked');
+
 				setModelNameAndDescription('addData', 'antiCondensingHeater', e.target.id);
 			} else {
+				e.target.classList.replace('checkbox-antiCondenseHeater-checked', 'checkbox-antiCondenseHeater-uchecked');
+
 				setModelNameAndDescription('removeData', null, e.target.id);
 			}
 		}
@@ -142,7 +174,11 @@ export function globeEvHandler() {
 		}
 
 		if (e.target.id === 'selector-climateCat') {
-			console.log('selector-climateCat', e.target.value);
+			const selOptionIdOptionIP = Array.from(e.target.children)
+				.find((child) => child.innerText === e.target.value)
+				.getAttribute('data-itemid');
+
+			setModelNameAndDescription('addData', 'climateCat', selOptionIdOptionIP);
 		}
 
 		if (e.target.id === 'selector-ip') {
@@ -150,8 +186,23 @@ export function globeEvHandler() {
 				.find((child) => child.innerText === e.target.value)
 				.getAttribute('data-itemid');
 
-			//getOptions([selectorVentSystem], 'resetOptionsList');
 			setModelNameAndDescription('addData', 'ipVersion', selOptionId);
+			fillUpgradesChart();
+
+			//перезаливка опций для системы вентиляции при смене IP:
+			const { frameSize, encoderIsChecked, ventSystemOptionValue, brakeType } = optionsSelector;
+
+			fillBaseOptions(
+				frameSize,
+				encoderIsChecked,
+				ventSystemOptionValue,
+				brakeType,
+				document.getElementById('checkbox-currentInsulatingBearing').checked,
+				document.getElementById('selector-importBearings').value,
+				e.target.value
+			);
+
+			populateOptionsList([selectorVentSystem], [optionsConfig.ventSystem], 'resetOptionsList');
 		}
 
 		if (e.target.id === 'checkbox-package') {
@@ -187,10 +238,14 @@ export function globeEvHandler() {
 			}
 		}
 	});
-}
 
-document.body.addEventListener('input', (e) => {
-	if (e.target.id === 'input-encoderResOptions') {
-		fillUpgradesChart();
-	}
-});
+	document.body.addEventListener('input', (e) => {
+		if (e.target.id === 'input-encoderResOptions') {
+			fillUpgradesChart();
+		}
+	});
+
+	window.onresize = () => {
+		mask.mask !== undefined && typeof mask.mask !== 'undefined' && mask.getMaskParams();
+	};
+}

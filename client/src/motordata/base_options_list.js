@@ -229,6 +229,15 @@ export const fillBaseOptions = function (
 	//данные для наполнения табличной части доработок при выборе тормозов и /или вентиляционной системы:
 	optionsConfig.upgradesData = [
 		{
+			id: 50,
+			brakeMoment: { data: '2/4', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 25, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.18, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 14, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.085', description: 'Потребляемый ток, А' },
+		},
+
+		{
 			id: 56,
 			brakeMoment: { data: '2/4', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
 			brake_consumedPower: { data: 25, description: 'Потребляемая мощность, Вт' },
@@ -466,8 +475,7 @@ export const fillBaseOptions = function (
 			type: 'Пристроенный вентилятор (наездник) с питанием 220В',
 			description: 'Укомплектован узлом независимой вентиляции (пристроенный вентилятор (наездник) с питанием 220В)',
 			selectable:
-				motorFrameSize >= 112 &&
-				((motorFrameSize <= 200 && brakeType.includes('независимым питанием')) || brakeType === '-')
+				motorFrameSize >= 112 && motorFrameSize <= 200 && (brakeType.includes('независимым питанием') || brakeType === '-')
 					? true
 					: false,
 			power: 220,

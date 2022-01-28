@@ -10,6 +10,7 @@ export const selectorVentSystem = document.getElementById('selector-ventSystem')
 export const imageDrawing = document.getElementById('img-drawing');
 export const chart_connectionParams = document.getElementById('chart-connectionParams');
 export const chart_connectionValues = document.getElementById('chart-connectionValues');
+export const areaFilter = document.getElementById('area-filter');
 export const areaSelection = document.getElementById('area-selection').firstElementChild;
 export const areaRender = document.getElementById('area-render');
 export const listItemUpgrades = document.getElementById('listItem-upgrades');

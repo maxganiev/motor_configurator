@@ -42,7 +42,13 @@ body {
     height: 150vh;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    overflow-y: hidden; }
+    overflow-y: hidden;
+    position: relative; }
+    body main .mask {
+      position: absolute;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 10; }
     body main .area-filter {
       grid-column: 1/4;
       display: flex;
