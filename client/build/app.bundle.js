@@ -11389,7 +11389,6 @@ function fillExtraOptions() {
 			checkboxCurrentInsulatingBearing.disabled = !currentInsulatingBearing.selectable;
 
 			(0, _selectFunctions.populateOptionsList)([document.getElementById('selector-importBearings')], [importBearings], 'resetOptionsList');
-			(0, _selectFunctions.populateOptionsList)([document.getElementById('selector-climateCat')], [climateCat], 'resetOptionsList');
 			(0, _selectFunctions.populateOptionsList)([document.getElementById('selector-ip')], [ipVersion], 'resetOptionsList');
 
 			//вывод предупреждения при отсутствии выбора токоиз. подшипника для двигателей >= 200 габ.:
@@ -11458,12 +11457,6 @@ function fillExtraOptions() {
 					});
 				}
 			}
-			//если да - стираем существующие опции для энкодера:
-			else {
-					Array.from(_global_dom.areaSelection.children).forEach(function (child) {
-						return child.id.includes('encoder-group-id') && child.remove();
-					});
-				}
 		}
 }
 

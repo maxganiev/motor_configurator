@@ -87,7 +87,6 @@ export function fillExtraOptions() {
 		checkboxCurrentInsulatingBearing.disabled = !currentInsulatingBearing.selectable;
 
 		populateOptionsList([document.getElementById('selector-importBearings')], [importBearings], 'resetOptionsList');
-		populateOptionsList([document.getElementById('selector-climateCat')], [climateCat], 'resetOptionsList');
 		populateOptionsList([document.getElementById('selector-ip')], [ipVersion], 'resetOptionsList');
 
 		//вывод предупреждения при отсутствии выбора токоиз. подшипника для двигателей >= 200 габ.:
@@ -153,10 +152,6 @@ export function fillExtraOptions() {
 					areaSelection.insertBefore(listItem, checkboxConicShaft.parentElement);
 				});
 			}
-		}
-		//если да - стираем существующие опции для энкодера:
-		else {
-			Array.from(areaSelection.children).forEach((child) => child.id.includes('encoder-group-id') && child.remove());
 		}
 	}
 }
