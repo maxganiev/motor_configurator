@@ -8,31 +8,36 @@ import {
 	checkboxEncoder,
 	checkboxConicShaft,
 	selectorVentSystem,
-	areaFilter,
 } from './global_dom';
 import {
 	searchModel,
 	getOptions,
 	optionsSelector,
-	setModelNameAndDescription,
+	setModelDescription,
 	fillUpgradesChart,
 	populateOptionsList,
+	setModelName,
 } from './selectFunctions';
 import { fillBaseOptions, optionsConfig } from '../motordata/base_options_list';
 import { mask } from '../ui/ui';
 
 export function globeEvHandler() {
+	//searching for a model against input:
 	inputModel.oninput = (e) => searchModel(e);
 
+	//searching for a specific model agains choice of rpm or voltage:
 	selectorPower.onchange = selectorRpm.onchange = (e) => searchModel(e);
 
 	//selecting a motor model:
 	selectorModel.addEventListener('change', () => {
 		getOptions([selectorBrakes, selectorPaws, selectorVentSystem], 'populateOptionsList');
+		setModelName();
 	});
+
 	//selecting a paw type:
 	selectorPaws.addEventListener('change', () => {
 		getOptions(null);
+		setModelName();
 	});
 
 	//selecting a breaks type:
@@ -44,12 +49,13 @@ export function globeEvHandler() {
 			.getAttribute('data-itemid');
 
 		if (e.target.value !== '-') {
-			setModelNameAndDescription('addData', 'electroMagneticBreak', selOptionId);
+			setModelDescription('addData', 'electroMagneticBreak', selOptionId);
 		} else {
-			setModelNameAndDescription('removeData', null, selOptionId);
+			setModelDescription('removeData', null, selOptionId);
 		}
 
 		fillUpgradesChart();
+		setModelName();
 	});
 
 	//selecting vent system type:
@@ -69,9 +75,9 @@ export function globeEvHandler() {
 			.getAttribute('data-itemid');
 
 		if (e.target.value !== '-') {
-			setModelNameAndDescription('addData', 'ventSystem', selOptionId);
+			setModelDescription('addData', 'ventSystem', selOptionId);
 		} else {
-			setModelNameAndDescription('removeData', null, selOptionId);
+			setModelDescription('removeData', null, selOptionId);
 		}
 
 		fillUpgradesChart();
@@ -81,13 +87,17 @@ export function globeEvHandler() {
 			.find((child) => child.innerText === selectorIp.value)
 			.getAttribute('data-itemid');
 
-		setModelNameAndDescription('addData', 'ipVersion', selOptionIdOptionIP);
+		setModelDescription('addData', 'ipVersion', selOptionIdOptionIP);
+		setModelName();
 	});
 
 	//choosing encoder:
-	checkboxEncoder.addEventListener('change', () => {
+	checkboxEncoder.addEventListener('change', (e) => {
+		console.log(e.target.getAttribute('type'));
 		getOptions([selectorBrakes], 'resetOptionsList');
+		setModelDescription();
 		fillUpgradesChart();
+		setModelName();
 	});
 
 	//chosing conic shaft:
@@ -95,10 +105,11 @@ export function globeEvHandler() {
 		getOptions(null);
 
 		if (e.target.checked) {
-			setModelNameAndDescription('addData', 'conicShaft', e.target.id);
+			setModelDescription('addData', 'conicShaft', e.target.id);
 		} else {
-			setModelNameAndDescription('removeData', null, e.target.id);
+			setModelDescription('removeData', null, e.target.id);
 		}
+		setModelName();
 	});
 
 	//обработчики с делегированием:
@@ -107,36 +118,41 @@ export function globeEvHandler() {
 			if (e.target.checked) {
 				e.target.classList.replace('checkbox-vibrosensors-unchecked', 'checkbox-vibrosensors-checked');
 
-				setModelNameAndDescription('addData', 'vibroSensors', e.target.id);
+				setModelDescription('addData', 'vibroSensors', e.target.id);
 			} else {
 				e.target.classList.replace('checkbox-vibrosensors-checked', 'checkbox-vibrosensors-unchecked');
 
-				setModelNameAndDescription('removeData', null, e.target.id);
+				setModelDescription('removeData', null, e.target.id);
 			}
+			setModelName();
 		}
 
 		if (e.target.id === 'checkbox-antiCondenseHeater') {
 			if (e.target.checked) {
 				e.target.classList.replace('checkbox-antiCondenseHeater-unchecked', 'checkbox-antiCondenseHeater-checked');
 
-				setModelNameAndDescription('addData', 'antiCondensingHeater', e.target.id);
+				setModelDescription('addData', 'antiCondensingHeater', e.target.id);
 			} else {
 				e.target.classList.replace('checkbox-antiCondenseHeater-checked', 'checkbox-antiCondenseHeater-uchecked');
 
-				setModelNameAndDescription('removeData', null, e.target.id);
+				setModelDescription('removeData', null, e.target.id);
 			}
+			setModelName();
 		}
 
 		////encoder group:
 		if (e.target.id === 'selector-encoderVoltage') {
 			fillUpgradesChart();
+			setModelName();
 		}
 
 		if (e.target.id === 'selector-outputSignal') {
 			fillUpgradesChart();
+			setModelName();
 		}
 		////
 
+		//currentInsulatingBearing:
 		if (e.target.id === 'checkbox-currentInsulatingBearing') {
 			optionsSelector.setOptionsList();
 
@@ -147,7 +163,7 @@ export function globeEvHandler() {
 					'checkbox-currentInsulatingBearing-checked',
 					'checkbox-currentInsulatingBearing-unchecked'
 				);
-				setModelNameAndDescription('removeData', null, e.target.id);
+				setModelDescription('removeData', null, e.target.id);
 			} else if (Array.from(e.target.classList).some((className) => className.includes('-unchecked'))) {
 				e.target.checked = true;
 
@@ -155,10 +171,12 @@ export function globeEvHandler() {
 					'checkbox-currentInsulatingBearing-unchecked',
 					'checkbox-currentInsulatingBearing-checked'
 				);
-				setModelNameAndDescription('addData', 'currentInsulatingBearing', e.target.id);
+				setModelDescription('addData', 'currentInsulatingBearing', e.target.id);
 			}
+			setModelName();
 		}
 
+		//importBearings:
 		if (e.target.id === 'selector-importBearings') {
 			optionsSelector.setOptionsList();
 
@@ -167,26 +185,31 @@ export function globeEvHandler() {
 				.getAttribute('data-itemid');
 
 			if (e.target.value !== '-') {
-				setModelNameAndDescription('addData', 'importBearings', selOptionId);
+				setModelDescription('addData', 'importBearings', selOptionId);
 			} else {
-				setModelNameAndDescription('removeData', null, selOptionId);
+				setModelDescription('removeData', null, selOptionId);
 			}
+
+			setModelName();
 		}
 
+		//climateCat:
 		if (e.target.id === 'selector-climateCat') {
 			const selOptionIdOptionIP = Array.from(e.target.children)
 				.find((child) => child.innerText === e.target.value)
 				.getAttribute('data-itemid');
 
-			setModelNameAndDescription('addData', 'climateCat', selOptionIdOptionIP);
+			setModelDescription('addData', 'climateCat', selOptionIdOptionIP);
+			setModelName();
 		}
 
+		//IP:
 		if (e.target.id === 'selector-ip') {
 			const selOptionId = Array.from(e.target.children)
 				.find((child) => child.innerText === e.target.value)
 				.getAttribute('data-itemid');
 
-			setModelNameAndDescription('addData', 'ipVersion', selOptionId);
+			setModelDescription('addData', 'ipVersion', selOptionId);
 			fillUpgradesChart();
 
 			//перезаливка опций для системы вентиляции при смене IP:
@@ -203,14 +226,17 @@ export function globeEvHandler() {
 			);
 
 			populateOptionsList([selectorVentSystem], [optionsConfig.ventSystem], 'resetOptionsList');
+			setModelName();
 		}
 
+		//package:
 		if (e.target.id === 'checkbox-package') {
 			console.log('checkbox-package', e.target.value);
 		}
 	});
 
 	document.body.addEventListener('click', (e) => {
+		//options-sensors:
 		if (e.target.id.includes('btn-options-sensors-id')) {
 			if (Array.from(e.target.classList).some((className) => className.includes('btn-option-non-selected'))) {
 				e.target.classList.replace('btn-option-non-selected', 'btn-option-selected');
@@ -222,7 +248,7 @@ export function globeEvHandler() {
 					btn.id !== e.target.id && btn.classList.replace('btn-option-selected', 'btn-option-non-selected');
 				});
 
-				setModelNameAndDescription(
+				setModelDescription(
 					'addData',
 					'tempDataSensors',
 					Array.from(e.target.classList).find((cl) => cl.includes('Б'))
@@ -230,18 +256,22 @@ export function globeEvHandler() {
 			} else if (Array.from(e.target.classList).some((className) => className.includes('btn-option-selected'))) {
 				e.target.classList.replace('btn-option-selected', 'btn-option-non-selected');
 
-				setModelNameAndDescription(
+				setModelDescription(
 					'removeData',
 					null,
 					Array.from(e.target.classList).find((cl) => cl.includes('Б'))
 				);
 			}
+			setModelName(e.target.tagName);
 		}
 	});
 
 	document.body.addEventListener('input', (e) => {
+		//encoderResOptions
 		if (e.target.id === 'input-encoderResOptions') {
+			setModelDescription();
 			fillUpgradesChart();
+			setModelName();
 		}
 	});
 

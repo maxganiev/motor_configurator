@@ -78,8 +78,8 @@ export const fillBaseOptions = function (
 		//ui: select
 		powerVolt: [
 			{ id: 'default-encod-powe', group: 'Напряжение питания', type: '-' },
-			{ id: '5V', group: 'Напряжение питания', type: '+5В' },
-			{ id: '10_30V', group: 'Напряжение питания', type: '+10...30В' },
+			{ id: '1', group: 'Напряжение питания', type: '+5В' },
+			{ id: '2', group: 'Напряжение питания', type: '+10...30В' },
 		],
 
 		//ui: select
@@ -387,38 +387,38 @@ export const fillBaseOptions = function (
 		motorFrameSize >= 112
 			? [
 					{
-						id: 'IM1001',
+						id: motorFrameSize >= 132 ? 'IM1001' : 'IM1081',
 						group: 'Лапы и фланцы',
 						type: 'Лапы (1001/1081)',
 					},
 
 					{
-						id: 'IM2001',
+						id: motorFrameSize >= 132 ? 'IM2001' : 'IM2081',
 						group: 'Лапы и фланцы',
 						type: 'Лапы + Фланец (2001/2081)',
 					},
 
 					{
-						id: 'IM3001',
+						id: motorFrameSize >= 132 ? 'IM3001' : 'IM3081',
 						group: 'Лапы и фланцы',
 						type: 'Фланец (3081)',
 					},
 			  ]
 			: [
 					{
-						id: 'IM1001',
+						id: 'IM1081',
 						group: 'Лапы и фланцы',
 						type: 'Лапы (1001/1081)',
 					},
 
 					{
-						id: 'IM2001',
+						id: 'IM2081',
 						group: 'Лапы и фланцы',
 						type: 'Лапы + Фланец (2001/2081)',
 					},
 
 					{
-						id: 'IM3001',
+						id: 'IM3081',
 						group: 'Лапы и фланцы',
 						type: 'Фланец (3081)',
 					},

@@ -14,6 +14,7 @@ import {
 	areaRender,
 	listItemUpgrades,
 	areaFilter,
+	h2ModelName,
 } from './global_dom';
 import { fillBaseOptions, optionsConfig } from '../motordata/base_options_list';
 import { regex } from './global_vars';
@@ -242,8 +243,14 @@ export function getModel(query, targetArr) {
 			selectorModel.children[1].selected = true;
 			getOptions([selectorBrakes, selectorPaws, selectorVentSystem], 'populateOptionsList');
 
+			//перезаливка наименования:
+			setModelName();
+
+			//выставление IP55 по умолчанию при поиске новой модели:
+			document.getElementById('selector-ip').children[0].selected = true;
+
 			//перезаливка описательной части для IP при поиске новой модели (всегда по умолчанию выставляется IP55 из опции 1):
-			setModelNameAndDescription(
+			setModelDescription(
 				'addData',
 				'ipVersion',
 				Array.from(document.getElementById('selector-ip').children)
@@ -252,7 +259,7 @@ export function getModel(query, targetArr) {
 			);
 
 			//выставление УХЛ:
-			setModelNameAndDescription(
+			setModelDescription(
 				'addData',
 				'climateCat',
 				Array.from(document.getElementById('selector-climateCat').children)
@@ -261,7 +268,7 @@ export function getModel(query, targetArr) {
 			);
 
 			//перезаливка описательной части для импортных подшипников:
-			setModelNameAndDescription(
+			setModelDescription(
 				'addData',
 				'importBearings',
 				Array.from(document.getElementById('selector-importBearings').children)
@@ -313,7 +320,7 @@ export function getModel(query, targetArr) {
 				Array.from(checkboxCurrentInsulatingBearing.classList).some((className) => className.includes('-checked')) &&
 				optionsSelector.frameSize >= 200
 			) {
-				setModelNameAndDescription('addData', 'currentInsulatingBearing', 'checkbox-currentInsulatingBearing');
+				setModelDescription('addData', 'currentInsulatingBearing', 'checkbox-currentInsulatingBearing');
 			}
 		} else {
 			//маска для поля выбора, чтобы пользователь не мог ею воспользоваться, пока не скорректирует поиск:
@@ -492,34 +499,8 @@ export function setChartConnectionDims(frameSize, brakeType, pawType, ventSystem
 	chart_connectionParams.style.borderBottom = '0.5px #000 solid';
 }
 
-//формирование наименования двигателя и описательной части к чертежу:
-export function setModelNameAndDescription(operationType, typeofDataToFill, htmlElemRef) {
-	const { model, ventSystemOptionValue, brakeType, encoderIsChecked, conicShaftIsChecked } = optionsSelector;
-	const сurrentIsolatingBearingIsChecked = document.getElementById('checkbox-currentInsulatingBearing').checked;
-
-	const importBearingsValue = document.getElementById('selector-importBearings').value;
-	const ipValue = document.getElementById('selector-ip').value;
-	const climateCatValue = document.getElementById('selector-climateCat').value;
-
-	const temp_arr_ws = Array.from(document.getElementById('list-windingSensors').children);
-	const temp_arr_bs = Array.from(document.getElementById('list-bearingSensors').children);
-
-	const wiringSensorsCode = temp_arr_ws.some((child) => !child.firstElementChild.getAttribute('class').includes('non-selected'))
-		? temp_arr_ws
-				.find((child) => !child.firstElementChild.getAttribute('class').includes('non-selected'))
-				.firstElementChild.getAttribute('class')
-				.split(' ')[1]
-		: '';
-
-	const bearingSensorsCode = temp_arr_bs.some((child) => !child.firstElementChild.getAttribute('class').includes('non-selected'))
-		? temp_arr_bs
-				.find((child) => !child.firstElementChild.getAttribute('class').includes('non-selected'))
-				.firstElementChild.getAttribute('class')
-				.split(' ')[1]
-		: '';
-
-	console.log(wiringSensorsCode, bearingSensorsCode);
-
+//формирование наименования описательной части к чертежу:
+export function setModelDescription(operationType, typeofDataToFill, htmlElemRef) {
 	if (operationType === 'addData') {
 		const text = Array.isArray(optionsConfig[typeofDataToFill])
 			? optionsConfig[typeofDataToFill].find((data) => data.id === htmlElemRef).description
@@ -757,4 +738,98 @@ export function fillUpgradesChart() {
 			);
 		}
 	}
+}
+
+//формирование наименования двигателя:
+export function setModelName() {
+	setTimeout(() => {
+		const { model, ventSystemOptionValue, brakeType, encoderIsChecked, conicShaftIsChecked } = optionsSelector;
+		//формируем наименование при выборе опций:
+		let name = model;
+
+		//код для датчиков обмотки и подшипников:
+		const temp_arr_ws = Array.from(document.getElementById('list-windingSensors').children);
+		const temp_arr_bs = Array.from(document.getElementById('list-bearingSensors').children);
+
+		const wiringSensorsCode = temp_arr_ws.some((child) => !child.firstElementChild.getAttribute('class').includes('non-selected'))
+			? '-' +
+			  temp_arr_ws
+					.find((child) => !child.firstElementChild.getAttribute('class').includes('non-selected'))
+					.firstElementChild.getAttribute('class')
+					.split(' ')[1]
+			: '';
+
+		const bearingSensorsCode = temp_arr_bs.some((child) => !child.firstElementChild.getAttribute('class').includes('non-selected'))
+			? '-' +
+			  temp_arr_bs
+					.find((child) => !child.firstElementChild.getAttribute('class').includes('non-selected'))
+					.firstElementChild.getAttribute('class')
+					.split(' ')[1]
+			: '';
+
+		const ws_bs_code = (wiringSensorsCode + bearingSensorsCode)
+			.split('')
+			.filter((letter, index, exp) => letter.match(regex) && index === exp.indexOf(letter))
+			.join('');
+
+		name += ws_bs_code;
+
+		//код для выбродатчиков:
+		document.getElementById('checkbox-vibrosensors').checked ? (name += '-' + 'W1') : null;
+
+		//код для антиконденсатного подогрева:
+		document.getElementById('checkbox-antiCondenseHeater').checked ? (name += '-' + 'H') : null;
+
+		//код для токоиз. подшипника:
+		document.getElementById('checkbox-currentInsulatingBearing').checked ? (name += '-' + 'F2') : null;
+
+		//код для импортных подшипников:
+		document.getElementById('selector-importBearings').value !== '-' &&
+			updateModelNameForSelect(document.getElementById('selector-importBearings'));
+
+		//код для тормоза:
+		brakeType !== '-' ? updateModelNameForSelect(selectorBrakes) : null;
+
+		//код для вентиляции:
+		ventSystemOptionValue !== '-' ? updateModelNameForSelect(selectorVentSystem) : null;
+
+		//код для энкодера и опций:
+		encoderIsChecked ? (name += '-' + 'N') : null;
+
+		//разрешение:
+		const e_res = document.getElementById('input-encoderResOptions');
+		e_res !== null && e_res.value.match(regex) ? (name += e_res.value) : null;
+
+		//напряжение:
+		const e_volt = document.getElementById('selector-encoderVoltage');
+		e_volt !== null && e_volt.value !== '-' ? updateModelNameForSelect(e_volt) : null;
+
+		//выходной сигнал:
+		const e_signal = document.getElementById('selector-outputSignal');
+		e_signal !== null && e_signal.value !== '-' ? updateModelNameForSelect(e_signal) : null;
+
+		//код для IP:
+		document.getElementById('selector-ip').value !== '-' ? updateModelNameForSelect(document.getElementById('selector-ip')) : null;
+
+		//код для УХЛ:
+		document.getElementById('selector-climateCat').value !== '-'
+			? updateModelNameForSelect(document.getElementById('selector-climateCat'))
+			: null;
+
+		//код для исполнения:
+		updateModelNameForSelect(selectorPaws);
+
+		//код при выборе конусного вала:
+		const finalName = conicShaftIsChecked ? name.slice(0, name.length - 1) + '3' : name;
+		h2ModelName.innerText = finalName;
+
+		//обновление наименования при выборе опций селекторов:
+		function updateModelNameForSelect(parentSelector) {
+			name +=
+				'-' +
+				Array.from(parentSelector.children)
+					.find((child) => child.selected === true)
+					.getAttribute('data-itemid');
+		}
+	}, 10);
 }

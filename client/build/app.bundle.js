@@ -1996,6 +1996,7 @@ var areaFilter = exports.areaFilter = document.getElementById('area-filter');
 var areaSelection = exports.areaSelection = document.getElementById('area-selection').firstElementChild;
 var areaRender = exports.areaRender = document.getElementById('area-render');
 var listItemUpgrades = exports.listItemUpgrades = document.getElementById('listItem-upgrades');
+var h2ModelName = exports.h2ModelName = document.getElementById('model-name');
 
 /***/ }),
 /* 67 */
@@ -3021,7 +3022,7 @@ var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFr
 		resolution: { id: 'resol', type: 'Разрешение(имп/об)' },
 
 		//ui: select
-		powerVolt: [{ id: 'default-encod-powe', group: 'Напряжение питания', type: '-' }, { id: '5V', group: 'Напряжение питания', type: '+5В' }, { id: '10_30V', group: 'Напряжение питания', type: '+10...30В' }],
+		powerVolt: [{ id: 'default-encod-powe', group: 'Напряжение питания', type: '-' }, { id: '1', group: 'Напряжение питания', type: '+5В' }, { id: '2', group: 'Напряжение питания', type: '+10...30В' }],
 
 		//ui: select
 		outputSignal: [{ id: 'default-encod-signal', group: 'Тип выходного сигнала', type: '-' }, { id: '3', group: 'Тип выходного сигнала', type: 'TTL/RS422, 6 каналов' }, { id: '4', group: 'Тип выходного сигнала', type: 'HTL/push pull, 6 каналов' }]
@@ -3260,27 +3261,27 @@ var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFr
 
 	//лапы и фланцы (UI: select):
 	optionsConfig.paws = motorFrameSize >= 112 ? [{
-		id: 'IM1001',
+		id: motorFrameSize >= 132 ? 'IM1001' : 'IM1081',
 		group: 'Лапы и фланцы',
 		type: 'Лапы (1001/1081)'
 	}, {
-		id: 'IM2001',
+		id: motorFrameSize >= 132 ? 'IM2001' : 'IM2081',
 		group: 'Лапы и фланцы',
 		type: 'Лапы + Фланец (2001/2081)'
 	}, {
-		id: 'IM3001',
+		id: motorFrameSize >= 132 ? 'IM3001' : 'IM3081',
 		group: 'Лапы и фланцы',
 		type: 'Фланец (3081)'
 	}] : [{
-		id: 'IM1001',
+		id: 'IM1081',
 		group: 'Лапы и фланцы',
 		type: 'Лапы (1001/1081)'
 	}, {
-		id: 'IM2001',
+		id: 'IM2081',
 		group: 'Лапы и фланцы',
 		type: 'Лапы + Фланец (2001/2081)'
 	}, {
-		id: 'IM3001',
+		id: 'IM3081',
 		group: 'Лапы и фланцы',
 		type: 'Фланец (3081)'
 	}, {
@@ -4423,8 +4424,9 @@ exports.getOptions = getOptions;
 exports.populateOptionsList = populateOptionsList;
 exports.getModel = getModel;
 exports.setChartConnectionDims = setChartConnectionDims;
-exports.setModelNameAndDescription = setModelNameAndDescription;
+exports.setModelDescription = setModelDescription;
 exports.fillUpgradesChart = fillUpgradesChart;
+exports.setModelName = setModelName;
 
 var _global_dom = __webpack_require__(66);
 
@@ -4657,18 +4659,24 @@ function getModel(query, targetArr) {
 			_global_dom.selectorModel.children[1].selected = true;
 			getOptions([_global_dom.selectorBrakes, _global_dom.selectorPaws, _global_dom.selectorVentSystem], 'populateOptionsList');
 
+			//перезаливка наименования:
+			setModelName();
+
+			//выставление IP55 по умолчанию при поиске новой модели:
+			document.getElementById('selector-ip').children[0].selected = true;
+
 			//перезаливка описательной части для IP при поиске новой модели (всегда по умолчанию выставляется IP55 из опции 1):
-			setModelNameAndDescription('addData', 'ipVersion', Array.from(document.getElementById('selector-ip').children).find(function (option) {
+			setModelDescription('addData', 'ipVersion', Array.from(document.getElementById('selector-ip').children).find(function (option) {
 				return option.selected;
 			}).getAttribute('data-itemid'));
 
 			//выставление УХЛ:
-			setModelNameAndDescription('addData', 'climateCat', Array.from(document.getElementById('selector-climateCat').children).find(function (option) {
+			setModelDescription('addData', 'climateCat', Array.from(document.getElementById('selector-climateCat').children).find(function (option) {
 				return option.selected;
 			}).getAttribute('data-itemid'));
 
 			//перезаливка описательной части для импортных подшипников:
-			setModelNameAndDescription('addData', 'importBearings', Array.from(document.getElementById('selector-importBearings').children).find(function (option) {
+			setModelDescription('addData', 'importBearings', Array.from(document.getElementById('selector-importBearings').children).find(function (option) {
 				return option.selected;
 			}).getAttribute('data-itemid'));
 
@@ -4707,7 +4715,7 @@ function getModel(query, targetArr) {
 			if (Array.from(checkboxCurrentInsulatingBearing.classList).some(function (className) {
 				return className.includes('-checked');
 			}) && optionsSelector.frameSize >= 200) {
-				setModelNameAndDescription('addData', 'currentInsulatingBearing', 'checkbox-currentInsulatingBearing');
+				setModelDescription('addData', 'currentInsulatingBearing', 'checkbox-currentInsulatingBearing');
 			}
 		} else {
 			//маска для поля выбора, чтобы пользователь не мог ею воспользоваться, пока не скорректирует поиск:
@@ -4846,37 +4854,8 @@ function setChartConnectionDims(frameSize, brakeType, pawType, ventSystemOptionV
 	_global_dom.chart_connectionParams.style.borderBottom = '0.5px #000 solid';
 }
 
-//формирование наименования двигателя и описательной части к чертежу:
-function setModelNameAndDescription(operationType, typeofDataToFill, htmlElemRef) {
-	var model = optionsSelector.model,
-	    ventSystemOptionValue = optionsSelector.ventSystemOptionValue,
-	    brakeType = optionsSelector.brakeType,
-	    encoderIsChecked = optionsSelector.encoderIsChecked,
-	    conicShaftIsChecked = optionsSelector.conicShaftIsChecked;
-
-	var сurrentIsolatingBearingIsChecked = document.getElementById('checkbox-currentInsulatingBearing').checked;
-
-	var importBearingsValue = document.getElementById('selector-importBearings').value;
-	var ipValue = document.getElementById('selector-ip').value;
-	var climateCatValue = document.getElementById('selector-climateCat').value;
-
-	var temp_arr_ws = Array.from(document.getElementById('list-windingSensors').children);
-	var temp_arr_bs = Array.from(document.getElementById('list-bearingSensors').children);
-
-	var wiringSensorsCode = temp_arr_ws.some(function (child) {
-		return !child.firstElementChild.getAttribute('class').includes('non-selected');
-	}) ? temp_arr_ws.find(function (child) {
-		return !child.firstElementChild.getAttribute('class').includes('non-selected');
-	}).firstElementChild.getAttribute('class').split(' ')[1] : '';
-
-	var bearingSensorsCode = temp_arr_bs.some(function (child) {
-		return !child.firstElementChild.getAttribute('class').includes('non-selected');
-	}) ? temp_arr_bs.find(function (child) {
-		return !child.firstElementChild.getAttribute('class').includes('non-selected');
-	}).firstElementChild.getAttribute('class').split(' ')[1] : '';
-
-	console.log(wiringSensorsCode, bearingSensorsCode);
-
+//формирование наименования описательной части к чертежу:
+function setModelDescription(operationType, typeofDataToFill, htmlElemRef) {
 	if (operationType === 'addData') {
 		var text = Array.isArray(_base_options_list.optionsConfig[typeofDataToFill]) ? _base_options_list.optionsConfig[typeofDataToFill].find(function (data) {
 			return data.id === htmlElemRef;
@@ -5121,6 +5100,95 @@ function fillUpgradesChart() {
 			});
 		}
 	}
+}
+
+//формирование наименования двигателя:
+function setModelName() {
+	setTimeout(function () {
+		var model = optionsSelector.model,
+		    ventSystemOptionValue = optionsSelector.ventSystemOptionValue,
+		    brakeType = optionsSelector.brakeType,
+		    encoderIsChecked = optionsSelector.encoderIsChecked,
+		    conicShaftIsChecked = optionsSelector.conicShaftIsChecked;
+		//формируем наименование при выборе опций:
+
+		var name = model;
+
+		//код для датчиков обмотки и подшипников:
+		var temp_arr_ws = Array.from(document.getElementById('list-windingSensors').children);
+		var temp_arr_bs = Array.from(document.getElementById('list-bearingSensors').children);
+
+		var wiringSensorsCode = temp_arr_ws.some(function (child) {
+			return !child.firstElementChild.getAttribute('class').includes('non-selected');
+		}) ? '-' + temp_arr_ws.find(function (child) {
+			return !child.firstElementChild.getAttribute('class').includes('non-selected');
+		}).firstElementChild.getAttribute('class').split(' ')[1] : '';
+
+		var bearingSensorsCode = temp_arr_bs.some(function (child) {
+			return !child.firstElementChild.getAttribute('class').includes('non-selected');
+		}) ? '-' + temp_arr_bs.find(function (child) {
+			return !child.firstElementChild.getAttribute('class').includes('non-selected');
+		}).firstElementChild.getAttribute('class').split(' ')[1] : '';
+
+		var ws_bs_code = (wiringSensorsCode + bearingSensorsCode).split('').filter(function (letter, index, exp) {
+			return letter.match(_global_vars.regex) && index === exp.indexOf(letter);
+		}).join('');
+
+		name += ws_bs_code;
+
+		//код для выбродатчиков:
+		document.getElementById('checkbox-vibrosensors').checked ? name += '-' + 'W1' : null;
+
+		//код для антиконденсатного подогрева:
+		document.getElementById('checkbox-antiCondenseHeater').checked ? name += '-' + 'H' : null;
+
+		//код для токоиз. подшипника:
+		document.getElementById('checkbox-currentInsulatingBearing').checked ? name += '-' + 'F2' : null;
+
+		//код для импортных подшипников:
+		document.getElementById('selector-importBearings').value !== '-' && updateModelNameForSelect(document.getElementById('selector-importBearings'));
+
+		//код для тормоза:
+		brakeType !== '-' ? updateModelNameForSelect(_global_dom.selectorBrakes) : null;
+
+		//код для вентиляции:
+		ventSystemOptionValue !== '-' ? updateModelNameForSelect(_global_dom.selectorVentSystem) : null;
+
+		//код для энкодера и опций:
+		encoderIsChecked ? name += '-' + 'N' : null;
+
+		//разрешение:
+		var e_res = document.getElementById('input-encoderResOptions');
+		e_res !== null && e_res.value.match(_global_vars.regex) ? name += e_res.value : null;
+
+		//напряжение:
+		var e_volt = document.getElementById('selector-encoderVoltage');
+		e_volt !== null && e_volt.value !== '-' ? updateModelNameForSelect(e_volt) : null;
+
+		//выходной сигнал:
+		var e_signal = document.getElementById('selector-outputSignal');
+		e_signal !== null && e_signal.value !== '-' ? updateModelNameForSelect(e_signal) : null;
+
+		//код для IP:
+		document.getElementById('selector-ip').value !== '-' ? updateModelNameForSelect(document.getElementById('selector-ip')) : null;
+
+		//код для УХЛ:
+		document.getElementById('selector-climateCat').value !== '-' ? updateModelNameForSelect(document.getElementById('selector-climateCat')) : null;
+
+		//код для исполнения:
+		updateModelNameForSelect(_global_dom.selectorPaws);
+
+		//код при выборе конусного вала:
+		var finalName = conicShaftIsChecked ? name.slice(0, name.length - 1) + '3' : name;
+		_global_dom.h2ModelName.innerText = finalName;
+
+		//обновление наименования при выборе опций селекторов:
+		function updateModelNameForSelect(parentSelector) {
+			name += '-' + Array.from(parentSelector.children).find(function (child) {
+				return child.selected === true;
+			}).getAttribute('data-itemid');
+		}
+	}, 10);
 }
 
 /***/ }),
@@ -10760,10 +10828,12 @@ var _base_options_list = __webpack_require__(94);
 var _ui = __webpack_require__(133);
 
 function globeEvHandler() {
+	//searching for a model against input:
 	_global_dom.inputModel.oninput = function (e) {
 		return (0, _selectFunctions.searchModel)(e);
 	};
 
+	//searching for a specific model agains choice of rpm or voltage:
 	_global_dom.selectorPower.onchange = _global_dom.selectorRpm.onchange = function (e) {
 		return (0, _selectFunctions.searchModel)(e);
 	};
@@ -10771,10 +10841,13 @@ function globeEvHandler() {
 	//selecting a motor model:
 	_global_dom.selectorModel.addEventListener('change', function () {
 		(0, _selectFunctions.getOptions)([_global_dom.selectorBrakes, _global_dom.selectorPaws, _global_dom.selectorVentSystem], 'populateOptionsList');
+		(0, _selectFunctions.setModelName)();
 	});
+
 	//selecting a paw type:
 	_global_dom.selectorPaws.addEventListener('change', function () {
 		(0, _selectFunctions.getOptions)(null);
+		(0, _selectFunctions.setModelName)();
 	});
 
 	//selecting a breaks type:
@@ -10786,12 +10859,13 @@ function globeEvHandler() {
 		}).getAttribute('data-itemid');
 
 		if (e.target.value !== '-') {
-			(0, _selectFunctions.setModelNameAndDescription)('addData', 'electroMagneticBreak', selOptionId);
+			(0, _selectFunctions.setModelDescription)('addData', 'electroMagneticBreak', selOptionId);
 		} else {
-			(0, _selectFunctions.setModelNameAndDescription)('removeData', null, selOptionId);
+			(0, _selectFunctions.setModelDescription)('removeData', null, selOptionId);
 		}
 
 		(0, _selectFunctions.fillUpgradesChart)();
+		(0, _selectFunctions.setModelName)();
 	});
 
 	//selecting vent system type:
@@ -10810,9 +10884,9 @@ function globeEvHandler() {
 		}).getAttribute('data-itemid');
 
 		if (e.target.value !== '-') {
-			(0, _selectFunctions.setModelNameAndDescription)('addData', 'ventSystem', selOptionId);
+			(0, _selectFunctions.setModelDescription)('addData', 'ventSystem', selOptionId);
 		} else {
-			(0, _selectFunctions.setModelNameAndDescription)('removeData', null, selOptionId);
+			(0, _selectFunctions.setModelDescription)('removeData', null, selOptionId);
 		}
 
 		(0, _selectFunctions.fillUpgradesChart)();
@@ -10822,13 +10896,17 @@ function globeEvHandler() {
 			return child.innerText === selectorIp.value;
 		}).getAttribute('data-itemid');
 
-		(0, _selectFunctions.setModelNameAndDescription)('addData', 'ipVersion', selOptionIdOptionIP);
+		(0, _selectFunctions.setModelDescription)('addData', 'ipVersion', selOptionIdOptionIP);
+		(0, _selectFunctions.setModelName)();
 	});
 
 	//choosing encoder:
-	_global_dom.checkboxEncoder.addEventListener('change', function () {
+	_global_dom.checkboxEncoder.addEventListener('change', function (e) {
+		console.log(e.target.getAttribute('type'));
 		(0, _selectFunctions.getOptions)([_global_dom.selectorBrakes], 'resetOptionsList');
+		(0, _selectFunctions.setModelDescription)();
 		(0, _selectFunctions.fillUpgradesChart)();
+		(0, _selectFunctions.setModelName)();
 	});
 
 	//chosing conic shaft:
@@ -10836,10 +10914,11 @@ function globeEvHandler() {
 		(0, _selectFunctions.getOptions)(null);
 
 		if (e.target.checked) {
-			(0, _selectFunctions.setModelNameAndDescription)('addData', 'conicShaft', e.target.id);
+			(0, _selectFunctions.setModelDescription)('addData', 'conicShaft', e.target.id);
 		} else {
-			(0, _selectFunctions.setModelNameAndDescription)('removeData', null, e.target.id);
+			(0, _selectFunctions.setModelDescription)('removeData', null, e.target.id);
 		}
+		(0, _selectFunctions.setModelName)();
 	});
 
 	//обработчики с делегированием:
@@ -10848,36 +10927,41 @@ function globeEvHandler() {
 			if (e.target.checked) {
 				e.target.classList.replace('checkbox-vibrosensors-unchecked', 'checkbox-vibrosensors-checked');
 
-				(0, _selectFunctions.setModelNameAndDescription)('addData', 'vibroSensors', e.target.id);
+				(0, _selectFunctions.setModelDescription)('addData', 'vibroSensors', e.target.id);
 			} else {
 				e.target.classList.replace('checkbox-vibrosensors-checked', 'checkbox-vibrosensors-unchecked');
 
-				(0, _selectFunctions.setModelNameAndDescription)('removeData', null, e.target.id);
+				(0, _selectFunctions.setModelDescription)('removeData', null, e.target.id);
 			}
+			(0, _selectFunctions.setModelName)();
 		}
 
 		if (e.target.id === 'checkbox-antiCondenseHeater') {
 			if (e.target.checked) {
 				e.target.classList.replace('checkbox-antiCondenseHeater-unchecked', 'checkbox-antiCondenseHeater-checked');
 
-				(0, _selectFunctions.setModelNameAndDescription)('addData', 'antiCondensingHeater', e.target.id);
+				(0, _selectFunctions.setModelDescription)('addData', 'antiCondensingHeater', e.target.id);
 			} else {
 				e.target.classList.replace('checkbox-antiCondenseHeater-checked', 'checkbox-antiCondenseHeater-uchecked');
 
-				(0, _selectFunctions.setModelNameAndDescription)('removeData', null, e.target.id);
+				(0, _selectFunctions.setModelDescription)('removeData', null, e.target.id);
 			}
+			(0, _selectFunctions.setModelName)();
 		}
 
 		////encoder group:
 		if (e.target.id === 'selector-encoderVoltage') {
 			(0, _selectFunctions.fillUpgradesChart)();
+			(0, _selectFunctions.setModelName)();
 		}
 
 		if (e.target.id === 'selector-outputSignal') {
 			(0, _selectFunctions.fillUpgradesChart)();
+			(0, _selectFunctions.setModelName)();
 		}
 		////
 
+		//currentInsulatingBearing:
 		if (e.target.id === 'checkbox-currentInsulatingBearing') {
 			_selectFunctions.optionsSelector.setOptionsList();
 
@@ -10887,17 +10971,19 @@ function globeEvHandler() {
 				e.target.checked = false;
 
 				e.target.classList.replace('checkbox-currentInsulatingBearing-checked', 'checkbox-currentInsulatingBearing-unchecked');
-				(0, _selectFunctions.setModelNameAndDescription)('removeData', null, e.target.id);
+				(0, _selectFunctions.setModelDescription)('removeData', null, e.target.id);
 			} else if (Array.from(e.target.classList).some(function (className) {
 				return className.includes('-unchecked');
 			})) {
 				e.target.checked = true;
 
 				e.target.classList.replace('checkbox-currentInsulatingBearing-unchecked', 'checkbox-currentInsulatingBearing-checked');
-				(0, _selectFunctions.setModelNameAndDescription)('addData', 'currentInsulatingBearing', e.target.id);
+				(0, _selectFunctions.setModelDescription)('addData', 'currentInsulatingBearing', e.target.id);
 			}
+			(0, _selectFunctions.setModelName)();
 		}
 
+		//importBearings:
 		if (e.target.id === 'selector-importBearings') {
 			_selectFunctions.optionsSelector.setOptionsList();
 
@@ -10906,26 +10992,31 @@ function globeEvHandler() {
 			}).getAttribute('data-itemid');
 
 			if (e.target.value !== '-') {
-				(0, _selectFunctions.setModelNameAndDescription)('addData', 'importBearings', selOptionId);
+				(0, _selectFunctions.setModelDescription)('addData', 'importBearings', selOptionId);
 			} else {
-				(0, _selectFunctions.setModelNameAndDescription)('removeData', null, selOptionId);
+				(0, _selectFunctions.setModelDescription)('removeData', null, selOptionId);
 			}
+
+			(0, _selectFunctions.setModelName)();
 		}
 
+		//climateCat:
 		if (e.target.id === 'selector-climateCat') {
 			var selOptionIdOptionIP = Array.from(e.target.children).find(function (child) {
 				return child.innerText === e.target.value;
 			}).getAttribute('data-itemid');
 
-			(0, _selectFunctions.setModelNameAndDescription)('addData', 'climateCat', selOptionIdOptionIP);
+			(0, _selectFunctions.setModelDescription)('addData', 'climateCat', selOptionIdOptionIP);
+			(0, _selectFunctions.setModelName)();
 		}
 
+		//IP:
 		if (e.target.id === 'selector-ip') {
 			var _selOptionId = Array.from(e.target.children).find(function (child) {
 				return child.innerText === e.target.value;
 			}).getAttribute('data-itemid');
 
-			(0, _selectFunctions.setModelNameAndDescription)('addData', 'ipVersion', _selOptionId);
+			(0, _selectFunctions.setModelDescription)('addData', 'ipVersion', _selOptionId);
 			(0, _selectFunctions.fillUpgradesChart)();
 
 			//перезаливка опций для системы вентиляции при смене IP:
@@ -10938,14 +11029,17 @@ function globeEvHandler() {
 			(0, _base_options_list.fillBaseOptions)(frameSize, encoderIsChecked, ventSystemOptionValue, brakeType, document.getElementById('checkbox-currentInsulatingBearing').checked, document.getElementById('selector-importBearings').value, e.target.value);
 
 			(0, _selectFunctions.populateOptionsList)([_global_dom.selectorVentSystem], [_base_options_list.optionsConfig.ventSystem], 'resetOptionsList');
+			(0, _selectFunctions.setModelName)();
 		}
 
+		//package:
 		if (e.target.id === 'checkbox-package') {
 			console.log('checkbox-package', e.target.value);
 		}
 	});
 
 	document.body.addEventListener('click', function (e) {
+		//options-sensors:
 		if (e.target.id.includes('btn-options-sensors-id')) {
 			if (Array.from(e.target.classList).some(function (className) {
 				return className.includes('btn-option-non-selected');
@@ -10959,7 +11053,7 @@ function globeEvHandler() {
 					btn.id !== e.target.id && btn.classList.replace('btn-option-selected', 'btn-option-non-selected');
 				});
 
-				(0, _selectFunctions.setModelNameAndDescription)('addData', 'tempDataSensors', Array.from(e.target.classList).find(function (cl) {
+				(0, _selectFunctions.setModelDescription)('addData', 'tempDataSensors', Array.from(e.target.classList).find(function (cl) {
 					return cl.includes('Б');
 				}));
 			} else if (Array.from(e.target.classList).some(function (className) {
@@ -10967,16 +11061,20 @@ function globeEvHandler() {
 			})) {
 				e.target.classList.replace('btn-option-selected', 'btn-option-non-selected');
 
-				(0, _selectFunctions.setModelNameAndDescription)('removeData', null, Array.from(e.target.classList).find(function (cl) {
+				(0, _selectFunctions.setModelDescription)('removeData', null, Array.from(e.target.classList).find(function (cl) {
 					return cl.includes('Б');
 				}));
 			}
+			(0, _selectFunctions.setModelName)(e.target.tagName);
 		}
 	});
 
 	document.body.addEventListener('input', function (e) {
+		//encoderResOptions
 		if (e.target.id === 'input-encoderResOptions') {
+			(0, _selectFunctions.setModelDescription)();
 			(0, _selectFunctions.fillUpgradesChart)();
+			(0, _selectFunctions.setModelName)();
 		}
 	});
 

@@ -14,3 +14,4 @@ export const areaFilter = document.getElementById('area-filter');
 export const areaSelection = document.getElementById('area-selection').firstElementChild;
 export const areaRender = document.getElementById('area-render');
 export const listItemUpgrades = document.getElementById('listItem-upgrades');
+export const h2ModelName = document.getElementById('model-name');
