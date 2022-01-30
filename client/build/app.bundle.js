@@ -3022,7 +3022,7 @@ var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFr
 		resolution: { id: 'resol', type: 'Разрешение(имп/об)' },
 
 		//ui: select
-		powerVolt: [{ id: 'default-encod-powe', group: 'Напряжение питания', type: '-' }, { id: '1', group: 'Напряжение питания', type: '+5В' }, { id: '2', group: 'Напряжение питания', type: '+10...30В' }],
+		powerVolt: [{ id: 'default-encod-power', group: 'Напряжение питания', type: '-' }, { id: '1', group: 'Напряжение питания', type: '+5В' }, { id: '2', group: 'Напряжение питания', type: '+10...30В' }],
 
 		//ui: select
 		outputSignal: [{ id: 'default-encod-signal', group: 'Тип выходного сигнала', type: '-' }, { id: '3', group: 'Тип выходного сигнала', type: 'TTL/RS422, 6 каналов' }, { id: '4', group: 'Тип выходного сигнала', type: 'HTL/push pull, 6 каналов' }]
@@ -4513,8 +4513,8 @@ var optionsSelector = exports.optionsSelector = {
 
 		this.frameSize = Number(sliced.slice(0, sliced.indexOf(false)).join(''));
 		this.model = _global_dom.selectorModel.value;
-		this.ventSystemOptionValue = _global_dom.selectorVentSystem.value;
-		this.brakeType = _global_dom.selectorBrakes.value;
+		this.ventSystemOptionValue = _global_dom.selectorVentSystem.value === '' ? '-' : _global_dom.selectorVentSystem.value;
+		this.brakeType = _global_dom.selectorBrakes.value === '' ? '-' : _global_dom.selectorBrakes.value;
 		this.encoderIsChecked = _global_dom.checkboxEncoder.checked;
 		this.conicShaftIsChecked = _global_dom.checkboxConicShaft.checked;
 		this.pawType = _global_dom.selectorPaws.value === '' ? 'Лапы (1001/1081)' : _global_dom.selectorPaws.value;
@@ -4561,7 +4561,7 @@ function getOptions(selectorsId, operationType) {
 
 		if (Array.isArray(selectorsId)) {
 			if (selectorsId.length > 1) {
-				populateOptionsList(selectorsId, [electroMagneticBreak.splice(1), paws, ventSystem.splice(1)], operationType);
+				populateOptionsList(selectorsId, [electroMagneticBreak, paws, ventSystem], operationType);
 			} else {
 				if (selectorsId[0].id === 'selector-breaks') {
 					populateOptionsList(selectorsId, [electroMagneticBreak], operationType);
@@ -4600,9 +4600,7 @@ function populateOptionsList(selectorsId, srcData, operationType) {
 	function fillOptions(parentSelector, srcData) {
 		//перезаливка опций:
 		if (operationType === 'populateOptionsList') {
-			parentSelector.id !== 'selector-paws' ? Array.from(parentSelector.children).forEach(function (child, index) {
-				return index !== 0 && child.remove();
-			}) : Array.from(parentSelector.children).forEach(function (child) {
+			Array.from(parentSelector.children).forEach(function (child) {
 				return child.remove();
 			});
 
@@ -4619,8 +4617,8 @@ function populateOptionsList(selectorsId, srcData, operationType) {
 
 		//перезаливка свойств disabled:
 		if (operationType === 'resetOptionsList') {
-			Array.from(selectorsId[0].children).forEach(function (child, index) {
-				child.disabled = !srcData[index].selectable;
+			Array.from(parentSelector.children).forEach(function (child, index) {
+				child.disabled = (srcData[index].selectable !== undefined || typeof srcData[index].selectable !== 'undefined') && !srcData[index].selectable;
 			});
 		}
 	}
@@ -5184,9 +5182,11 @@ function setModelName() {
 
 		//обновление наименования при выборе опций селекторов:
 		function updateModelNameForSelect(parentSelector) {
-			name += '-' + Array.from(parentSelector.children).find(function (child) {
+			name += !Array.from(parentSelector.children).some(function (child) {
+				return child.selected && child.innerText === '-';
+			}) ? '-' + Array.from(parentSelector.children).find(function (child) {
 				return child.selected === true;
-			}).getAttribute('data-itemid');
+			}).getAttribute('data-itemid') : '';
 		}
 	}, 10);
 }
@@ -10840,7 +10840,7 @@ function globeEvHandler() {
 
 	//selecting a motor model:
 	_global_dom.selectorModel.addEventListener('change', function () {
-		(0, _selectFunctions.getOptions)([_global_dom.selectorBrakes, _global_dom.selectorPaws, _global_dom.selectorVentSystem], 'populateOptionsList');
+		(0, _selectFunctions.getOptions)([_global_dom.selectorBrakes, _global_dom.selectorPaws, _global_dom.selectorVentSystem], 'resetOptionsList');
 		(0, _selectFunctions.setModelName)();
 	});
 

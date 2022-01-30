@@ -30,7 +30,7 @@ export function globeEvHandler() {
 
 	//selecting a motor model:
 	selectorModel.addEventListener('change', () => {
-		getOptions([selectorBrakes, selectorPaws, selectorVentSystem], 'populateOptionsList');
+		getOptions([selectorBrakes, selectorPaws, selectorVentSystem], 'resetOptionsList');
 		setModelName();
 	});
 

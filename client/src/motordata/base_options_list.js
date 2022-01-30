@@ -77,7 +77,7 @@ export const fillBaseOptions = function (
 
 		//ui: select
 		powerVolt: [
-			{ id: 'default-encod-powe', group: 'Напряжение питания', type: '-' },
+			{ id: 'default-encod-power', group: 'Напряжение питания', type: '-' },
 			{ id: '1', group: 'Напряжение питания', type: '+5В' },
 			{ id: '2', group: 'Напряжение питания', type: '+10...30В' },
 		],

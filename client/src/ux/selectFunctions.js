@@ -98,8 +98,8 @@ export const optionsSelector = {
 
 		this.frameSize = Number(sliced.slice(0, sliced.indexOf(false)).join(''));
 		this.model = selectorModel.value;
-		this.ventSystemOptionValue = selectorVentSystem.value;
-		this.brakeType = selectorBrakes.value;
+		this.ventSystemOptionValue = selectorVentSystem.value === '' ? '-' : selectorVentSystem.value;
+		this.brakeType = selectorBrakes.value === '' ? '-' : selectorBrakes.value;
 		this.encoderIsChecked = checkboxEncoder.checked;
 		this.conicShaftIsChecked = checkboxConicShaft.checked;
 		this.pawType = selectorPaws.value === '' ? 'Лапы (1001/1081)' : selectorPaws.value;
@@ -159,7 +159,7 @@ export function getOptions(selectorsId, operationType) {
 
 		if (Array.isArray(selectorsId)) {
 			if (selectorsId.length > 1) {
-				populateOptionsList(selectorsId, [electroMagneticBreak.splice(1), paws, ventSystem.splice(1)], operationType);
+				populateOptionsList(selectorsId, [electroMagneticBreak, paws, ventSystem], operationType);
 			} else {
 				if (selectorsId[0].id === 'selector-breaks') {
 					populateOptionsList(selectorsId, [electroMagneticBreak], operationType);
@@ -190,9 +190,7 @@ export function populateOptionsList(selectorsId, srcData, operationType) {
 	function fillOptions(parentSelector, srcData) {
 		//перезаливка опций:
 		if (operationType === 'populateOptionsList') {
-			parentSelector.id !== 'selector-paws'
-				? Array.from(parentSelector.children).forEach((child, index) => index !== 0 && child.remove())
-				: Array.from(parentSelector.children).forEach((child) => child.remove());
+			Array.from(parentSelector.children).forEach((child) => child.remove());
 
 			srcData.forEach((obj) => {
 				const option = document.createElement('option');
@@ -207,8 +205,10 @@ export function populateOptionsList(selectorsId, srcData, operationType) {
 
 		//перезаливка свойств disabled:
 		if (operationType === 'resetOptionsList') {
-			Array.from(selectorsId[0].children).forEach((child, index) => {
-				child.disabled = !srcData[index].selectable;
+			Array.from(parentSelector.children).forEach((child, index) => {
+				child.disabled =
+					(srcData[index].selectable !== undefined || typeof srcData[index].selectable !== 'undefined') &&
+					!srcData[index].selectable;
 			});
 		}
 	}
@@ -825,11 +825,12 @@ export function setModelName() {
 
 		//обновление наименования при выборе опций селекторов:
 		function updateModelNameForSelect(parentSelector) {
-			name +=
-				'-' +
-				Array.from(parentSelector.children)
-					.find((child) => child.selected === true)
-					.getAttribute('data-itemid');
+			name += !Array.from(parentSelector.children).some((child) => child.selected && child.innerText === '-')
+				? '-' +
+				  Array.from(parentSelector.children)
+						.find((child) => child.selected === true)
+						.getAttribute('data-itemid')
+				: '';
 		}
 	}, 10);
 }
