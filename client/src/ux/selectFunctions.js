@@ -15,9 +15,10 @@ import {
 	listItemUpgrades,
 	areaFilter,
 	h2ModelName,
+	btn,
 } from './global_dom';
-import { fillBaseOptions, optionsConfig } from '../motordata/base_options_list';
-import { regex } from './global_vars';
+import { optionsConfig } from '../motordata/base_options_list';
+import { regex, motorStandartSetter } from './global_vars';
 import { motorsAllSeriesFlatten } from '../motordata/models';
 import { imgSrcData, setImgSrcData } from '../motordata/imgSrcData';
 import { fillExtraOptions, showWarning } from '../motordata/extra_options_list';
@@ -39,6 +40,9 @@ export function searchModel(e) {
 				'checkbox-antiCondenseHeater'
 			).checked = false;
 		}
+
+		//hiding/showing motor type select btns:
+		btn.selectorMotor_5ai.parentElement.style.visibility = e.target.value !== '' ? 'hidden' : 'visible';
 	} else {
 		getModel([selectorPower.value, selectorRpm.value], filteredResults);
 		selectorBrakes.value = selectorPaws.value = selectorVentSystem.value = '-';
@@ -52,6 +56,10 @@ export function searchModel(e) {
 				'checkbox-antiCondenseHeater'
 			).checked = false;
 		}
+
+		//hiding/showing motor type select btns:
+		btn.selectorMotor_5ai.parentElement.style.visibility =
+			selectorPower.value !== '-' || selectorRpm.value !== '-' ? 'hidden' : 'visible';
 	}
 
 	//cleaning up selector options list while typing or re-selecting:
@@ -68,8 +76,11 @@ export function searchModel(e) {
 	);
 
 	//setting btn UI used for tempDataSensors selection back to default while typing:
-	Array.from(document.querySelectorAll('.btn-option-selected')).forEach((btn) =>
-		btn.classList.replace('btn-option-selected', 'btn-option-non-selected')
+	Array.from(document.querySelectorAll('.btn-option-selected')).forEach(
+		(btn) =>
+			btn.id !== 'btn-5ai-select' &&
+			btn.id !== 'btn-din-select' &&
+			btn.classList.replace('btn-option-selected', 'btn-option-non-selected')
 	);
 
 	//setting upgrades chart to default while typing:
@@ -102,7 +113,12 @@ export const optionsSelector = {
 		this.brakeType = selectorBrakes.value === '' ? '-' : selectorBrakes.value;
 		this.encoderIsChecked = checkboxEncoder.checked;
 		this.conicShaftIsChecked = checkboxConicShaft.checked;
-		this.pawType = selectorPaws.value === '' ? 'Лапы (1001/1081)' : selectorPaws.value;
+		this.pawType =
+			selectorPaws.value === '' && motorStandartSetter.selected === '5АИ'
+				? 'Лапы (1001/1081)'
+				: selectorPaws.value === '' && motorStandartSetter.selected === 'ESQ'
+				? 'Лапы (B3)'
+				: selectorPaws.value;
 
 		//elements temporarily unacceccisble with initial render:
 		const checkboxCurrentInsulatingBearing =
@@ -119,7 +135,7 @@ export const optionsSelector = {
 
 		const selectorIp = document.getElementById('selector-ip') === null ? 'IP55' : document.getElementById('selector-ip').value;
 
-		fillBaseOptions(
+		optionsConfig.fillBaseOptions(
 			this.frameSize,
 			this.encoderIsChecked,
 			this.ventSystemOptionValue,
@@ -218,11 +234,29 @@ export function populateOptionsList(selectorsId, srcData, operationType) {
 export function getModel(query, targetArr) {
 	setTimeout(() => {
 		if (query.length > 4 && query.match(regex) !== null && typeof query === 'string') {
-			targetArr = motorsAllSeriesFlatten.filter((result) => result.name.toLowerCase().includes(query.toLowerCase()));
+			targetArr =
+				motorStandartSetter.selected === '5АИ'
+					? motorsAllSeriesFlatten.filter(
+							(result) => result.standard === '5АИ' && result.name.toLowerCase().includes(query.toLowerCase())
+					  )
+					: motorsAllSeriesFlatten.filter(
+							(result) => result.standard === 'ESQ' && result.name.toLowerCase().includes(query.toLowerCase())
+					  );
 		} else if (typeof query === 'object' && Array.isArray(query)) {
-			targetArr = motorsAllSeriesFlatten.filter(
-				(result) => String(result.power) === String(query[0]) && String(result.rpm) === String(query[1])
-			);
+			targetArr =
+				motorStandartSetter.selected === '5АИ'
+					? motorsAllSeriesFlatten.filter(
+							(result) =>
+								result.standard === '5АИ' &&
+								String(result.power) === String(query[0]) &&
+								String(result.rpm) === String(query[1])
+					  )
+					: motorsAllSeriesFlatten.filter(
+							(result) =>
+								result.standard === 'ESQ' &&
+								String(result.power) === String(query[0]) &&
+								String(result.rpm) === String(query[1])
+					  );
 		}
 
 		Array.from(selectorModel.children).forEach((child, index) => index !== 0 && child.remove());
@@ -344,7 +378,9 @@ function setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValu
 	const pathStart =
 		brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked
 			? 'https://www.elcomspb.ru/image/catalog/products/to/engine/adchr/'
-			: 'https://www.elcomspb.ru/image/catalog/products/to/engine/5ai/new/';
+			: 'https://www.elcomspb.ru/image/catalog/products/to/engine/'.concat(
+					motorStandartSetter.selected === 'ESQ' ? 'din/' : '5ai/new/'
+			  );
 
 	const path_vent_part =
 		ventSystemOptionValue.includes('наездник') && frameSize >= 112 && frameSize <= 132
@@ -361,48 +397,76 @@ function setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValu
 
 	switch (pawType) {
 		case 'Лапы (1001/1081)':
-			//case for DIN:
+		case 'Лапы (B3)':
 			restPath =
 				brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked
 					? path_vent_part + path_shaft_part + 'paws/'
+					: motorStandartSetter.selected === 'ESQ'
+					? 'imb3.png'
 					: '1001_small.png';
 			break;
 
+		//!!&& !ventSystemOptionValue.includes('наездник') - временное решение, пока нет чертежей для наездника ESQ
 		case 'Лапы + Фланец (2001/2081)':
-			//case for DIN:
-			restPath =
-				brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked
-					? path_vent_part + path_shaft_part + 'large_flange_paws/'
-					: frameSize <= 180 &&
-					  (brakeType === '-' || !encoderIsChecked || ventSystemOptionValue === '-' || !conicShaftIsChecked)
-					? '2001_below_small.png'
-					: '2001_over_small.png';
-
+		case 'Лапы + Фланец (B35)':
+			if (brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked) {
+				restPath =
+					path_vent_part +
+					path_shaft_part.concat(
+						motorStandartSetter.selected === 'ESQ' && !ventSystemOptionValue.includes('наездник')
+							? 'din/large_flange_paws/'
+							: 'large_flange_paws/'
+					);
+			} else {
+				restPath =
+					motorStandartSetter.selected === '5АИ' && frameSize <= 180
+						? '2001_below_small.png'
+						: motorStandartSetter.selected === '5АИ' && frameSize > 180
+						? '2001_over_small.png'
+						: motorStandartSetter.selected === 'ESQ' && frameSize < 225
+						? 'imb35.png'
+						: 'imb35_over225.png';
+			}
 			break;
 
+		//!!&& !ventSystemOptionValue.includes('наездник') - временное решение, пока нет чертежей для наездника ESQ
 		case 'Фланец (3081)':
-			//case for DIN:
-			restPath =
-				brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked
-					? path_vent_part + path_shaft_part + 'flange/'
-					: frameSize <= 132 &&
-					  (brakeType === '-' || !encoderIsChecked || ventSystemOptionValue === '-' || !conicShaftIsChecked)
-					? '3001_below_small.png'
-					: '3001_over.png';
+		case 'Лапы (B5)':
+			if (brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked) {
+				restPath =
+					path_vent_part +
+					path_shaft_part.concat(
+						motorStandartSetter.selected === 'ESQ' && !ventSystemOptionValue.includes('наездник')
+							? 'din/flange/'
+							: 'flange/'
+					);
+			} else {
+				restPath =
+					motorStandartSetter.selected === '5АИ' && frameSize <= 132
+						? '3001_below_small.png'
+						: motorStandartSetter.selected === '5АИ' && frameSize > 132
+						? '3001_over.png'
+						: motorStandartSetter.selected === 'ESQ' && frameSize < 225
+						? 'imb5.png'
+						: 'imb5_over225.png';
+			}
 
 			break;
 
 		case 'Лапы + Малый фланец (2181)':
-			//case for DIN:
-			restPath =
-				brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked
-					? path_vent_part + path_shaft_part + 'little_flange_paws/'
-					: '2101_small.png';
-
+		case 'Лапы + Мал. фланец (B34)':
+			if (brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked) {
+				restPath = path_vent_part + path_shaft_part + 'little_flange_paws/';
+			} else {
+				restPath = motorStandartSetter.selected === '5АИ' ? '2101_small.png' : 'imb34.png';
+			}
 			break;
 
-		//case for DIN (B14:)
-		//restPath = path_shaft_part + 'little_flange/';
+		case 'Мал. фланец (B14)':
+			restPath =
+				brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked
+					? path_vent_part + path_shaft_part + 'little_flange/'
+					: 'imb14.png';
 	}
 
 	const currSelectionIndex = optionsConfig.options.findIndex(
@@ -440,13 +504,14 @@ export function setChartConnectionDims(frameSize, brakeType, pawType, ventSystem
 	);
 
 	switch (pawType) {
+		//5AI:
 		case 'Лапы (1001/1081)':
 			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
 				//prettier-ignore
 				connectionParams = ['l30', 'h31', 'l1', 'l10', 'l31', 'd1', 'd10', 'b1', 'b10', 'h1', 'h10', 'h', 'h5', 'd4', 'l4'];
 			} else {
 				//prettier-ignore
-				connectionParams = ['l30', 'h31', 'l1', 'l10', 'l31', 'd1', 'd10', 'b1', 'b10', 'h1', 'h10', 'h', 'h5']
+				connectionParams = ['l30', 'h31', 'l1', 'l10', 'l31', 'd1', 'd10', 'b1', 'b10', 'h1', 'h10', 'h', 'h5'];
 			}
 
 			break;
@@ -454,10 +519,10 @@ export function setChartConnectionDims(frameSize, brakeType, pawType, ventSystem
 		case 'Лапы + Фланец (2001/2081)':
 			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
 				//prettier-ignore
-				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5', 'd4', 'l4']
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5', 'd4', 'l4'];
 			} else {
 				//prettier-ignore
-				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5']
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5'];
 			}
 
 			break;
@@ -465,10 +530,10 @@ export function setChartConnectionDims(frameSize, brakeType, pawType, ventSystem
 		case 'Фланец (3081)':
 			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
 				//prettier-ignore
-				connectionParams = ['l30', 'h31', 'd24', 'l1', 'd1', 'd20', 'd22', 'd25', 'b1', 'h1', 'h', 'h5', 'd4', 'l4']
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'd1', 'd20', 'd22', 'd25', 'b1', 'h1', 'h', 'h5', 'd4', 'l4'];
 			} else {
 				//prettier-ignore
-				connectionParams = ['l30', 'h31', 'd24', 'l1', 'd1', 'd20', 'd22', 'd25', 'b1', 'h1', 'h', 'h5']
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'd1', 'd20', 'd22', 'd25', 'b1', 'h1', 'h', 'h5'];
 			}
 
 			break;
@@ -476,10 +541,65 @@ export function setChartConnectionDims(frameSize, brakeType, pawType, ventSystem
 		case 'Лапы + Малый фланец (2181)':
 			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
 				//prettier-ignore
-				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5', 'd4', 'l4']
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5', 'd4', 'l4'];
 			} else {
 				//prettier-ignore
-				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5']
+				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5'];
+			}
+
+			break;
+
+		//ESQ:
+		case 'Лапы (B3)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'E', 'B', 'C', 'D', 'K', 'F', 'AB', 'A', 'G', 'H', 'AC'];
+			} else {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'E', 'B', 'C', 'D', 'K', 'F', 'AB', 'A', 'G', 'H', 'AC', 'd4', 'l4'];
+			}
+			break;
+
+		case 'Лапы + Фланец (B35)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'B', 'C', 'D', 'K', 'M', 'S', 'N', 'F', 'AB', 'A', 'G', 'H', 'AC', 'd4', 'l4'];
+			} else {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'B', 'C', 'D', 'K', 'M', 'S', 'N', 'F', 'AB', 'A', 'G', 'H', 'AC'];
+			}
+
+			break;
+
+		case 'Лапы (B5)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'D', 'M', 'S', 'N', 'F', 'G', 'H', 'AC', 'd4', 'l4'];
+			} else {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'D', 'M', 'S', 'N', 'F', 'G', 'H', 'AC'];
+			}
+
+			break;
+
+		case 'Лапы + Мал. фланец (B34)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'B', 'C', 'D', 'K', 'M', 'S', 'N', 'F', 'AB', 'A', 'G', 'H', 'AC', 'd4', 'l4'];
+			} else {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'B', 'C', 'D', 'K', 'M', 'S', 'N', 'F', 'AB', 'A', 'G', 'H', 'AC'];
+			}
+
+			break;
+
+		case 'Мал. фланец (B14)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'D', 'M', 'S', 'N', 'F', 'G', 'H', 'AC', 'd4', 'l4'];
+			} else {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'D', 'M', 'S', 'N', 'F', 'G', 'H', 'AC'];
 			}
 
 			break;

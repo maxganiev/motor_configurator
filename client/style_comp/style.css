@@ -6,6 +6,9 @@
   box-sizing: border-box;
   font-family: 'Montserrat' !important; }
 
+.btn:hover {
+  cursor: pointer; }
+
 .btn-option-selected {
   background-color: #017987;
   color: #fff; }
@@ -67,8 +70,15 @@ body {
           flex-direction: column;
           padding: 0% 2%; }
           body main .area-filter .list li:first-child {
-            flex: 2; }
-          body main .area-filter .list li:nth-child(2), body main .area-filter .list li:nth-child(3) {
+            flex: 0.3;
+            flex-direction: row;
+            justify-content: space-around; }
+            body main .area-filter .list li:first-child .btn-5ai-select, body main .area-filter .list li:first-child .btn-btn-din-select {
+              transition: all 0.6s ease-out; }
+          body main .area-filter .list li:nth-child(2) {
+            flex: 1.4; }
+          body main .area-filter .list li:nth-child(3),
+          body main .area-filter .list li :nth-child(4) {
             flex: 1; }
     body main .area-selection {
       max-width: 50%;

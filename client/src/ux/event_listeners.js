@@ -8,6 +8,7 @@ import {
 	checkboxEncoder,
 	checkboxConicShaft,
 	selectorVentSystem,
+	btn,
 } from './global_dom';
 import {
 	searchModel,
@@ -18,10 +19,48 @@ import {
 	populateOptionsList,
 	setModelName,
 } from './selectFunctions';
-import { fillBaseOptions, optionsConfig } from '../motordata/base_options_list';
-import { mask } from '../ui/ui';
+import { optionsConfig } from '../motordata/base_options_list';
+import { mask, ls_getBtnSelectorStyle, ls_getScrollPos } from '../ui/ui';
+import { motorStandartSetter } from './global_vars';
+import { ls_keepStandardChoice, ls_keepScrollPosY } from '../storage/localStorage';
 
 export function globeEvHandler() {
+	ls_getScrollPos();
+	ls_getBtnSelectorStyle();
+
+	//selecting motor standard:
+	btn.selectorMotor_5ai.onclick = btn.selectorMotor_din.onclick = (e) => {
+		switch (e.target.id) {
+			case 'btn-5ai-select':
+				if (Array.from(e.target.classList).some((className) => className.includes('btn-option-non-selected'))) {
+					btn.selectorMotor_din.classList.replace('btn-option-selected', 'btn-option-non-selected');
+					e.target.classList.replace('btn-option-non-selected', 'btn-option-selected');
+					checkboxConicShaft.parentElement.style.display = 'block';
+
+					motorStandartSetter.setMotorStandart(e.target.id);
+					ls_keepStandardChoice('5АИ');
+					mask.mask !== undefined && typeof mask.mask !== 'undefined' && mask.getMaskParams();
+					e.preventDefault();
+				}
+
+				break;
+
+			case 'btn-din-select':
+				if (Array.from(e.target.classList).some((className) => className.includes('btn-option-non-selected'))) {
+					btn.selectorMotor_5ai.classList.replace('btn-option-selected', 'btn-option-non-selected');
+					e.target.classList.replace('btn-option-non-selected', 'btn-option-selected');
+					checkboxConicShaft.parentElement.style.display = 'none';
+
+					motorStandartSetter.setMotorStandart(e.target.id);
+					ls_keepStandardChoice('ESQ');
+					mask.mask !== undefined && typeof mask.mask !== 'undefined' && mask.getMaskParams();
+					e.preventDefault();
+				}
+
+				break;
+		}
+	};
+
 	//searching for a model against input:
 	inputModel.oninput = (e) => searchModel(e);
 
@@ -93,7 +132,6 @@ export function globeEvHandler() {
 
 	//choosing encoder:
 	checkboxEncoder.addEventListener('change', (e) => {
-		console.log(e.target.getAttribute('type'));
 		getOptions([selectorBrakes], 'resetOptionsList');
 		setModelDescription();
 		fillUpgradesChart();
@@ -215,7 +253,7 @@ export function globeEvHandler() {
 			//перезаливка опций для системы вентиляции при смене IP:
 			const { frameSize, encoderIsChecked, ventSystemOptionValue, brakeType } = optionsSelector;
 
-			fillBaseOptions(
+			optionsConfig.fillBaseOptions(
 				frameSize,
 				encoderIsChecked,
 				ventSystemOptionValue,
@@ -278,4 +316,6 @@ export function globeEvHandler() {
 	window.onresize = () => {
 		mask.mask !== undefined && typeof mask.mask !== 'undefined' && mask.getMaskParams();
 	};
+
+	window.onbeforeunload = () => ls_keepScrollPosY(document.documentElement.scrollTop);
 }

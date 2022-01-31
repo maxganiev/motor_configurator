@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 134);
+/******/ 	return __webpack_require__(__webpack_require__.s = 135);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -201,7 +201,7 @@ module.exports = !__webpack_require__(3)(function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 var anObject = __webpack_require__(1);
-var IE8_DOM_DEFINE = __webpack_require__(96);
+var IE8_DOM_DEFINE = __webpack_require__(97);
 var toPrimitive = __webpack_require__(23);
 var dP = Object.defineProperty;
 
@@ -261,7 +261,7 @@ var global = __webpack_require__(2);
 var hide = __webpack_require__(11);
 var has = __webpack_require__(14);
 var SRC = __webpack_require__(33)('src');
-var $toString = __webpack_require__(138);
+var $toString = __webpack_require__(139);
 var TO_STRING = 'toString';
 var TPL = ('' + $toString).split(TO_STRING);
 
@@ -346,7 +346,7 @@ var createDesc = __webpack_require__(32);
 var toIObject = __webpack_require__(15);
 var toPrimitive = __webpack_require__(23);
 var has = __webpack_require__(14);
-var IE8_DOM_DEFINE = __webpack_require__(96);
+var IE8_DOM_DEFINE = __webpack_require__(97);
 var gOPD = Object.getOwnPropertyDescriptor;
 
 exports.f = __webpack_require__(7) ? gOPD : function getOwnPropertyDescriptor(O, P) {
@@ -566,7 +566,7 @@ if (__webpack_require__(7)) {
   var redefineAll = __webpack_require__(41);
   var toInteger = __webpack_require__(21);
   var toLength = __webpack_require__(6);
-  var toIndex = __webpack_require__(124);
+  var toIndex = __webpack_require__(125);
   var toAbsoluteIndex = __webpack_require__(35);
   var toPrimitive = __webpack_require__(23);
   var has = __webpack_require__(14);
@@ -588,7 +588,7 @@ if (__webpack_require__(7)) {
   var $iterDetect = __webpack_require__(57);
   var setSpecies = __webpack_require__(38);
   var arrayFill = __webpack_require__(86);
-  var arrayCopyWithin = __webpack_require__(113);
+  var arrayCopyWithin = __webpack_require__(114);
   var $DP = __webpack_require__(8);
   var $GOPD = __webpack_require__(16);
   var dP = $DP.f;
@@ -1037,10 +1037,10 @@ if (__webpack_require__(7)) {
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Map = __webpack_require__(119);
+var Map = __webpack_require__(120);
 var $export = __webpack_require__(0);
 var shared = __webpack_require__(47)('metadata');
-var store = shared.store || (shared.store = new (__webpack_require__(122))());
+var store = shared.store || (shared.store = new (__webpack_require__(123))());
 
 var getOrCreateMetadataMap = function (target, targetKey, create) {
   var targetMetadata = store.get(target);
@@ -1199,7 +1199,7 @@ module.exports = function (key) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys = __webpack_require__(98);
+var $keys = __webpack_require__(99);
 var enumBugKeys = __webpack_require__(70);
 
 module.exports = Object.keys || function keys(O) {
@@ -1226,7 +1226,7 @@ module.exports = function (index, length) {
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject = __webpack_require__(1);
-var dPs = __webpack_require__(99);
+var dPs = __webpack_require__(100);
 var enumBugKeys = __webpack_require__(70);
 var IE_PROTO = __webpack_require__(69)('IE_PROTO');
 var Empty = function () { /* empty */ };
@@ -1272,7 +1272,7 @@ module.exports = Object.create || function create(O, Properties) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-var $keys = __webpack_require__(98);
+var $keys = __webpack_require__(99);
 var hiddenKeys = __webpack_require__(70).concat('length', 'prototype');
 
 exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
@@ -1316,7 +1316,7 @@ module.exports = function (it, Constructor, name, forbiddenField) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var ctx = __webpack_require__(19);
-var call = __webpack_require__(111);
+var call = __webpack_require__(112);
 var isArrayIter = __webpack_require__(82);
 var anObject = __webpack_require__(1);
 var toLength = __webpack_require__(6);
@@ -1667,7 +1667,7 @@ module.exports = function (R, S) {
 
 "use strict";
 
-__webpack_require__(115);
+__webpack_require__(116);
 var redefine = __webpack_require__(12);
 var hide = __webpack_require__(11);
 var fails = __webpack_require__(3);
@@ -1978,7 +1978,7 @@ module.exports = function (COLLECTION) {
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 var inputModel = exports.inputModel = document.getElementById('input-model');
 var selectorModel = exports.selectorModel = document.getElementById('selector-model');
@@ -1997,6 +1997,10 @@ var areaSelection = exports.areaSelection = document.getElementById('area-select
 var areaRender = exports.areaRender = document.getElementById('area-render');
 var listItemUpgrades = exports.listItemUpgrades = document.getElementById('listItem-upgrades');
 var h2ModelName = exports.h2ModelName = document.getElementById('model-name');
+var btn = exports.btn = {
+	selectorMotor_5ai: document.getElementById('btn-5ai-select'),
+	selectorMotor_din: document.getElementById('btn-din-select')
+};
 
 /***/ }),
 /* 67 */
@@ -2018,7 +2022,7 @@ module.exports = function (it) {
 var global = __webpack_require__(2);
 var core = __webpack_require__(18);
 var LIBRARY = __webpack_require__(29);
-var wksExt = __webpack_require__(97);
+var wksExt = __webpack_require__(98);
 var defineProperty = __webpack_require__(8).f;
 module.exports = function (name) {
   var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
@@ -2331,7 +2335,7 @@ module.exports = __webpack_require__(18).getIteratorMethod = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 9.4.2.3 ArraySpeciesCreate(originalArray, length)
-var speciesConstructor = __webpack_require__(227);
+var speciesConstructor = __webpack_require__(228);
 
 module.exports = function (original, length) {
   return new (speciesConstructor(original))(length);
@@ -2367,7 +2371,7 @@ module.exports = function fill(value /* , start = 0, end = @length */) {
 "use strict";
 
 var addToUnscopables = __webpack_require__(31);
-var step = __webpack_require__(114);
+var step = __webpack_require__(115);
 var Iterators = __webpack_require__(46);
 var toIObject = __webpack_require__(15);
 
@@ -2486,7 +2490,7 @@ module.exports = function (S, index, unicode) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var ctx = __webpack_require__(19);
-var invoke = __webpack_require__(104);
+var invoke = __webpack_require__(105);
 var html = __webpack_require__(71);
 var cel = __webpack_require__(67);
 var global = __webpack_require__(2);
@@ -2687,7 +2691,7 @@ var fails = __webpack_require__(3);
 var anInstance = __webpack_require__(39);
 var toInteger = __webpack_require__(21);
 var toLength = __webpack_require__(6);
-var toIndex = __webpack_require__(124);
+var toIndex = __webpack_require__(125);
 var gOPN = __webpack_require__(37).f;
 var dP = __webpack_require__(8).f;
 var arrayFill = __webpack_require__(86);
@@ -2964,450 +2968,519 @@ exports[DATA_VIEW] = $DataView;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-var optionsConfig = exports.optionsConfig = {};
+exports.optionsConfig = undefined;
 
-var fillBaseOptions = exports.fillBaseOptions = function fillBaseOptions(motorFrameSize, encoderIsChecked, ventSystemOptionValue, brakeType, currentInsulatingBearingIsChecked, importBearingsValue, IPvalue) {
-	//термодатчики (UI: button):
-	optionsConfig.tempDataSensors = [{
-		id: 'Б1',
-		group: 'Датчики температуры обмотки',
-		type: 'Биметаллические датчики',
-		description: 'Укомплектован датчиками защиты обмотки статора (три биметаллических датчика)',
-		selectable: true
-	}, {
-		id: 'Б3',
-		group: 'Датчики температуры обмотки',
-		type: 'Датчики РТС',
-		description: 'Укомплектован датчиками защиты обмотки статора (три терморезистивных датчика PTС)',
-		selectable: true
-	}, {
-		id: 'Б5',
-		group: 'Датчики температуры обмотки',
-		type: 'Датчики РТ-100',
-		description: 'Укомплектован датчиками защиты обмотки статора (терморезистивный датчик PT100)',
-		selectable: true
-	}, {
-		id: 'Б2',
-		group: 'Датчики температуры подшипников',
-		type: 'Биметаллические датчики',
-		description: 'Укомплектован датчиками защиты подшипников (2 биметаллических датчика)',
-		selectable: motorFrameSize < 132 ? false : true
-	}, {
-		id: 'Б4',
-		group: 'Датчики температуры подшипников',
-		type: 'Датчики РТС',
-		description: 'Укомплектован датчиками защиты подшипников (2 терморезестивных датчика PTС)',
-		selectable: true
-	}, {
-		id: 'Б6',
-		group: 'Датчики температуры подшипников',
-		type: 'Датчики РТ-100',
-		description: 'Укомплектован датчиками защиты подшипников (2 терморезестивных датчика PT100)',
-		selectable: motorFrameSize < 132 ? false : true
-	}];
+var _global_vars = __webpack_require__(95);
 
-	//конический вал (UI: checkbox):
-	optionsConfig.conicShaftDisabled = motorFrameSize < 200 ? true : false;
-	optionsConfig.conicShaft = {
-		id: 'checkbox-conicShaft',
-		description: 'Конический вал в соответствии с ГОСТ 12081-72'
-	};
+var optionsConfig = exports.optionsConfig = {
+	fillBaseOptions: function fillBaseOptions(motorFrameSize, encoderIsChecked, ventSystemOptionValue, brakeType, currentInsulatingBearingIsChecked, importBearingsValue, IPvalue) {
+		//термодатчики (UI: button):
+		this.tempDataSensors = [{
+			id: 'Б1',
+			group: 'Датчики температуры обмотки',
+			type: 'Биметаллические датчики',
+			description: 'Укомплектован датчиками защиты обмотки статора (три биметаллических датчика)',
+			selectable: true
+		}, {
+			id: 'Б3',
+			group: 'Датчики температуры обмотки',
+			type: 'Датчики РТС',
+			description: 'Укомплектован датчиками защиты обмотки статора (три терморезистивных датчика PTС)',
+			selectable: true
+		}, {
+			id: 'Б5',
+			group: 'Датчики температуры обмотки',
+			type: 'Датчики РТ-100',
+			description: 'Укомплектован датчиками защиты обмотки статора (терморезистивный датчик PT100)',
+			selectable: true
+		}, {
+			id: 'Б2',
+			group: 'Датчики температуры подшипников',
+			type: 'Биметаллические датчики',
+			description: 'Укомплектован датчиками защиты подшипников (2 биметаллических датчика)',
+			selectable: motorFrameSize < 132 ? false : true
+		}, {
+			id: 'Б4',
+			group: 'Датчики температуры подшипников',
+			type: 'Датчики РТС',
+			description: 'Укомплектован датчиками защиты подшипников (2 терморезестивных датчика PTС)',
+			selectable: true
+		}, {
+			id: 'Б6',
+			group: 'Датчики температуры подшипников',
+			type: 'Датчики РТ-100',
+			description: 'Укомплектован датчиками защиты подшипников (2 терморезестивных датчика PT100)',
+			selectable: motorFrameSize < 132 ? false : true
+		}];
 
-	//энкодер:
-	optionsConfig.encoderIsDisabled = brakeType.includes('независимым питанием') || brakeType === '-' ? true : false;
+		//конический вал (UI: checkbox):
+		this.conicShaftDisabled = motorFrameSize < 200 ? true : false;
+		this.conicShaft = {
+			id: 'checkbox-conicShaft',
+			description: 'Конический вал в соответствии с ГОСТ 12081-72'
+		};
 
-	//опции энкодера, если энкодер включен:
-	optionsConfig.encoderParams = {
-		//ui: input (type: num)
-		resolution: { id: 'resol', type: 'Разрешение(имп/об)' },
+		//энкодер:
+		this.encoderIsDisabled = brakeType.includes('независимым питанием') || brakeType === '-' ? true : false;
 
-		//ui: select
-		powerVolt: [{ id: 'default-encod-power', group: 'Напряжение питания', type: '-' }, { id: '1', group: 'Напряжение питания', type: '+5В' }, { id: '2', group: 'Напряжение питания', type: '+10...30В' }],
+		//опции энкодера, если энкодер включен:
+		this.encoderParams = {
+			//ui: input (type: num)
+			resolution: { id: 'resol', type: 'Разрешение(имп/об)' },
 
-		//ui: select
-		outputSignal: [{ id: 'default-encod-signal', group: 'Тип выходного сигнала', type: '-' }, { id: '3', group: 'Тип выходного сигнала', type: 'TTL/RS422, 6 каналов' }, { id: '4', group: 'Тип выходного сигнала', type: 'HTL/push pull, 6 каналов' }]
-	};
+			//ui: select
+			powerVolt: [{ id: 'default-encod-power', group: 'Напряжение питания', type: '-' }, { id: '1', group: 'Напряжение питания', type: '+5В' }, { id: '2', group: 'Напряжение питания', type: '+10...30В' }],
 
-	//вибродатчики (UI: checkbox):
-	optionsConfig.vibroSensors = {
-		id: 'W1',
-		type: 'Вибродатчики',
-		description: 'Укомплектован вибродатчиком трех-координатных ВК-310С на переднем подшипниковом щите',
-		selectable: motorFrameSize >= 200 ? true : false
-	};
+			//ui: select
+			outputSignal: [{ id: 'default-encod-signal', group: 'Тип выходного сигнала', type: '-' }, { id: '3', group: 'Тип выходного сигнала', type: 'TTL/RS422, 6 каналов' }, { id: '4', group: 'Тип выходного сигнала', type: 'HTL/push pull, 6 каналов' }]
+		};
 
-	//антиконденсатный подогрев (UI: checkbox):
-	optionsConfig.antiCondensingHeater = {
-		id: 'H',
-		type: 'Антиконденсатный подогрев',
-		description: 'Укомплектован антиконденсатным подогревом (питание 220В)',
-		selectable: motorFrameSize >= 132 ? true : false
-	};
+		//вибродатчики (UI: checkbox):
+		this.vibroSensors = {
+			id: 'W1',
+			type: 'Вибродатчики',
+			description: 'Укомплектован вибродатчиком трех-координатных ВК-310С на переднем подшипниковом щите',
+			selectable: motorFrameSize >= 200 ? true : false
+		};
 
-	//!должен быть выставлен по умолчанию, начиная с 200 габарита
-	//токоизолированный подшипник (UI: checkbox):
-	optionsConfig.currentInsulatingBearing = {
-		id: 'F2',
-		type: 'Токоизолированный подшипник',
-		description: 'Заменен задний штатный подшипник на токоизолированный (производства SKF/NSK/KOYO/FAG)',
-		selectable: motorFrameSize >= 200 && importBearingsValue !== '-' ? false : motorFrameSize < 200 ? false : true,
-		checked: motorFrameSize >= 200 ? true : false,
-		warning: 'Элком рекомендует установку токоизолированных подшипников на двигатели выше 200 габарита'
-	};
+		//антиконденсатный подогрев (UI: checkbox):
+		this.antiCondensingHeater = {
+			id: 'H',
+			type: 'Антиконденсатный подогрев',
+			description: 'Укомплектован антиконденсатным подогревом (питание 220В)',
+			selectable: motorFrameSize >= 132 ? true : false
+		};
 
-	//!выбор S12 должен автоматически исключать возможность выбора F2 и наоборот:
-	//импортные подшипники (UI: select):
-	optionsConfig.importBearings = [{ id: 'default-imp', group: 'Импортные подшипники', type: '-', description: '-', selectable: true }, {
-		id: 'S1',
-		group: 'Импортные подшипники',
-		type: 'Передний шариковый подшипник (производства SKF/NSK/KOYO/FAG)',
-		description: 'Заменен передний штатный подшипник на подшипник повышенной надежности шариковый (производства SKF/NSK/KOYO/FAG)',
-		selectable: motorFrameSize < 200 ? true : motorFrameSize >= 200 && currentInsulatingBearingIsChecked ? true : false
-	}, {
-		id: 'S12',
-		group: 'Импортные подшипники',
-		type: 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)',
-		description: 'Заменены передний и задний штатные подшипники на подшипники повышенной надежности шариковые (производства SKF/NSK/KOYO/FAG)',
-		selectable: currentInsulatingBearingIsChecked ? false : true
-	}];
+		//!должен быть выставлен по умолчанию, начиная с 200 габарита
+		//токоизолированный подшипник (UI: checkbox):
+		this.currentInsulatingBearing = {
+			id: 'F2',
+			type: 'Токоизолированный подшипник',
+			description: 'Заменен задний штатный подшипник на токоизолированный (производства SKF/NSK/KOYO/FAG)',
+			selectable: motorFrameSize >= 200 && importBearingsValue !== '-' ? false : motorFrameSize < 200 ? false : true,
+			checked: motorFrameSize >= 200 ? true : false,
+			warning: 'Элком рекомендует установку токоизолированных подшипников на двигатели выше 200 габарита'
+		};
 
-	//электромагнитный тормоз (UI: select):
-	optionsConfig.electroMagneticBreak = [{
-		id: 'default-brakes',
-		group: 'Встроенный электромагнитный тормоз',
-		type: '-',
-		description: '-',
-		selectable: true,
-		power: null
-	}, {
-		id: 'ED',
-		group: 'Встроенный электромагнитный тормоз',
-		type: 'Тормоз (питание 220В)',
-		description: 'Укомплектован встроенным электромагнитным тормозом (питание 220В)',
-		selectable: motorFrameSize <= 100 && !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
-		power: 220
-	}, {
-		id: 'ET',
-		group: 'Встроенный электромагнитный тормоз',
-		type: 'Тормоз (питание 380В)',
-		description: 'Укомплектован встроенным электромагнитным тормозом (питание 380В)',
-		selectable: !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
-		power: 380
-	}, {
-		id: 'ED1',
-		group: 'Встроенный электромагнитный тормоз',
-		type: 'Тормоз (питание 220В) с независимым питанием',
-		description: 'Укомплектован встроенным электромагнитным тормозом (питание 220В) с независимым питанием',
-		selectable: motorFrameSize <= 100 ? true : false,
-		power: 220
-	}, {
-		id: 'ET1',
-		group: 'Встроенный электромагнитный тормоз',
-		type: 'Тормоз (питание 380В) с независимым питанием',
-		description: 'Укомплектован встроенным электромагнитным тормозом (питание 380В) с независимым питанием',
-		selectable: true,
-		power: 380
-	}, {
-		id: 'ED2',
-		group: 'Встроенный электромагнитный тормоз',
-		type: 'Тормоз (питание 220В)  с ручным растормаживающим устройством',
-		description: 'Укомплектован встроенным электромагнитным тормозом (питание 220В) с ручным растормаживающим устройством',
-		selectable: motorFrameSize <= 100 && !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
-		power: 220
-	}, {
-		id: 'ET2',
-		group: 'Встроенный электромагнитный тормоз',
-		type: 'Тормоз (питание 380В) с ручным растормаживающим устройством',
-		description: 'Укомплектован встроенным электромагнитным тормозом (питание 380В) с ручным растормаживающим устройством',
-		selectable: motorFrameSize <= 200 && !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
-		power: 380
-	}, {
-		id: 'ED1ED2',
-		group: 'Встроенный электромагнитный тормоз',
-		type: 'Тормоз (питание 220В) с независимым питанием и ручным растормаживающим устройством',
-		description: 'Укомплектован встроенным электромагнитным тормозом (питание 220В) с независимым питанием и ручным растормаживающим устройством',
-		selectable: motorFrameSize <= 100 ? true : false,
-		power: 220
-	}, {
-		id: 'ET1ET2',
-		group: 'Встроенный электромагнитный тормоз',
-		type: 'Тормоз (питание 380В) с независимым питанием и ручным растормаживающим устройством',
-		description: 'Укомплектован встроенным электромагнитным тормозом (питание 380В) с независимым питанием и ручным растормаживающим устройством',
-		selectable: motorFrameSize <= 200 ? true : false,
-		power: 380
-	}];
+		//!выбор S12 должен автоматически исключать возможность выбора F2 и наоборот:
+		//импортные подшипники (UI: select):
+		this.importBearings = [{ id: 'default-imp', group: 'Импортные подшипники', type: '-', description: '-', selectable: true }, {
+			id: 'S1',
+			group: 'Импортные подшипники',
+			type: 'Передний шариковый подшипник (производства SKF/NSK/KOYO/FAG)',
+			description: 'Заменен передний штатный подшипник на подшипник повышенной надежности шариковый (производства SKF/NSK/KOYO/FAG)',
+			selectable: motorFrameSize < 200 ? true : motorFrameSize >= 200 && currentInsulatingBearingIsChecked ? true : false
+		}, {
+			id: 'S12',
+			group: 'Импортные подшипники',
+			type: 'Передний и задний шариковые подшипники (производства SKF/NSK/KOYO/FAG)',
+			description: 'Заменены передний и задний штатные подшипники на подшипники повышенной надежности шариковые (производства SKF/NSK/KOYO/FAG)',
+			selectable: currentInsulatingBearingIsChecked ? false : true
+		}];
 
-	//данные для наполнения табличной части доработок при выборе тормозов и /или вентиляционной системы:
-	optionsConfig.upgradesData = [{
-		id: 50,
-		brakeMoment: { data: '2/4', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 25, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.18, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 14, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '0.085', description: 'Потребляемый ток, А' }
-	}, {
-		id: 56,
-		brakeMoment: { data: '2/4', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 25, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.18, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 14, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '0.085', description: 'Потребляемый ток, А' }
-	}, {
-		id: 63,
-		brakeMoment: { data: '2/4', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 25, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.18, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 14, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '0.085', description: 'Потребляемый ток, А' }
-	}, {
-		id: 71,
-		brakeMoment: { data: '4/6', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.18, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 16, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '0.1', description: 'Потребляемый ток, А' }
-	}, {
-		id: 80,
-		brakeMoment: { data: '7.5/9', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 45, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.2, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '0.2', description: 'Потребляемый ток, А' }
-	}, {
-		id: 90,
-		brakeMoment: { data: '15/17', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 50, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.2, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '0.2', description: 'Потребляемый ток, А' }
-	}, {
-		id: 100,
-		brakeMoment: { data: '30/35', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 65, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.2, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '0.2', description: 'Потребляемый ток, А' }
-	}, {
-		id: 112,
-		brakeMoment: { data: '40/50', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 70, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.25, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 36, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '0.3', description: 'Потребляемый ток, А' }
-	}, {
-		id: 132,
-		brakeMoment: { data: '75/85', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 95, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.25, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 36, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '0.3', description: 'Потребляемый ток, А' }
-	}, {
-		id: 160,
-		brakeMoment: { data: '150/160', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 110, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.35, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 80, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '0.37', description: 'Потребляемый ток, А' }
-	}, {
-		id: 180,
-		brakeMoment: { data: '200/220', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 150, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.35, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 80, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '0.37', description: 'Потребляемый ток, А' }
-	}, {
-		id: 200,
-		brakeMoment: { data: '300/330', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 200, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.45, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 150, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '0.7', description: 'Потребляемый ток, А' }
-	}, {
-		id: 225,
-		brakeMoment: { data: '450/500', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 200, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.45, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 180, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '0.8', description: 'Потребляемый ток, А' }
-	}, {
-		id: 250,
-		brakeMoment: { data: '600/660', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 210, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.5, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 250, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '1.15', description: 'Потребляемый ток, А' }
-	}, {
-		id: 280,
-		brakeMoment: { data: '850/940', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 340, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.6, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 400, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '0.7', description: 'Потребляемый ток, А' }
-	}, {
-		id: 315,
-		brakeMoment: { data: '2000/2200', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 400, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.7, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 500, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '0.95', description: 'Потребляемый ток, А' }
-	}, {
-		id: 355,
-		brakeMoment: { data: '4000/4400', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
-		brake_consumedPower: { data: 480, description: 'Потребляемая мощность, Вт' },
-		reactionTime: { data: 0.85, description: 'Время срабатывания, мс' },
-		vent_consumedPower: { data: 800, description: 'Потребляемая мощность, Вт' },
-		vent_consumedCurrent: { data: '1.55', description: 'Потребляемый ток, А' }
-	}];
+		//электромагнитный тормоз (UI: select):
+		this.electroMagneticBreak = [{
+			id: 'default-brakes',
+			group: 'Встроенный электромагнитный тормоз',
+			type: '-',
+			description: '-',
+			selectable: true,
+			power: null
+		}, {
+			id: 'ED',
+			group: 'Встроенный электромагнитный тормоз',
+			type: 'Тормоз (питание 220В)',
+			description: 'Укомплектован встроенным электромагнитным тормозом (питание 220В)',
+			selectable: motorFrameSize <= 100 && !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
+			power: 220
+		}, {
+			id: 'ET',
+			group: 'Встроенный электромагнитный тормоз',
+			type: 'Тормоз (питание 380В)',
+			description: 'Укомплектован встроенным электромагнитным тормозом (питание 380В)',
+			selectable: !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
+			power: 380
+		}, {
+			id: 'ED1',
+			group: 'Встроенный электромагнитный тормоз',
+			type: 'Тормоз (питание 220В) с независимым питанием',
+			description: 'Укомплектован встроенным электромагнитным тормозом (питание 220В) с независимым питанием',
+			selectable: motorFrameSize <= 100 ? true : false,
+			power: 220
+		}, {
+			id: 'ET1',
+			group: 'Встроенный электромагнитный тормоз',
+			type: 'Тормоз (питание 380В) с независимым питанием',
+			description: 'Укомплектован встроенным электромагнитным тормозом (питание 380В) с независимым питанием',
+			selectable: true,
+			power: 380
+		}, {
+			id: 'ED2',
+			group: 'Встроенный электромагнитный тормоз',
+			type: 'Тормоз (питание 220В)  с ручным растормаживающим устройством',
+			description: 'Укомплектован встроенным электромагнитным тормозом (питание 220В) с ручным растормаживающим устройством',
+			selectable: motorFrameSize <= 100 && !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
+			power: 220
+		}, {
+			id: 'ET2',
+			group: 'Встроенный электромагнитный тормоз',
+			type: 'Тормоз (питание 380В) с ручным растормаживающим устройством',
+			description: 'Укомплектован встроенным электромагнитным тормозом (питание 380В) с ручным растормаживающим устройством',
+			selectable: motorFrameSize <= 200 && !encoderIsChecked && ventSystemOptionValue === '-' ? true : false,
+			power: 380
+		}, {
+			id: 'ED1ED2',
+			group: 'Встроенный электромагнитный тормоз',
+			type: 'Тормоз (питание 220В) с независимым питанием и ручным растормаживающим устройством',
+			description: 'Укомплектован встроенным электромагнитным тормозом (питание 220В) с независимым питанием и ручным растормаживающим устройством',
+			selectable: motorFrameSize <= 100 ? true : false,
+			power: 220
+		}, {
+			id: 'ET1ET2',
+			group: 'Встроенный электромагнитный тормоз',
+			type: 'Тормоз (питание 380В) с независимым питанием и ручным растормаживающим устройством',
+			description: 'Укомплектован встроенным электромагнитным тормозом (питание 380В) с независимым питанием и ручным растормаживающим устройством',
+			selectable: motorFrameSize <= 200 ? true : false,
+			power: 380
+		}];
 
-	//лапы и фланцы (UI: select):
-	optionsConfig.paws = motorFrameSize >= 112 ? [{
-		id: motorFrameSize >= 132 ? 'IM1001' : 'IM1081',
-		group: 'Лапы и фланцы',
-		type: 'Лапы (1001/1081)'
-	}, {
-		id: motorFrameSize >= 132 ? 'IM2001' : 'IM2081',
-		group: 'Лапы и фланцы',
-		type: 'Лапы + Фланец (2001/2081)'
-	}, {
-		id: motorFrameSize >= 132 ? 'IM3001' : 'IM3081',
-		group: 'Лапы и фланцы',
-		type: 'Фланец (3081)'
-	}] : [{
-		id: 'IM1081',
-		group: 'Лапы и фланцы',
-		type: 'Лапы (1001/1081)'
-	}, {
-		id: 'IM2081',
-		group: 'Лапы и фланцы',
-		type: 'Лапы + Фланец (2001/2081)'
-	}, {
-		id: 'IM3081',
-		group: 'Лапы и фланцы',
-		type: 'Фланец (3081)'
-	}, {
-		id: 'IM2181',
-		group: 'Лапы и фланцы',
-		type: 'Лапы + Малый фланец (2181)'
-	}];
+		//данные для наполнения табличной части доработок при выборе тормозов и /или вентиляционной системы:
+		this.upgradesData = [{
+			id: 50,
+			brakeMoment: { data: '2/4', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 25, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.18, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 14, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.085', description: 'Потребляемый ток, А' }
+		}, {
+			id: 56,
+			brakeMoment: { data: '2/4', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 25, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.18, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 14, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.085', description: 'Потребляемый ток, А' }
+		}, {
+			id: 63,
+			brakeMoment: { data: '2/4', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 25, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.18, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 14, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.085', description: 'Потребляемый ток, А' }
+		}, {
+			id: 71,
+			brakeMoment: { data: '4/6', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.18, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 16, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.1', description: 'Потребляемый ток, А' }
+		}, {
+			id: 80,
+			brakeMoment: { data: '7.5/9', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 45, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.2, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.2', description: 'Потребляемый ток, А' }
+		}, {
+			id: 90,
+			brakeMoment: { data: '15/17', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 50, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.2, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.2', description: 'Потребляемый ток, А' }
+		}, {
+			id: 100,
+			brakeMoment: { data: '30/35', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 65, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.2, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 30, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.2', description: 'Потребляемый ток, А' }
+		}, {
+			id: 112,
+			brakeMoment: { data: '40/50', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 70, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.25, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 36, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.3', description: 'Потребляемый ток, А' }
+		}, {
+			id: 132,
+			brakeMoment: { data: '75/85', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 95, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.25, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 36, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.3', description: 'Потребляемый ток, А' }
+		}, {
+			id: 160,
+			brakeMoment: { data: '150/160', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 110, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.35, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 80, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.37', description: 'Потребляемый ток, А' }
+		}, {
+			id: 180,
+			brakeMoment: { data: '200/220', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 150, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.35, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 80, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.37', description: 'Потребляемый ток, А' }
+		}, {
+			id: 200,
+			brakeMoment: { data: '300/330', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 200, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.45, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 150, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.7', description: 'Потребляемый ток, А' }
+		}, {
+			id: 225,
+			brakeMoment: { data: '450/500', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 200, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.45, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 180, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.8', description: 'Потребляемый ток, А' }
+		}, {
+			id: 250,
+			brakeMoment: { data: '600/660', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 210, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.5, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 250, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '1.15', description: 'Потребляемый ток, А' }
+		}, {
+			id: 280,
+			brakeMoment: { data: '850/940', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 340, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.6, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 400, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.7', description: 'Потребляемый ток, А' }
+		}, {
+			id: 315,
+			brakeMoment: { data: '2000/2200', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 400, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.7, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 500, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '0.95', description: 'Потребляемый ток, А' }
+		}, {
+			id: 355,
+			brakeMoment: { data: '4000/4400', description: 'Тормозной момент, Н х м (Ном./Макс.)' },
+			brake_consumedPower: { data: 480, description: 'Потребляемая мощность, Вт' },
+			reactionTime: { data: 0.85, description: 'Время срабатывания, мс' },
+			vent_consumedPower: { data: 800, description: 'Потребляемая мощность, Вт' },
+			vent_consumedCurrent: { data: '1.55', description: 'Потребляемый ток, А' }
+		}];
 
-	//тип системы вентиляции (UI: select)
-	optionsConfig.ventSystem = [{
-		id: 'default-vent',
-		group: 'Независимая вентиляция',
-		type: '-',
-		description: '-',
-		selectable: true,
-		power: null
-	}, {
-		id: 'V1',
-		group: 'Независимая вентиляция',
-		type: 'Встроенный вентилятор с питанием 220В',
-		description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 220В)',
-		selectable: motorFrameSize <= 250 && (brakeType.includes('независимым питанием') || brakeType === '-') && Number(IPvalue.slice(2)) <= 55 ? true : false,
-		power: 220
-	}, {
-		id: 'V2',
-		group: 'Независимая вентиляция',
-		type: 'Встроенный вентилятор с питанием 380В',
-		description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 380В)',
-		selectable: motorFrameSize >= 132 && (brakeType.includes('независимым питанием') || brakeType === '-') && Number(IPvalue.slice(2)) <= 55 ? true : false,
-		power: 380
-	}, {
-		id: 'V3',
-		group: 'Независимая вентиляция',
-		type: 'Пристроенный вентилятор (наездник) с питанием 220В',
-		description: 'Укомплектован узлом независимой вентиляции (пристроенный вентилятор (наездник) с питанием 220В)',
-		selectable: motorFrameSize >= 112 && motorFrameSize <= 200 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
-		power: 220
-	}, {
-		id: 'V4',
-		group: 'Независимая вентиляция',
-		type: 'Пристроенный вентилятор (наездник) с питанием 380В',
-		description: 'Укомплектован узлом независимой вентиляции (пристроенный вентилятор (наездник) с питанием 380В)',
-		selectable: motorFrameSize >= 225 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
-		power: 380
-	}];
+		//лапы и фланцы (UI: select):
+		this.paws = _global_vars.motorStandartSetter.selected === '5АИ' ? //if 5AI:
+		motorFrameSize >= 112 ? [{
+			id: motorFrameSize >= 132 ? 'IM1001' : 'IM1081',
+			group: 'Лапы и фланцы',
+			type: 'Лапы (1001/1081)'
+		}, {
+			id: motorFrameSize >= 132 ? 'IM2001' : 'IM2081',
+			group: 'Лапы и фланцы',
+			type: 'Лапы + Фланец (2001/2081)'
+		}, {
+			id: motorFrameSize >= 132 ? 'IM3001' : 'IM3081',
+			group: 'Лапы и фланцы',
+			type: 'Фланец (3081)'
+		}] : [{
+			id: 'IM1081',
+			group: 'Лапы и фланцы',
+			type: 'Лапы (1001/1081)'
+		}, {
+			id: 'IM2081',
+			group: 'Лапы и фланцы',
+			type: 'Лапы + Фланец (2001/2081)'
+		}, {
+			id: 'IM3081',
+			group: 'Лапы и фланцы',
+			type: 'Фланец (3081)'
+		}, {
+			id: 'IM2181',
+			group: 'Лапы и фланцы',
+			type: 'Лапы + Малый фланец (2181)'
+		}] : // if ESQ:
+		motorFrameSize <= 160 ? [{
+			id: 'B3',
+			group: 'Лапы и фланцы',
+			type: 'Лапы (B3)'
+		}, {
+			id: 'B35',
+			group: 'Лапы и фланцы',
+			type: 'Лапы + Фланец (B35)'
+		}, {
+			id: 'B5',
+			group: 'Лапы и фланцы',
+			type: 'Лапы (B5)'
+		}, {
+			id: 'B34',
+			group: 'Лапы и фланцы',
+			type: 'Лапы + Мал. фланец (B34)'
+		}, {
+			id: 'B14',
+			group: 'Лапы и фланцы',
+			type: 'Мал. фланец (B14)'
+		}] : [{
+			id: 'B3',
+			group: 'Лапы и фланцы',
+			type: 'Лапы (B3)'
+		}, {
+			id: 'B35',
+			group: 'Лапы и фланцы',
+			type: 'Лапы + Фланец (B35)'
+		}, {
+			id: 'B5',
+			group: 'Лапы и фланцы',
+			type: 'Лапы (B5)'
+		}];
 
-	//климатическое исполнение (UI: select):
-	optionsConfig.climateCat = [{ id: 'У2', group: 'Климатическое исполнение', type: 'У2', description: 'Климатическое исполнение: У2', selectable: true }, { id: 'У1', group: 'Климатическое исполнение', type: 'У1', description: 'Климатическое исполнение: У1', selectable: true }, {
-		id: 'УХЛ1',
-		group: 'Климатическое исполнение',
-		type: 'УХЛ1',
-		description: 'Климатическое исполнение: УХЛ1',
-		selectable: true
-	}, {
-		id: 'УХЛ2',
-		group: 'Климатическое исполнение',
-		type: 'УХЛ2',
-		description: 'Климатическое исполнение: УХЛ2',
-		selectable: true
-	}];
+		//тип системы вентиляции (UI: select)
+		this.ventSystem = [{
+			id: 'default-vent',
+			group: 'Независимая вентиляция',
+			type: '-',
+			description: '-',
+			selectable: true,
+			power: null
+		}, {
+			id: 'V1',
+			group: 'Независимая вентиляция',
+			type: 'Встроенный вентилятор с питанием 220В',
+			description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 220В)',
+			selectable: motorFrameSize <= 250 && (brakeType.includes('независимым питанием') || brakeType === '-') && Number(IPvalue.slice(2)) <= 55 ? true : false,
+			power: 220
+		}, {
+			id: 'V2',
+			group: 'Независимая вентиляция',
+			type: 'Встроенный вентилятор с питанием 380В',
+			description: 'Укомплектован узлом независимой вентиляции (встроенный вентилятор с питанием 380В)',
+			selectable: motorFrameSize >= 132 && (brakeType.includes('независимым питанием') || brakeType === '-') && Number(IPvalue.slice(2)) <= 55 ? true : false,
+			power: 380
+		}, {
+			id: 'V3',
+			group: 'Независимая вентиляция',
+			type: 'Пристроенный вентилятор (наездник) с питанием 220В',
+			description: 'Укомплектован узлом независимой вентиляции (пристроенный вентилятор (наездник) с питанием 220В)',
+			selectable: motorFrameSize >= 112 && motorFrameSize <= 200 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
+			power: 220
+		}, {
+			id: 'V4',
+			group: 'Независимая вентиляция',
+			type: 'Пристроенный вентилятор (наездник) с питанием 380В',
+			description: 'Укомплектован узлом независимой вентиляции (пристроенный вентилятор (наездник) с питанием 380В)',
+			selectable: motorFrameSize >= 225 && (brakeType.includes('независимым питанием') || brakeType === '-') ? true : false,
+			power: 380
+		}];
 
-	//степень защиты (UI: select):
-	optionsConfig.ipVersion = [{
-		id: 'IP55',
-		group: 'Степень защиты',
-		type: 'IP55',
-		description: 'Степень защиты: IP55',
-		selectable: true,
-		selectedByDefault: motorFrameSize >= 90 && (ventSystemOptionValue.includes('наездник') || ventSystemOptionValue === '-') || motorFrameSize < 90 ? true : false
-	}, {
-		id: 'IP54',
-		group: 'Степень защиты',
-		type: 'IP54',
-		description: 'Степень защиты: IP54',
-		selectable: motorFrameSize >= 90 && !ventSystemOptionValue.includes('наездник') && ventSystemOptionValue !== '-' ? true : false,
-		selectedByDefault: motorFrameSize >= 90 && !ventSystemOptionValue.includes('наездник') && ventSystemOptionValue !== '-' ? true : false
-	}, {
-		id: 'IP65',
-		group: 'Степень защиты',
-		type: 'IP65',
-		description: 'Степень защиты: IP65',
-		selectable: motorFrameSize >= 90 && ventSystemOptionValue.includes('наездник') || ventSystemOptionValue === '-' ? true : false,
-		selectedByDefault: false
-	}, {
-		id: 'IP66',
-		group: 'Степень защиты',
-		type: 'IP66',
-		description: 'Степень защиты: IP66',
-		selectable: motorFrameSize >= 90 && ventSystemOptionValue.includes('наездник') || ventSystemOptionValue === '-' ? true : false,
-		selectedByDefault: false
-	}];
+		//климатическое исполнение (UI: select):
+		this.climateCat = [{
+			id: 'У2',
+			group: 'Климатическое исполнение',
+			type: 'У2',
+			description: 'Климатическое исполнение: У2',
+			selectable: true
+		}, {
+			id: 'У1',
+			group: 'Климатическое исполнение',
+			type: 'У1',
+			description: 'Климатическое исполнение: У1',
+			selectable: true
+		}, {
+			id: 'УХЛ1',
+			group: 'Климатическое исполнение',
+			type: 'УХЛ1',
+			description: 'Климатическое исполнение: УХЛ1',
+			selectable: true
+		}, {
+			id: 'УХЛ2',
+			group: 'Климатическое исполнение',
+			type: 'УХЛ2',
+			description: 'Климатическое исполнение: УХЛ2',
+			selectable: true
+		}];
 
-	var options = [];
-	var encoderOptions = [true, false];
-	var ventOptions = optionsConfig.ventSystem.map(function (obj) {
-		return obj.type;
-	});
+		//степень защиты (UI: select):
+		this.ipVersion = [{
+			id: 'IP55',
+			group: 'Степень защиты',
+			type: 'IP55',
+			description: 'Степень защиты: IP55',
+			selectable: true,
+			selectedByDefault: motorFrameSize >= 90 && (ventSystemOptionValue.includes('наездник') || ventSystemOptionValue === '-') || motorFrameSize < 90 ? true : false
+		}, {
+			id: 'IP54',
+			group: 'Степень защиты',
+			type: 'IP54',
+			description: 'Степень защиты: IP54',
+			selectable: motorFrameSize >= 90 && !ventSystemOptionValue.includes('наездник') && ventSystemOptionValue !== '-' ? true : false,
+			selectedByDefault: motorFrameSize >= 90 && !ventSystemOptionValue.includes('наездник') && ventSystemOptionValue !== '-' ? true : false
+		}, {
+			id: 'IP65',
+			group: 'Степень защиты',
+			type: 'IP65',
+			description: 'Степень защиты: IP65',
+			selectable: motorFrameSize >= 90 && ventSystemOptionValue.includes('наездник') || ventSystemOptionValue === '-' ? true : false,
+			selectedByDefault: false
+		}, {
+			id: 'IP66',
+			group: 'Степень защиты',
+			type: 'IP66',
+			description: 'Степень защиты: IP66',
+			selectable: motorFrameSize >= 90 && ventSystemOptionValue.includes('наездник') || ventSystemOptionValue === '-' ? true : false,
+			selectedByDefault: false
+		}];
 
-	if (encoderIsChecked || ventSystemOptionValue !== '-') {
-		var brakeOptions = optionsConfig.electroMagneticBreak.filter(function (obj) {
-			return obj.type.includes('независимым питанием') || obj.type.includes('-');
-		}).map(function (obj) {
+		var options = [];
+		var encoderOptions = [true, false];
+		var ventOptions = this.ventSystem.map(function (obj) {
 			return obj.type;
 		});
 
-		encoderOptions.forEach(function (e) {
-			ventOptions.forEach(function (v) {
-				brakeOptions.forEach(function (b) {
-					options.push({ e: e, v: v, b: b });
+		if (encoderIsChecked || ventSystemOptionValue !== '-') {
+			var brakeOptions = this.electroMagneticBreak.filter(function (obj) {
+				return obj.type.includes('независимым питанием') || obj.type.includes('-');
+			}).map(function (obj) {
+				return obj.type;
+			});
+
+			encoderOptions.forEach(function (e) {
+				ventOptions.forEach(function (v) {
+					brakeOptions.forEach(function (b) {
+						options.push({ e: e, v: v, b: b });
+					});
 				});
 			});
-		});
-	} else {
-		var _brakeOptions = optionsConfig.electroMagneticBreak.map(function (obj) {
-			return obj.type;
-		});
-		_brakeOptions.forEach(function (b) {
-			options.push({ e: false, v: '-', b: b });
-		});
-	}
+		} else {
+			var _brakeOptions = this.electroMagneticBreak.map(function (obj) {
+				return obj.type;
+			});
+			_brakeOptions.forEach(function (b) {
+				options.push({ e: false, v: '-', b: b });
+			});
+		}
 
-	optionsConfig.options = options;
+		this.options = options;
+	}
 };
 
 /***/ }),
 /* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var regex = exports.regex = /^(?!\s*$).+/;
+var motorStandartSetter = exports.motorStandartSetter = {
+	//5ai by default when page first uploaded:
+	selected: localStorage.getItem('standard-selected') === null ? '5АИ' : localStorage.getItem('standard-selected'),
+	setMotorStandart: function setMotorStandart(btnId) {
+		this.selected = btnId === 'btn-5ai-select' ? '5АИ' : 'ESQ';
+	}
+};
+
+/***/ }),
+/* 96 */
 /***/ (function(module, exports) {
 
 var g;
@@ -3434,7 +3507,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = !__webpack_require__(7) && !__webpack_require__(3)(function () {
@@ -3443,14 +3516,14 @@ module.exports = !__webpack_require__(7) && !__webpack_require__(3)(function () 
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports.f = __webpack_require__(5);
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var has = __webpack_require__(14);
@@ -3473,7 +3546,7 @@ module.exports = function (object, names) {
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var dP = __webpack_require__(8);
@@ -3492,7 +3565,7 @@ module.exports = __webpack_require__(7) ? Object.defineProperties : function def
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
@@ -3517,7 +3590,7 @@ module.exports.f = function getOwnPropertyNames(it) {
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3562,7 +3635,7 @@ module.exports = !$assign || __webpack_require__(3)(function () {
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports) {
 
 // 7.2.9 SameValue(x, y)
@@ -3573,14 +3646,14 @@ module.exports = Object.is || function is(x, y) {
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var aFunction = __webpack_require__(10);
 var isObject = __webpack_require__(4);
-var invoke = __webpack_require__(104);
+var invoke = __webpack_require__(105);
 var arraySlice = [].slice;
 var factories = {};
 
@@ -3605,7 +3678,7 @@ module.exports = Function.bind || function bind(that /* , ...args */) {
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports) {
 
 // fast apply, http://jsperf.lnkit.com/fast-apply/5
@@ -3627,7 +3700,7 @@ module.exports = function (fn, args, that) {
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $parseInt = __webpack_require__(2).parseInt;
@@ -3642,7 +3715,7 @@ module.exports = $parseInt(ws + '08') !== 8 || $parseInt(ws + '0x16') !== 22 ? f
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $parseFloat = __webpack_require__(2).parseFloat;
@@ -3656,7 +3729,7 @@ module.exports = 1 / $parseFloat(__webpack_require__(73) + '-0') !== -Infinity ?
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var cof = __webpack_require__(20);
@@ -3667,7 +3740,7 @@ module.exports = function (it, msg) {
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.3 Number.isInteger(number)
@@ -3679,7 +3752,7 @@ module.exports = function isInteger(it) {
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports) {
 
 // 20.2.2.20 Math.log1p(x)
@@ -3689,7 +3762,7 @@ module.exports = Math.log1p || function log1p(x) {
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.16 Math.fround(x)
@@ -3718,7 +3791,7 @@ module.exports = Math.fround || function fround(x) {
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // call something on iterator step with safe closing on error
@@ -3736,7 +3809,7 @@ module.exports = function (iterator, fn, value, entries) {
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var aFunction = __webpack_require__(10);
@@ -3770,7 +3843,7 @@ module.exports = function (that, callbackfn, aLen, memo, isRight) {
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3803,7 +3876,7 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports) {
 
 module.exports = function (done, value) {
@@ -3812,7 +3885,7 @@ module.exports = function (done, value) {
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3828,7 +3901,7 @@ __webpack_require__(0)({
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 21.2.5.3 get RegExp.prototype.flags()
@@ -3839,7 +3912,7 @@ if (__webpack_require__(7) && /./g.flags != 'g') __webpack_require__(8).f(RegExp
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports) {
 
 module.exports = function (exec) {
@@ -3852,7 +3925,7 @@ module.exports = function (exec) {
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var anObject = __webpack_require__(1);
@@ -3870,12 +3943,12 @@ module.exports = function (C, x) {
 
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var strong = __webpack_require__(120);
+var strong = __webpack_require__(121);
 var validate = __webpack_require__(42);
 var MAP = 'Map';
 
@@ -3896,7 +3969,7 @@ module.exports = __webpack_require__(61)(MAP, function (get) {
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3908,7 +3981,7 @@ var ctx = __webpack_require__(19);
 var anInstance = __webpack_require__(39);
 var forOf = __webpack_require__(40);
 var $iterDefine = __webpack_require__(78);
-var step = __webpack_require__(114);
+var step = __webpack_require__(115);
 var setSpecies = __webpack_require__(38);
 var DESCRIPTORS = __webpack_require__(7);
 var fastKey = __webpack_require__(30).fastKey;
@@ -4047,12 +4120,12 @@ module.exports = {
 
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var strong = __webpack_require__(120);
+var strong = __webpack_require__(121);
 var validate = __webpack_require__(42);
 var SET = 'Set';
 
@@ -4068,7 +4141,7 @@ module.exports = __webpack_require__(61)(SET, function (get) {
 
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4077,8 +4150,8 @@ var global = __webpack_require__(2);
 var each = __webpack_require__(26)(0);
 var redefine = __webpack_require__(12);
 var meta = __webpack_require__(30);
-var assign = __webpack_require__(101);
-var weak = __webpack_require__(123);
+var assign = __webpack_require__(102);
+var weak = __webpack_require__(124);
 var isObject = __webpack_require__(4);
 var validate = __webpack_require__(42);
 var NATIVE_WEAK_MAP = __webpack_require__(42);
@@ -4135,7 +4208,7 @@ if (NATIVE_WEAK_MAP && IS_IE11) {
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4227,7 +4300,7 @@ module.exports = {
 
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://tc39.github.io/ecma262/#sec-toindex
@@ -4243,7 +4316,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // all object keys, includes non-enumerable and symbols
@@ -4259,7 +4332,7 @@ module.exports = Reflect && Reflect.ownKeys || function ownKeys(it) {
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4305,7 +4378,7 @@ module.exports = flattenIntoArray;
 
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/tc39/proposal-string-pad-start-end
@@ -4327,7 +4400,7 @@ module.exports = function (that, maxLength, fillString, left) {
 
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var DESCRIPTORS = __webpack_require__(7);
@@ -4354,12 +4427,12 @@ module.exports = function (isEntries) {
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/DavidBruant/Map-Set.prototype.toJSON
 var classof = __webpack_require__(44);
-var from = __webpack_require__(130);
+var from = __webpack_require__(131);
 module.exports = function (NAME) {
   return function toJSON() {
     if (classof(this) != NAME) throw TypeError(NAME + "#toJSON isn't generic");
@@ -4369,7 +4442,7 @@ module.exports = function (NAME) {
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var forOf = __webpack_require__(40);
@@ -4382,7 +4455,7 @@ module.exports = function (iter, ITERATOR) {
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports) {
 
 // https://rwaldron.github.io/proposal-math-extensions/
@@ -4406,7 +4479,7 @@ module.exports = Math.scale || function scale(x, inLow, inHigh, outLow, outHigh)
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4432,7 +4505,7 @@ var _global_dom = __webpack_require__(66);
 
 var _base_options_list = __webpack_require__(94);
 
-var _global_vars = __webpack_require__(339);
+var _global_vars = __webpack_require__(95);
 
 var _models = __webpack_require__(340);
 
@@ -4440,7 +4513,7 @@ var _imgSrcData = __webpack_require__(341);
 
 var _extra_options_list = __webpack_require__(342);
 
-var _ui = __webpack_require__(133);
+var _ui = __webpack_require__(134);
 
 //получение списка моделей и очистка UI:
 function searchModel(e) {
@@ -4453,6 +4526,9 @@ function searchModel(e) {
 		if (document.getElementById('checkbox-vibrosensors') !== null && document.getElementById('checkbox-antiCondenseHeater') !== null) {
 			document.getElementById('checkbox-vibrosensors').checked = document.getElementById('checkbox-antiCondenseHeater').checked = false;
 		}
+
+		//hiding/showing motor type select btns:
+		_global_dom.btn.selectorMotor_5ai.parentElement.style.visibility = e.target.value !== '' ? 'hidden' : 'visible';
 	} else {
 		getModel([_global_dom.selectorPower.value, _global_dom.selectorRpm.value], filteredResults);
 		_global_dom.selectorBrakes.value = _global_dom.selectorPaws.value = _global_dom.selectorVentSystem.value = '-';
@@ -4461,6 +4537,9 @@ function searchModel(e) {
 		if (document.getElementById('checkbox-vibrosensors') !== null && document.getElementById('checkbox-antiCondenseHeater') !== null) {
 			document.getElementById('checkbox-vibrosensors').checked = document.getElementById('checkbox-antiCondenseHeater').checked = false;
 		}
+
+		//hiding/showing motor type select btns:
+		_global_dom.btn.selectorMotor_5ai.parentElement.style.visibility = _global_dom.selectorPower.value !== '-' || _global_dom.selectorRpm.value !== '-' ? 'hidden' : 'visible';
 	}
 
 	//cleaning up selector options list while typing or re-selecting:
@@ -4486,7 +4565,7 @@ function searchModel(e) {
 
 	//setting btn UI used for tempDataSensors selection back to default while typing:
 	Array.from(document.querySelectorAll('.btn-option-selected')).forEach(function (btn) {
-		return btn.classList.replace('btn-option-selected', 'btn-option-non-selected');
+		return btn.id !== 'btn-5ai-select' && btn.id !== 'btn-din-select' && btn.classList.replace('btn-option-selected', 'btn-option-non-selected');
 	});
 
 	//setting upgrades chart to default while typing:
@@ -4517,7 +4596,7 @@ var optionsSelector = exports.optionsSelector = {
 		this.brakeType = _global_dom.selectorBrakes.value === '' ? '-' : _global_dom.selectorBrakes.value;
 		this.encoderIsChecked = _global_dom.checkboxEncoder.checked;
 		this.conicShaftIsChecked = _global_dom.checkboxConicShaft.checked;
-		this.pawType = _global_dom.selectorPaws.value === '' ? 'Лапы (1001/1081)' : _global_dom.selectorPaws.value;
+		this.pawType = _global_dom.selectorPaws.value === '' && _global_vars.motorStandartSetter.selected === '5АИ' ? 'Лапы (1001/1081)' : _global_dom.selectorPaws.value === '' && _global_vars.motorStandartSetter.selected === 'ESQ' ? 'Лапы (B3)' : _global_dom.selectorPaws.value;
 
 		//elements temporarily unacceccisble with initial render:
 		var checkboxCurrentInsulatingBearing = document.getElementById('checkbox-currentInsulatingBearing') === null && this.frameSize >= 200 ? true : document.getElementById('checkbox-currentInsulatingBearing') === null && this.frameSize < 200 ? false : document.getElementById('checkbox-currentInsulatingBearing').checked;
@@ -4526,7 +4605,7 @@ var optionsSelector = exports.optionsSelector = {
 
 		var selectorIp = document.getElementById('selector-ip') === null ? 'IP55' : document.getElementById('selector-ip').value;
 
-		(0, _base_options_list.fillBaseOptions)(this.frameSize, this.encoderIsChecked, this.ventSystemOptionValue, this.brakeType, checkboxCurrentInsulatingBearing, selectorImportBearings, selectorIp);
+		_base_options_list.optionsConfig.fillBaseOptions(this.frameSize, this.encoderIsChecked, this.ventSystemOptionValue, this.brakeType, checkboxCurrentInsulatingBearing, selectorImportBearings, selectorIp);
 
 		(0, _extra_options_list.fillExtraOptions)();
 
@@ -4628,12 +4707,16 @@ function populateOptionsList(selectorsId, srcData, operationType) {
 function getModel(query, targetArr) {
 	setTimeout(function () {
 		if (query.length > 4 && query.match(_global_vars.regex) !== null && typeof query === 'string') {
-			targetArr = _models.motorsAllSeriesFlatten.filter(function (result) {
-				return result.name.toLowerCase().includes(query.toLowerCase());
+			targetArr = _global_vars.motorStandartSetter.selected === '5АИ' ? _models.motorsAllSeriesFlatten.filter(function (result) {
+				return result.standard === '5АИ' && result.name.toLowerCase().includes(query.toLowerCase());
+			}) : _models.motorsAllSeriesFlatten.filter(function (result) {
+				return result.standard === 'ESQ' && result.name.toLowerCase().includes(query.toLowerCase());
 			});
 		} else if ((typeof query === 'undefined' ? 'undefined' : _typeof(query)) === 'object' && Array.isArray(query)) {
-			targetArr = _models.motorsAllSeriesFlatten.filter(function (result) {
-				return String(result.power) === String(query[0]) && String(result.rpm) === String(query[1]);
+			targetArr = _global_vars.motorStandartSetter.selected === '5АИ' ? _models.motorsAllSeriesFlatten.filter(function (result) {
+				return result.standard === '5АИ' && String(result.power) === String(query[0]) && String(result.rpm) === String(query[1]);
+			}) : _models.motorsAllSeriesFlatten.filter(function (result) {
+				return result.standard === 'ESQ' && String(result.power) === String(query[0]) && String(result.rpm) === String(query[1]);
 			});
 		}
 
@@ -4735,7 +4818,7 @@ function getModel(query, targetArr) {
 
 //выбор чертежа в зависимости от ввода (селекторы / чекбоксы):
 function setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValue, conicShaftIsChecked, pawType) {
-	var pathStart = brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked ? 'https://www.elcomspb.ru/image/catalog/products/to/engine/adchr/' : 'https://www.elcomspb.ru/image/catalog/products/to/engine/5ai/new/';
+	var pathStart = brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked ? 'https://www.elcomspb.ru/image/catalog/products/to/engine/adchr/' : 'https://www.elcomspb.ru/image/catalog/products/to/engine/'.concat(_global_vars.motorStandartSetter.selected === 'ESQ' ? 'din/' : '5ai/new/');
 
 	var path_vent_part = ventSystemOptionValue.includes('наездник') && frameSize >= 112 && frameSize <= 132 ? 'naezd/do_132/' : ventSystemOptionValue.includes('наездник') && frameSize > 132 && frameSize <= 250 ? 'naezd/160_250/' : ventSystemOptionValue.includes('наездник') && frameSize > 250 ? 'naezd/ot_280/' : '';
 
@@ -4745,30 +4828,42 @@ function setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValu
 
 	switch (pawType) {
 		case 'Лапы (1001/1081)':
-			//case for DIN:
-			restPath = brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked ? path_vent_part + path_shaft_part + 'paws/' : '1001_small.png';
+		case 'Лапы (B3)':
+			restPath = brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked ? path_vent_part + path_shaft_part + 'paws/' : _global_vars.motorStandartSetter.selected === 'ESQ' ? 'imb3.png' : '1001_small.png';
 			break;
 
+		//!!&& !ventSystemOptionValue.includes('наездник') - временное решение, пока нет чертежей для наездника ESQ
 		case 'Лапы + Фланец (2001/2081)':
-			//case for DIN:
-			restPath = brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked ? path_vent_part + path_shaft_part + 'large_flange_paws/' : frameSize <= 180 && (brakeType === '-' || !encoderIsChecked || ventSystemOptionValue === '-' || !conicShaftIsChecked) ? '2001_below_small.png' : '2001_over_small.png';
-
+		case 'Лапы + Фланец (B35)':
+			if (brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked) {
+				restPath = path_vent_part + path_shaft_part.concat(_global_vars.motorStandartSetter.selected === 'ESQ' && !ventSystemOptionValue.includes('наездник') ? 'din/large_flange_paws/' : 'large_flange_paws/');
+			} else {
+				restPath = _global_vars.motorStandartSetter.selected === '5АИ' && frameSize <= 180 ? '2001_below_small.png' : _global_vars.motorStandartSetter.selected === '5АИ' && frameSize > 180 ? '2001_over_small.png' : _global_vars.motorStandartSetter.selected === 'ESQ' && frameSize < 225 ? 'imb35.png' : 'imb35_over225.png';
+			}
 			break;
 
+		//!!&& !ventSystemOptionValue.includes('наездник') - временное решение, пока нет чертежей для наездника ESQ
 		case 'Фланец (3081)':
-			//case for DIN:
-			restPath = brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked ? path_vent_part + path_shaft_part + 'flange/' : frameSize <= 132 && (brakeType === '-' || !encoderIsChecked || ventSystemOptionValue === '-' || !conicShaftIsChecked) ? '3001_below_small.png' : '3001_over.png';
+		case 'Лапы (B5)':
+			if (brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked) {
+				restPath = path_vent_part + path_shaft_part.concat(_global_vars.motorStandartSetter.selected === 'ESQ' && !ventSystemOptionValue.includes('наездник') ? 'din/flange/' : 'flange/');
+			} else {
+				restPath = _global_vars.motorStandartSetter.selected === '5АИ' && frameSize <= 132 ? '3001_below_small.png' : _global_vars.motorStandartSetter.selected === '5АИ' && frameSize > 132 ? '3001_over.png' : _global_vars.motorStandartSetter.selected === 'ESQ' && frameSize < 225 ? 'imb5.png' : 'imb5_over225.png';
+			}
 
 			break;
 
 		case 'Лапы + Малый фланец (2181)':
-			//case for DIN:
-			restPath = brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked ? path_vent_part + path_shaft_part + 'little_flange_paws/' : '2101_small.png';
-
+		case 'Лапы + Мал. фланец (B34)':
+			if (brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked) {
+				restPath = path_vent_part + path_shaft_part + 'little_flange_paws/';
+			} else {
+				restPath = _global_vars.motorStandartSetter.selected === '5АИ' ? '2101_small.png' : 'imb34.png';
+			}
 			break;
 
-		//case for DIN (B14:)
-		//restPath = path_shaft_part + 'little_flange/';
+		case 'Мал. фланец (B14)':
+			restPath = brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked ? path_vent_part + path_shaft_part + 'little_flange/' : 'imb14.png';
 	}
 
 	var currSelectionIndex = _base_options_list.optionsConfig.options.findIndex(function (optionObj) {
@@ -4793,6 +4888,7 @@ function setChartConnectionDims(frameSize, brakeType, pawType, ventSystemOptionV
 	});
 
 	switch (pawType) {
+		//5AI:
 		case 'Лапы (1001/1081)':
 			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
 				//prettier-ignore
@@ -4833,6 +4929,61 @@ function setChartConnectionDims(frameSize, brakeType, pawType, ventSystemOptionV
 			} else {
 				//prettier-ignore
 				connectionParams = ['l30', 'h31', 'd24', 'l1', 'l10', 'l31', 'd1', 'd10', 'd20', 'd22', 'd25', 'b1', 'b10', 'h1', 'h10', 'h', 'h5'];
+			}
+
+			break;
+
+		//ESQ:
+		case 'Лапы (B3)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'E', 'B', 'C', 'D', 'K', 'F', 'AB', 'A', 'G', 'H', 'AC'];
+			} else {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'E', 'B', 'C', 'D', 'K', 'F', 'AB', 'A', 'G', 'H', 'AC', 'd4', 'l4'];
+			}
+			break;
+
+		case 'Лапы + Фланец (B35)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'B', 'C', 'D', 'K', 'M', 'S', 'N', 'F', 'AB', 'A', 'G', 'H', 'AC', 'd4', 'l4'];
+			} else {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'B', 'C', 'D', 'K', 'M', 'S', 'N', 'F', 'AB', 'A', 'G', 'H', 'AC'];
+			}
+
+			break;
+
+		case 'Лапы (B5)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'D', 'M', 'S', 'N', 'F', 'G', 'H', 'AC', 'd4', 'l4'];
+			} else {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'D', 'M', 'S', 'N', 'F', 'G', 'H', 'AC'];
+			}
+
+			break;
+
+		case 'Лапы + Мал. фланец (B34)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'B', 'C', 'D', 'K', 'M', 'S', 'N', 'F', 'AB', 'A', 'G', 'H', 'AC', 'd4', 'l4'];
+			} else {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'B', 'C', 'D', 'K', 'M', 'S', 'N', 'F', 'AB', 'A', 'G', 'H', 'AC'];
+			}
+
+			break;
+
+		case 'Мал. фланец (B14)':
+			if (brakeType !== '-' || ventSystemOptionValue !== '-' || encoderIsChecked) {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'D', 'M', 'S', 'N', 'F', 'G', 'H', 'AC', 'd4', 'l4'];
+			} else {
+				//prettier-ignore
+				connectionParams = ['L', 'AD', 'P', 'E', 'D', 'M', 'S', 'N', 'F', 'G', 'H', 'AC'];
 			}
 
 			break;
@@ -5192,7 +5343,7 @@ function setModelName() {
 }
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5203,6 +5354,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.mask = undefined;
 exports.setTransforms = setTransforms;
+exports.ls_getBtnSelectorStyle = ls_getBtnSelectorStyle;
+exports.ls_getScrollPos = ls_getScrollPos;
 
 var _global_dom = __webpack_require__(66);
 
@@ -5223,26 +5376,57 @@ var mask = exports.mask = {
 	}
 };
 
-/***/ }),
-/* 134 */
-/***/ (function(module, exports, __webpack_require__) {
+function ls_getBtnSelectorStyle() {
+	var selectorMotor_din = _global_dom.btn.selectorMotor_din,
+	    selectorMotor_5ai = _global_dom.btn.selectorMotor_5ai;
 
-__webpack_require__(135);
-module.exports = __webpack_require__(337);
 
+	switch (localStorage.getItem('standard-selected')) {
+		case null:
+			break;
+
+		case '5АИ':
+			selectorMotor_din.classList.replace('btn-option-selected', 'btn-option-non-selected');
+			selectorMotor_5ai.classList.replace('btn-option-non-selected', 'btn-option-selected');
+			break;
+
+		case 'ESQ':
+			selectorMotor_din.classList.replace('btn-option-non-selected', 'btn-option-selected');
+			selectorMotor_5ai.classList.replace('btn-option-selected', 'btn-option-non-selected');
+			break;
+	}
+}
+
+function ls_getScrollPos() {
+	if (localStorage.getItem('scrollPosY') === null) {
+		return;
+	} else {
+		setTimeout(function () {
+			window.scrollTo(0, localStorage.getItem('scrollPosY'));
+		}, 10);
+	}
+}
 
 /***/ }),
 /* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(136);
+module.exports = __webpack_require__(338);
+
+
+/***/ }),
+/* 136 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {
 
-__webpack_require__(136);
-
-__webpack_require__(333);
+__webpack_require__(137);
 
 __webpack_require__(334);
+
+__webpack_require__(335);
 
 if (global._babelPolyfill) {
   throw new Error("only one instance of babel-polyfill is allowed");
@@ -5264,14 +5448,13 @@ define(String.prototype, "padRight", "".padEnd);
 "pop,reverse,shift,keys,values,entries,indexOf,every,some,forEach,map,filter,find,findIndex,includes,join,slice,concat,push,splice,unshift,sort,lastIndexOf,reduce,reduceRight,copyWithin,fill".split(",").forEach(function (key) {
   [][key] && define(Array, key, Function.call.bind([][key]));
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(95)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(96)))
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(137);
-__webpack_require__(140);
+__webpack_require__(138);
 __webpack_require__(141);
 __webpack_require__(142);
 __webpack_require__(143);
@@ -5347,16 +5530,16 @@ __webpack_require__(212);
 __webpack_require__(213);
 __webpack_require__(214);
 __webpack_require__(215);
-__webpack_require__(217);
+__webpack_require__(216);
 __webpack_require__(218);
-__webpack_require__(220);
+__webpack_require__(219);
 __webpack_require__(221);
 __webpack_require__(222);
 __webpack_require__(223);
 __webpack_require__(224);
 __webpack_require__(225);
 __webpack_require__(226);
-__webpack_require__(228);
+__webpack_require__(227);
 __webpack_require__(229);
 __webpack_require__(230);
 __webpack_require__(231);
@@ -5369,20 +5552,20 @@ __webpack_require__(237);
 __webpack_require__(238);
 __webpack_require__(239);
 __webpack_require__(240);
-__webpack_require__(87);
 __webpack_require__(241);
-__webpack_require__(115);
+__webpack_require__(87);
 __webpack_require__(242);
 __webpack_require__(116);
 __webpack_require__(243);
+__webpack_require__(117);
 __webpack_require__(244);
 __webpack_require__(245);
 __webpack_require__(246);
 __webpack_require__(247);
-__webpack_require__(119);
-__webpack_require__(121);
-__webpack_require__(122);
 __webpack_require__(248);
+__webpack_require__(120);
+__webpack_require__(122);
+__webpack_require__(123);
 __webpack_require__(249);
 __webpack_require__(250);
 __webpack_require__(251);
@@ -5467,11 +5650,12 @@ __webpack_require__(329);
 __webpack_require__(330);
 __webpack_require__(331);
 __webpack_require__(332);
+__webpack_require__(333);
 module.exports = __webpack_require__(18);
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5488,9 +5672,9 @@ var shared = __webpack_require__(47);
 var setToStringTag = __webpack_require__(43);
 var uid = __webpack_require__(33);
 var wks = __webpack_require__(5);
-var wksExt = __webpack_require__(97);
+var wksExt = __webpack_require__(98);
 var wksDefine = __webpack_require__(68);
-var enumKeys = __webpack_require__(139);
+var enumKeys = __webpack_require__(140);
 var isArray = __webpack_require__(54);
 var anObject = __webpack_require__(1);
 var isObject = __webpack_require__(4);
@@ -5499,7 +5683,7 @@ var toIObject = __webpack_require__(15);
 var toPrimitive = __webpack_require__(23);
 var createDesc = __webpack_require__(32);
 var _create = __webpack_require__(36);
-var gOPNExt = __webpack_require__(100);
+var gOPNExt = __webpack_require__(101);
 var $GOPD = __webpack_require__(16);
 var $GOPS = __webpack_require__(53);
 var $DP = __webpack_require__(8);
@@ -5724,14 +5908,14 @@ setToStringTag(global.JSON, 'JSON', true);
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(47)('native-function-to-string', Function.toString);
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // all enumerable object keys, includes symbols
@@ -5752,7 +5936,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -5761,7 +5945,7 @@ $export($export.S, 'Object', { create: __webpack_require__(36) });
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -5770,16 +5954,16 @@ $export($export.S + $export.F * !__webpack_require__(7), 'Object', { definePrope
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
 // 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
-$export($export.S + $export.F * !__webpack_require__(7), 'Object', { defineProperties: __webpack_require__(99) });
+$export($export.S + $export.F * !__webpack_require__(7), 'Object', { defineProperties: __webpack_require__(100) });
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
@@ -5794,7 +5978,7 @@ __webpack_require__(25)('getOwnPropertyDescriptor', function () {
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 Object.getPrototypeOf(O)
@@ -5809,7 +5993,7 @@ __webpack_require__(25)('getPrototypeOf', function () {
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 Object.keys(O)
@@ -5824,17 +6008,17 @@ __webpack_require__(25)('keys', function () {
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.7 Object.getOwnPropertyNames(O)
 __webpack_require__(25)('getOwnPropertyNames', function () {
-  return __webpack_require__(100).f;
+  return __webpack_require__(101).f;
 });
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.5 Object.freeze(O)
@@ -5849,7 +6033,7 @@ __webpack_require__(25)('freeze', function ($freeze) {
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.17 Object.seal(O)
@@ -5864,7 +6048,7 @@ __webpack_require__(25)('seal', function ($seal) {
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.15 Object.preventExtensions(O)
@@ -5879,7 +6063,7 @@ __webpack_require__(25)('preventExtensions', function ($preventExtensions) {
 
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.12 Object.isFrozen(O)
@@ -5893,7 +6077,7 @@ __webpack_require__(25)('isFrozen', function ($isFrozen) {
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.13 Object.isSealed(O)
@@ -5907,7 +6091,7 @@ __webpack_require__(25)('isSealed', function ($isSealed) {
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.11 Object.isExtensible(O)
@@ -5921,26 +6105,26 @@ __webpack_require__(25)('isExtensible', function ($isExtensible) {
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.3.1 Object.assign(target, source)
 var $export = __webpack_require__(0);
 
-$export($export.S + $export.F, 'Object', { assign: __webpack_require__(101) });
-
-
-/***/ }),
-/* 154 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.3.10 Object.is(value1, value2)
-var $export = __webpack_require__(0);
-$export($export.S, 'Object', { is: __webpack_require__(102) });
+$export($export.S + $export.F, 'Object', { assign: __webpack_require__(102) });
 
 
 /***/ }),
 /* 155 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.3.10 Object.is(value1, value2)
+var $export = __webpack_require__(0);
+$export($export.S, 'Object', { is: __webpack_require__(103) });
+
+
+/***/ }),
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.3.19 Object.setPrototypeOf(O, proto)
@@ -5949,7 +6133,7 @@ $export($export.S, 'Object', { setPrototypeOf: __webpack_require__(72).set });
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5966,17 +6150,17 @@ if (test + '' != '[object z]') {
 
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.2.3.2 / 15.3.4.5 Function.prototype.bind(thisArg, args...)
 var $export = __webpack_require__(0);
 
-$export($export.P, 'Function', { bind: __webpack_require__(103) });
+$export($export.P, 'Function', { bind: __webpack_require__(104) });
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var dP = __webpack_require__(8).f;
@@ -5998,7 +6182,7 @@ NAME in FProto || __webpack_require__(7) && dP(FProto, NAME, {
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6018,27 +6202,27 @@ if (!(HAS_INSTANCE in FunctionProto)) __webpack_require__(8).f(FunctionProto, HA
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
-var $parseInt = __webpack_require__(105);
+var $parseInt = __webpack_require__(106);
 // 18.2.5 parseInt(string, radix)
 $export($export.G + $export.F * (parseInt != $parseInt), { parseInt: $parseInt });
 
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
-var $parseFloat = __webpack_require__(106);
+var $parseFloat = __webpack_require__(107);
 // 18.2.4 parseFloat(string)
 $export($export.G + $export.F * (parseFloat != $parseFloat), { parseFloat: $parseFloat });
 
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6114,14 +6298,14 @@ if (!$Number(' 0o1') || !$Number('0b1') || $Number('+0x1')) {
 
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var $export = __webpack_require__(0);
 var toInteger = __webpack_require__(21);
-var aNumberValue = __webpack_require__(107);
+var aNumberValue = __webpack_require__(108);
 var repeat = __webpack_require__(75);
 var $toFixed = 1.0.toFixed;
 var floor = Math.floor;
@@ -6235,14 +6419,14 @@ $export($export.P + $export.F * (!!$toFixed && (
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var $export = __webpack_require__(0);
 var $fails = __webpack_require__(3);
-var aNumberValue = __webpack_require__(107);
+var aNumberValue = __webpack_require__(108);
 var $toPrecision = 1.0.toPrecision;
 
 $export($export.P + $export.F * ($fails(function () {
@@ -6260,7 +6444,7 @@ $export($export.P + $export.F * ($fails(function () {
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.1 Number.EPSILON
@@ -6270,7 +6454,7 @@ $export($export.S, 'Number', { EPSILON: Math.pow(2, -52) });
 
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.2 Number.isFinite(number)
@@ -6285,17 +6469,17 @@ $export($export.S, 'Number', {
 
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.3 Number.isInteger(number)
 var $export = __webpack_require__(0);
 
-$export($export.S, 'Number', { isInteger: __webpack_require__(108) });
+$export($export.S, 'Number', { isInteger: __webpack_require__(109) });
 
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.4 Number.isNaN(number)
@@ -6310,12 +6494,12 @@ $export($export.S, 'Number', {
 
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.5 Number.isSafeInteger(number)
 var $export = __webpack_require__(0);
-var isInteger = __webpack_require__(108);
+var isInteger = __webpack_require__(109);
 var abs = Math.abs;
 
 $export($export.S, 'Number', {
@@ -6326,7 +6510,7 @@ $export($export.S, 'Number', {
 
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.6 Number.MAX_SAFE_INTEGER
@@ -6336,7 +6520,7 @@ $export($export.S, 'Number', { MAX_SAFE_INTEGER: 0x1fffffffffffff });
 
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.1.2.10 Number.MIN_SAFE_INTEGER
@@ -6346,32 +6530,32 @@ $export($export.S, 'Number', { MIN_SAFE_INTEGER: -0x1fffffffffffff });
 
 
 /***/ }),
-/* 172 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export = __webpack_require__(0);
-var $parseFloat = __webpack_require__(106);
-// 20.1.2.12 Number.parseFloat(string)
-$export($export.S + $export.F * (Number.parseFloat != $parseFloat), 'Number', { parseFloat: $parseFloat });
-
-
-/***/ }),
 /* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
-var $parseInt = __webpack_require__(105);
-// 20.1.2.13 Number.parseInt(string, radix)
-$export($export.S + $export.F * (Number.parseInt != $parseInt), 'Number', { parseInt: $parseInt });
+var $parseFloat = __webpack_require__(107);
+// 20.1.2.12 Number.parseFloat(string)
+$export($export.S + $export.F * (Number.parseFloat != $parseFloat), 'Number', { parseFloat: $parseFloat });
 
 
 /***/ }),
 /* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var $export = __webpack_require__(0);
+var $parseInt = __webpack_require__(106);
+// 20.1.2.13 Number.parseInt(string, radix)
+$export($export.S + $export.F * (Number.parseInt != $parseInt), 'Number', { parseInt: $parseInt });
+
+
+/***/ }),
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
 // 20.2.2.3 Math.acosh(x)
 var $export = __webpack_require__(0);
-var log1p = __webpack_require__(109);
+var log1p = __webpack_require__(110);
 var sqrt = Math.sqrt;
 var $acosh = Math.acosh;
 
@@ -6390,7 +6574,7 @@ $export($export.S + $export.F * !($acosh
 
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.5 Math.asinh(x)
@@ -6406,7 +6590,7 @@ $export($export.S + $export.F * !($asinh && 1 / $asinh(0) > 0), 'Math', { asinh:
 
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.7 Math.atanh(x)
@@ -6422,7 +6606,7 @@ $export($export.S + $export.F * !($atanh && 1 / $atanh(-0) < 0), 'Math', {
 
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.9 Math.cbrt(x)
@@ -6437,7 +6621,7 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.11 Math.clz32(x)
@@ -6451,7 +6635,7 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.12 Math.cosh(x)
@@ -6466,7 +6650,7 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.14 Math.expm1(x)
@@ -6477,17 +6661,17 @@ $export($export.S + $export.F * ($expm1 != Math.expm1), 'Math', { expm1: $expm1 
 
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.16 Math.fround(x)
 var $export = __webpack_require__(0);
 
-$export($export.S, 'Math', { fround: __webpack_require__(110) });
+$export($export.S, 'Math', { fround: __webpack_require__(111) });
 
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.17 Math.hypot([value1[, value2[, … ]]])
@@ -6518,7 +6702,7 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.18 Math.imul(x, y)
@@ -6541,7 +6725,7 @@ $export($export.S + $export.F * __webpack_require__(3)(function () {
 
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.21 Math.log10(x)
@@ -6555,17 +6739,17 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.20 Math.log1p(x)
 var $export = __webpack_require__(0);
 
-$export($export.S, 'Math', { log1p: __webpack_require__(109) });
+$export($export.S, 'Math', { log1p: __webpack_require__(110) });
 
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.22 Math.log2(x)
@@ -6579,7 +6763,7 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.28 Math.sign(x)
@@ -6589,7 +6773,7 @@ $export($export.S, 'Math', { sign: __webpack_require__(76) });
 
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.30 Math.sinh(x)
@@ -6610,7 +6794,7 @@ $export($export.S + $export.F * __webpack_require__(3)(function () {
 
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.33 Math.tanh(x)
@@ -6628,7 +6812,7 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.2.2.34 Math.trunc(x)
@@ -6642,7 +6826,7 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -6671,7 +6855,7 @@ $export($export.S + $export.F * (!!$fromCodePoint && $fromCodePoint.length != 1)
 
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -6695,7 +6879,7 @@ $export($export.S, 'String', {
 
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6709,7 +6893,7 @@ __webpack_require__(45)('trim', function ($trim) {
 
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6733,7 +6917,7 @@ __webpack_require__(78)(String, 'String', function (iterated) {
 
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6749,7 +6933,7 @@ $export($export.P, 'String', {
 
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6776,7 +6960,7 @@ $export($export.P + $export.F * __webpack_require__(81)(ENDS_WITH), 'String', {
 
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6795,7 +6979,7 @@ $export($export.P + $export.F * __webpack_require__(81)(INCLUDES), 'String', {
 
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -6807,7 +6991,7 @@ $export($export.P, 'String', {
 
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6832,7 +7016,7 @@ $export($export.P + $export.F * __webpack_require__(81)(STARTS_WITH), 'String', 
 
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6846,7 +7030,7 @@ __webpack_require__(13)('anchor', function (createHTML) {
 
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6860,7 +7044,7 @@ __webpack_require__(13)('big', function (createHTML) {
 
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6874,7 +7058,7 @@ __webpack_require__(13)('blink', function (createHTML) {
 
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6888,7 +7072,7 @@ __webpack_require__(13)('bold', function (createHTML) {
 
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6902,7 +7086,7 @@ __webpack_require__(13)('fixed', function (createHTML) {
 
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6916,7 +7100,7 @@ __webpack_require__(13)('fontcolor', function (createHTML) {
 
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6930,7 +7114,7 @@ __webpack_require__(13)('fontsize', function (createHTML) {
 
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6944,7 +7128,7 @@ __webpack_require__(13)('italics', function (createHTML) {
 
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6958,7 +7142,7 @@ __webpack_require__(13)('link', function (createHTML) {
 
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6972,7 +7156,7 @@ __webpack_require__(13)('small', function (createHTML) {
 
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6986,7 +7170,7 @@ __webpack_require__(13)('strike', function (createHTML) {
 
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7000,7 +7184,7 @@ __webpack_require__(13)('sub', function (createHTML) {
 
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7014,7 +7198,7 @@ __webpack_require__(13)('sup', function (createHTML) {
 
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.3.3.1 / 15.9.4.4 Date.now()
@@ -7024,7 +7208,7 @@ $export($export.S, 'Date', { now: function () { return new Date().getTime(); } }
 
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7047,12 +7231,12 @@ $export($export.P + $export.F * __webpack_require__(3)(function () {
 
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 20.3.4.36 / 15.9.5.43 Date.prototype.toISOString()
 var $export = __webpack_require__(0);
-var toISOString = __webpack_require__(216);
+var toISOString = __webpack_require__(217);
 
 // PhantomJS / old WebKit has a broken implementations
 $export($export.P + $export.F * (Date.prototype.toISOString !== toISOString), 'Date', {
@@ -7061,7 +7245,7 @@ $export($export.P + $export.F * (Date.prototype.toISOString !== toISOString), 'D
 
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7094,7 +7278,7 @@ module.exports = (fails(function () {
 
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var DateProto = Date.prototype;
@@ -7112,17 +7296,17 @@ if (new Date(NaN) + '' != INVALID_DATE) {
 
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var TO_PRIMITIVE = __webpack_require__(5)('toPrimitive');
 var proto = Date.prototype;
 
-if (!(TO_PRIMITIVE in proto)) __webpack_require__(11)(proto, TO_PRIMITIVE, __webpack_require__(219));
+if (!(TO_PRIMITIVE in proto)) __webpack_require__(11)(proto, TO_PRIMITIVE, __webpack_require__(220));
 
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7138,7 +7322,7 @@ module.exports = function (hint) {
 
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 22.1.2.2 / 15.4.3.2 Array.isArray(arg)
@@ -7148,7 +7332,7 @@ $export($export.S, 'Array', { isArray: __webpack_require__(54) });
 
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7156,7 +7340,7 @@ $export($export.S, 'Array', { isArray: __webpack_require__(54) });
 var ctx = __webpack_require__(19);
 var $export = __webpack_require__(0);
 var toObject = __webpack_require__(9);
-var call = __webpack_require__(111);
+var call = __webpack_require__(112);
 var isArrayIter = __webpack_require__(82);
 var toLength = __webpack_require__(6);
 var createProperty = __webpack_require__(83);
@@ -7192,7 +7376,7 @@ $export($export.S + $export.F * !__webpack_require__(57)(function (iter) { Array
 
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7218,7 +7402,7 @@ $export($export.S + $export.F * __webpack_require__(3)(function () {
 
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7237,7 +7421,7 @@ $export($export.P + $export.F * (__webpack_require__(48) != Object || !__webpack
 
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7272,7 +7456,7 @@ $export($export.P + $export.F * __webpack_require__(3)(function () {
 
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7302,7 +7486,7 @@ $export($export.P + $export.F * (fails(function () {
 
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7320,7 +7504,7 @@ $export($export.P + $export.F * !STRICT, 'Array', {
 
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(4);
@@ -7342,7 +7526,7 @@ module.exports = function (original) {
 
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7359,7 +7543,7 @@ $export($export.P + $export.F * !__webpack_require__(22)([].map, true), 'Array',
 
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7376,7 +7560,7 @@ $export($export.P + $export.F * !__webpack_require__(22)([].filter, true), 'Arra
 
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7393,7 +7577,7 @@ $export($export.P + $export.F * !__webpack_require__(22)([].some, true), 'Array'
 
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7410,13 +7594,13 @@ $export($export.P + $export.F * !__webpack_require__(22)([].every, true), 'Array
 
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var $export = __webpack_require__(0);
-var $reduce = __webpack_require__(112);
+var $reduce = __webpack_require__(113);
 
 $export($export.P + $export.F * !__webpack_require__(22)([].reduce, true), 'Array', {
   // 22.1.3.18 / 15.4.4.21 Array.prototype.reduce(callbackfn [, initialValue])
@@ -7427,13 +7611,13 @@ $export($export.P + $export.F * !__webpack_require__(22)([].reduce, true), 'Arra
 
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var $export = __webpack_require__(0);
-var $reduce = __webpack_require__(112);
+var $reduce = __webpack_require__(113);
 
 $export($export.P + $export.F * !__webpack_require__(22)([].reduceRight, true), 'Array', {
   // 22.1.3.19 / 15.4.4.22 Array.prototype.reduceRight(callbackfn [, initialValue])
@@ -7444,7 +7628,7 @@ $export($export.P + $export.F * !__webpack_require__(22)([].reduceRight, true), 
 
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7466,7 +7650,7 @@ $export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(22)($nati
 
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7495,19 +7679,19 @@ $export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(22)($nati
 
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 22.1.3.3 Array.prototype.copyWithin(target, start, end = this.length)
 var $export = __webpack_require__(0);
 
-$export($export.P, 'Array', { copyWithin: __webpack_require__(113) });
+$export($export.P, 'Array', { copyWithin: __webpack_require__(114) });
 
 __webpack_require__(31)('copyWithin');
 
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 22.1.3.6 Array.prototype.fill(value, start = 0, end = this.length)
@@ -7519,7 +7703,7 @@ __webpack_require__(31)('fill');
 
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7540,7 +7724,7 @@ __webpack_require__(31)(KEY);
 
 
 /***/ }),
-/* 239 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7561,14 +7745,14 @@ __webpack_require__(31)(KEY);
 
 
 /***/ }),
-/* 240 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(38)('Array');
 
 
 /***/ }),
-/* 241 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(2);
@@ -7617,12 +7801,12 @@ __webpack_require__(38)('RegExp');
 
 
 /***/ }),
-/* 242 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-__webpack_require__(116);
+__webpack_require__(117);
 var anObject = __webpack_require__(1);
 var $flags = __webpack_require__(50);
 var DESCRIPTORS = __webpack_require__(7);
@@ -7649,7 +7833,7 @@ if (__webpack_require__(3)(function () { return $toString.call({ source: 'a', fl
 
 
 /***/ }),
-/* 243 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7696,7 +7880,7 @@ __webpack_require__(59)('match', 1, function (defined, MATCH, $match, maybeCallN
 
 
 /***/ }),
-/* 244 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7821,14 +8005,14 @@ __webpack_require__(59)('replace', 2, function (defined, REPLACE, $replace, mayb
 
 
 /***/ }),
-/* 245 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var anObject = __webpack_require__(1);
-var sameValue = __webpack_require__(102);
+var sameValue = __webpack_require__(103);
 var regExpExec = __webpack_require__(58);
 
 // @@search logic
@@ -7859,7 +8043,7 @@ __webpack_require__(59)('search', 1, function (defined, SEARCH, $search, maybeCa
 
 
 /***/ }),
-/* 246 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8000,7 +8184,7 @@ __webpack_require__(59)('split', 2, function (defined, SPLIT, $split, maybeCallN
 
 
 /***/ }),
-/* 247 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8018,9 +8202,9 @@ var speciesConstructor = __webpack_require__(51);
 var task = __webpack_require__(90).set;
 var microtask = __webpack_require__(91)();
 var newPromiseCapabilityModule = __webpack_require__(92);
-var perform = __webpack_require__(117);
+var perform = __webpack_require__(118);
 var userAgent = __webpack_require__(60);
-var promiseResolve = __webpack_require__(118);
+var promiseResolve = __webpack_require__(119);
 var PROMISE = 'Promise';
 var TypeError = global.TypeError;
 var process = global.process;
@@ -8293,12 +8477,12 @@ $export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(57)(function
 
 
 /***/ }),
-/* 248 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var weak = __webpack_require__(123);
+var weak = __webpack_require__(124);
 var validate = __webpack_require__(42);
 var WEAK_SET = 'WeakSet';
 
@@ -8314,7 +8498,7 @@ __webpack_require__(61)(WEAK_SET, function (get) {
 
 
 /***/ }),
-/* 249 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8367,7 +8551,7 @@ __webpack_require__(38)(ARRAY_BUFFER);
 
 
 /***/ }),
-/* 250 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -8377,7 +8561,7 @@ $export($export.G + $export.W + $export.F * !__webpack_require__(62).ABV, {
 
 
 /***/ }),
-/* 251 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(27)('Int8', 1, function (init) {
@@ -8388,7 +8572,7 @@ __webpack_require__(27)('Int8', 1, function (init) {
 
 
 /***/ }),
-/* 252 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(27)('Uint8', 1, function (init) {
@@ -8399,7 +8583,7 @@ __webpack_require__(27)('Uint8', 1, function (init) {
 
 
 /***/ }),
-/* 253 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(27)('Uint8', 1, function (init) {
@@ -8410,7 +8594,7 @@ __webpack_require__(27)('Uint8', 1, function (init) {
 
 
 /***/ }),
-/* 254 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(27)('Int16', 2, function (init) {
@@ -8421,7 +8605,7 @@ __webpack_require__(27)('Int16', 2, function (init) {
 
 
 /***/ }),
-/* 255 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(27)('Uint16', 2, function (init) {
@@ -8432,7 +8616,7 @@ __webpack_require__(27)('Uint16', 2, function (init) {
 
 
 /***/ }),
-/* 256 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(27)('Int32', 4, function (init) {
@@ -8443,7 +8627,7 @@ __webpack_require__(27)('Int32', 4, function (init) {
 
 
 /***/ }),
-/* 257 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(27)('Uint32', 4, function (init) {
@@ -8454,7 +8638,7 @@ __webpack_require__(27)('Uint32', 4, function (init) {
 
 
 /***/ }),
-/* 258 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(27)('Float32', 4, function (init) {
@@ -8465,7 +8649,7 @@ __webpack_require__(27)('Float32', 4, function (init) {
 
 
 /***/ }),
-/* 259 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(27)('Float64', 8, function (init) {
@@ -8476,7 +8660,7 @@ __webpack_require__(27)('Float64', 8, function (init) {
 
 
 /***/ }),
-/* 260 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.1 Reflect.apply(target, thisArgument, argumentsList)
@@ -8498,7 +8682,7 @@ $export($export.S + $export.F * !__webpack_require__(3)(function () {
 
 
 /***/ }),
-/* 261 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
@@ -8508,7 +8692,7 @@ var aFunction = __webpack_require__(10);
 var anObject = __webpack_require__(1);
 var isObject = __webpack_require__(4);
 var fails = __webpack_require__(3);
-var bind = __webpack_require__(103);
+var bind = __webpack_require__(104);
 var rConstruct = (__webpack_require__(2).Reflect || {}).construct;
 
 // MS Edge supports only 2 arguments and argumentsList argument is optional
@@ -8551,7 +8735,7 @@ $export($export.S + $export.F * (NEW_TARGET_BUG || ARGS_BUG), 'Reflect', {
 
 
 /***/ }),
-/* 262 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.3 Reflect.defineProperty(target, propertyKey, attributes)
@@ -8580,7 +8764,7 @@ $export($export.S + $export.F * __webpack_require__(3)(function () {
 
 
 /***/ }),
-/* 263 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.4 Reflect.deleteProperty(target, propertyKey)
@@ -8597,7 +8781,7 @@ $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 264 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8630,7 +8814,7 @@ $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 265 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.6 Reflect.get(target, propertyKey [, receiver])
@@ -8657,7 +8841,7 @@ $export($export.S, 'Reflect', { get: get });
 
 
 /***/ }),
-/* 266 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.7 Reflect.getOwnPropertyDescriptor(target, propertyKey)
@@ -8673,7 +8857,7 @@ $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 267 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.8 Reflect.getPrototypeOf(target)
@@ -8689,7 +8873,7 @@ $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 268 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.9 Reflect.has(target, propertyKey)
@@ -8703,7 +8887,7 @@ $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 269 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.10 Reflect.isExtensible(target)
@@ -8720,17 +8904,17 @@ $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 270 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.11 Reflect.ownKeys(target)
 var $export = __webpack_require__(0);
 
-$export($export.S, 'Reflect', { ownKeys: __webpack_require__(125) });
+$export($export.S, 'Reflect', { ownKeys: __webpack_require__(126) });
 
 
 /***/ }),
-/* 271 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.12 Reflect.preventExtensions(target)
@@ -8752,7 +8936,7 @@ $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 272 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.13 Reflect.set(target, propertyKey, V [, receiver])
@@ -8791,7 +8975,7 @@ $export($export.S, 'Reflect', { set: set });
 
 
 /***/ }),
-/* 273 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.14 Reflect.setPrototypeOf(target, proto)
@@ -8812,7 +8996,7 @@ if (setProto) $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 274 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8831,14 +9015,14 @@ __webpack_require__(31)('includes');
 
 
 /***/ }),
-/* 275 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // https://tc39.github.io/proposal-flatMap/#sec-Array.prototype.flatMap
 var $export = __webpack_require__(0);
-var flattenIntoArray = __webpack_require__(126);
+var flattenIntoArray = __webpack_require__(127);
 var toObject = __webpack_require__(9);
 var toLength = __webpack_require__(6);
 var aFunction = __webpack_require__(10);
@@ -8860,14 +9044,14 @@ __webpack_require__(31)('flatMap');
 
 
 /***/ }),
-/* 276 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // https://tc39.github.io/proposal-flatMap/#sec-Array.prototype.flatten
 var $export = __webpack_require__(0);
-var flattenIntoArray = __webpack_require__(126);
+var flattenIntoArray = __webpack_require__(127);
 var toObject = __webpack_require__(9);
 var toLength = __webpack_require__(6);
 var toInteger = __webpack_require__(21);
@@ -8888,7 +9072,7 @@ __webpack_require__(31)('flatten');
 
 
 /***/ }),
-/* 277 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8910,14 +9094,14 @@ $export($export.P + $export.F * FORCED, 'String', {
 
 
 /***/ }),
-/* 278 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // https://github.com/tc39/proposal-string-pad-start-end
 var $export = __webpack_require__(0);
-var $pad = __webpack_require__(127);
+var $pad = __webpack_require__(128);
 var userAgent = __webpack_require__(60);
 
 // https://github.com/zloirock/core-js/issues/280
@@ -8931,14 +9115,14 @@ $export($export.P + $export.F * WEBKIT_BUG, 'String', {
 
 
 /***/ }),
-/* 279 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // https://github.com/tc39/proposal-string-pad-start-end
 var $export = __webpack_require__(0);
-var $pad = __webpack_require__(127);
+var $pad = __webpack_require__(128);
 var userAgent = __webpack_require__(60);
 
 // https://github.com/zloirock/core-js/issues/280
@@ -8952,7 +9136,7 @@ $export($export.P + $export.F * WEBKIT_BUG, 'String', {
 
 
 /***/ }),
-/* 280 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8966,7 +9150,7 @@ __webpack_require__(45)('trimLeft', function ($trim) {
 
 
 /***/ }),
-/* 281 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8980,7 +9164,7 @@ __webpack_require__(45)('trimRight', function ($trim) {
 
 
 /***/ }),
-/* 282 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9017,26 +9201,26 @@ $export($export.P, 'String', {
 
 
 /***/ }),
-/* 283 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(68)('asyncIterator');
 
 
 /***/ }),
-/* 284 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(68)('observable');
 
 
 /***/ }),
-/* 285 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/tc39/proposal-object-getownpropertydescriptors
 var $export = __webpack_require__(0);
-var ownKeys = __webpack_require__(125);
+var ownKeys = __webpack_require__(126);
 var toIObject = __webpack_require__(15);
 var gOPD = __webpack_require__(16);
 var createProperty = __webpack_require__(83);
@@ -9059,12 +9243,12 @@ $export($export.S, 'Object', {
 
 
 /***/ }),
-/* 286 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/tc39/proposal-object-values-entries
 var $export = __webpack_require__(0);
-var $values = __webpack_require__(128)(false);
+var $values = __webpack_require__(129)(false);
 
 $export($export.S, 'Object', {
   values: function values(it) {
@@ -9074,12 +9258,12 @@ $export($export.S, 'Object', {
 
 
 /***/ }),
-/* 287 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/tc39/proposal-object-values-entries
 var $export = __webpack_require__(0);
-var $entries = __webpack_require__(128)(true);
+var $entries = __webpack_require__(129)(true);
 
 $export($export.S, 'Object', {
   entries: function entries(it) {
@@ -9089,7 +9273,7 @@ $export($export.S, 'Object', {
 
 
 /***/ }),
-/* 288 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9108,7 +9292,7 @@ __webpack_require__(7) && $export($export.P + __webpack_require__(63), 'Object',
 
 
 /***/ }),
-/* 289 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9127,7 +9311,7 @@ __webpack_require__(7) && $export($export.P + __webpack_require__(63), 'Object',
 
 
 /***/ }),
-/* 290 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9152,7 +9336,7 @@ __webpack_require__(7) && $export($export.P + __webpack_require__(63), 'Object',
 
 
 /***/ }),
-/* 291 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9177,27 +9361,27 @@ __webpack_require__(7) && $export($export.P + __webpack_require__(63), 'Object',
 
 
 /***/ }),
-/* 292 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://github.com/DavidBruant/Map-Set.prototype.toJSON
-var $export = __webpack_require__(0);
-
-$export($export.P + $export.R, 'Map', { toJSON: __webpack_require__(129)('Map') });
-
-
-/***/ }),
 /* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/DavidBruant/Map-Set.prototype.toJSON
 var $export = __webpack_require__(0);
 
-$export($export.P + $export.R, 'Set', { toJSON: __webpack_require__(129)('Set') });
+$export($export.P + $export.R, 'Map', { toJSON: __webpack_require__(130)('Map') });
 
 
 /***/ }),
 /* 294 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://github.com/DavidBruant/Map-Set.prototype.toJSON
+var $export = __webpack_require__(0);
+
+$export($export.P + $export.R, 'Set', { toJSON: __webpack_require__(130)('Set') });
+
+
+/***/ }),
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://tc39.github.io/proposal-setmap-offrom/#sec-map.of
@@ -9205,7 +9389,7 @@ __webpack_require__(64)('Map');
 
 
 /***/ }),
-/* 295 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://tc39.github.io/proposal-setmap-offrom/#sec-set.of
@@ -9213,7 +9397,7 @@ __webpack_require__(64)('Set');
 
 
 /***/ }),
-/* 296 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://tc39.github.io/proposal-setmap-offrom/#sec-weakmap.of
@@ -9221,7 +9405,7 @@ __webpack_require__(64)('WeakMap');
 
 
 /***/ }),
-/* 297 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://tc39.github.io/proposal-setmap-offrom/#sec-weakset.of
@@ -9229,7 +9413,7 @@ __webpack_require__(64)('WeakSet');
 
 
 /***/ }),
-/* 298 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://tc39.github.io/proposal-setmap-offrom/#sec-map.from
@@ -9237,7 +9421,7 @@ __webpack_require__(65)('Map');
 
 
 /***/ }),
-/* 299 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://tc39.github.io/proposal-setmap-offrom/#sec-set.from
@@ -9245,7 +9429,7 @@ __webpack_require__(65)('Set');
 
 
 /***/ }),
-/* 300 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://tc39.github.io/proposal-setmap-offrom/#sec-weakmap.from
@@ -9253,21 +9437,11 @@ __webpack_require__(65)('WeakMap');
 
 
 /***/ }),
-/* 301 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://tc39.github.io/proposal-setmap-offrom/#sec-weakset.from
 __webpack_require__(65)('WeakSet');
-
-
-/***/ }),
-/* 302 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://github.com/tc39/proposal-global
-var $export = __webpack_require__(0);
-
-$export($export.G, { global: __webpack_require__(2) });
 
 
 /***/ }),
@@ -9277,11 +9451,21 @@ $export($export.G, { global: __webpack_require__(2) });
 // https://github.com/tc39/proposal-global
 var $export = __webpack_require__(0);
 
-$export($export.S, 'System', { global: __webpack_require__(2) });
+$export($export.G, { global: __webpack_require__(2) });
 
 
 /***/ }),
 /* 304 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://github.com/tc39/proposal-global
+var $export = __webpack_require__(0);
+
+$export($export.S, 'System', { global: __webpack_require__(2) });
+
+
+/***/ }),
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/ljharb/proposal-is-error
@@ -9296,7 +9480,7 @@ $export($export.S, 'Error', {
 
 
 /***/ }),
-/* 305 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://rwaldron.github.io/proposal-math-extensions/
@@ -9310,7 +9494,7 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 306 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://rwaldron.github.io/proposal-math-extensions/
@@ -9320,7 +9504,7 @@ $export($export.S, 'Math', { DEG_PER_RAD: Math.PI / 180 });
 
 
 /***/ }),
-/* 307 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://rwaldron.github.io/proposal-math-extensions/
@@ -9335,13 +9519,13 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 308 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://rwaldron.github.io/proposal-math-extensions/
 var $export = __webpack_require__(0);
-var scale = __webpack_require__(131);
-var fround = __webpack_require__(110);
+var scale = __webpack_require__(132);
+var fround = __webpack_require__(111);
 
 $export($export.S, 'Math', {
   fscale: function fscale(x, inLow, inHigh, outLow, outHigh) {
@@ -9351,7 +9535,7 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 309 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://gist.github.com/BrendanEich/4294d5c212a6d2254703
@@ -9368,7 +9552,7 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 310 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://gist.github.com/BrendanEich/4294d5c212a6d2254703
@@ -9385,7 +9569,7 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 311 */
+/* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://gist.github.com/BrendanEich/4294d5c212a6d2254703
@@ -9407,7 +9591,7 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 312 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://rwaldron.github.io/proposal-math-extensions/
@@ -9417,7 +9601,7 @@ $export($export.S, 'Math', { RAD_PER_DEG: 180 / Math.PI });
 
 
 /***/ }),
-/* 313 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://rwaldron.github.io/proposal-math-extensions/
@@ -9432,17 +9616,17 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 314 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://rwaldron.github.io/proposal-math-extensions/
 var $export = __webpack_require__(0);
 
-$export($export.S, 'Math', { scale: __webpack_require__(131) });
+$export($export.S, 'Math', { scale: __webpack_require__(132) });
 
 
 /***/ }),
-/* 315 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://gist.github.com/BrendanEich/4294d5c212a6d2254703
@@ -9464,7 +9648,7 @@ $export($export.S, 'Math', {
 
 
 /***/ }),
-/* 316 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // http://jfbastien.github.io/papers/Math.signbit.html
@@ -9477,7 +9661,7 @@ $export($export.S, 'Math', { signbit: function signbit(x) {
 
 
 /***/ }),
-/* 317 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9487,7 +9671,7 @@ var $export = __webpack_require__(0);
 var core = __webpack_require__(18);
 var global = __webpack_require__(2);
 var speciesConstructor = __webpack_require__(51);
-var promiseResolve = __webpack_require__(118);
+var promiseResolve = __webpack_require__(119);
 
 $export($export.P + $export.R, 'Promise', { 'finally': function (onFinally) {
   var C = speciesConstructor(this, core.Promise || global.Promise);
@@ -9504,7 +9688,7 @@ $export($export.P + $export.R, 'Promise', { 'finally': function (onFinally) {
 
 
 /***/ }),
-/* 318 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9512,7 +9696,7 @@ $export($export.P + $export.R, 'Promise', { 'finally': function (onFinally) {
 // https://github.com/tc39/proposal-promise-try
 var $export = __webpack_require__(0);
 var newPromiseCapability = __webpack_require__(92);
-var perform = __webpack_require__(117);
+var perform = __webpack_require__(118);
 
 $export($export.S, 'Promise', { 'try': function (callbackfn) {
   var promiseCapability = newPromiseCapability.f(this);
@@ -9523,7 +9707,7 @@ $export($export.S, 'Promise', { 'try': function (callbackfn) {
 
 
 /***/ }),
-/* 319 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata = __webpack_require__(28);
@@ -9537,7 +9721,7 @@ metadata.exp({ defineMetadata: function defineMetadata(metadataKey, metadataValu
 
 
 /***/ }),
-/* 320 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata = __webpack_require__(28);
@@ -9558,7 +9742,7 @@ metadata.exp({ deleteMetadata: function deleteMetadata(metadataKey, target /* , 
 
 
 /***/ }),
-/* 321 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata = __webpack_require__(28);
@@ -9581,11 +9765,11 @@ metadata.exp({ getMetadata: function getMetadata(metadataKey, target /* , target
 
 
 /***/ }),
-/* 322 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Set = __webpack_require__(121);
-var from = __webpack_require__(130);
+var Set = __webpack_require__(122);
+var from = __webpack_require__(131);
 var metadata = __webpack_require__(28);
 var anObject = __webpack_require__(1);
 var getPrototypeOf = __webpack_require__(17);
@@ -9606,7 +9790,7 @@ metadata.exp({ getMetadataKeys: function getMetadataKeys(target /* , targetKey *
 
 
 /***/ }),
-/* 323 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata = __webpack_require__(28);
@@ -9621,7 +9805,7 @@ metadata.exp({ getOwnMetadata: function getOwnMetadata(metadataKey, target /* , 
 
 
 /***/ }),
-/* 324 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata = __webpack_require__(28);
@@ -9635,7 +9819,7 @@ metadata.exp({ getOwnMetadataKeys: function getOwnMetadataKeys(target /* , targe
 
 
 /***/ }),
-/* 325 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata = __webpack_require__(28);
@@ -9657,7 +9841,7 @@ metadata.exp({ hasMetadata: function hasMetadata(metadataKey, target /* , target
 
 
 /***/ }),
-/* 326 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var metadata = __webpack_require__(28);
@@ -9672,7 +9856,7 @@ metadata.exp({ hasOwnMetadata: function hasOwnMetadata(metadataKey, target /* , 
 
 
 /***/ }),
-/* 327 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $metadata = __webpack_require__(28);
@@ -9693,7 +9877,7 @@ $metadata.exp({ metadata: function metadata(metadataKey, metadataValue) {
 
 
 /***/ }),
-/* 328 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/rwaldron/tc39-notes/blob/master/es6/2014-09/sept-25.md#510-globalasap-for-enqueuing-a-microtask
@@ -9711,7 +9895,7 @@ $export($export.G, {
 
 
 /***/ }),
-/* 329 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9917,7 +10101,7 @@ __webpack_require__(38)('Observable');
 
 
 /***/ }),
-/* 330 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // ie9- setTimeout & setInterval additional parameters fix
@@ -9943,7 +10127,7 @@ $export($export.G + $export.B + $export.F * MSIE, {
 
 
 /***/ }),
-/* 331 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
@@ -9955,7 +10139,7 @@ $export($export.G + $export.B, {
 
 
 /***/ }),
-/* 332 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $iterators = __webpack_require__(87);
@@ -10019,7 +10203,7 @@ for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++
 
 
 /***/ }),
-/* 333 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -10759,29 +10943,29 @@ for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++
   typeof self === "object" ? self : this
 );
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(95)))
-
-/***/ }),
-/* 334 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(335);
-module.exports = __webpack_require__(18).RegExp.escape;
-
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(96)))
 
 /***/ }),
 /* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(336);
+module.exports = __webpack_require__(18).RegExp.escape;
+
+
+/***/ }),
+/* 336 */
+/***/ (function(module, exports, __webpack_require__) {
+
 // https://github.com/benjamingr/RexExp.escape
 var $export = __webpack_require__(0);
-var $re = __webpack_require__(336)(/[\\^$*+?.()|[\]{}]/g, '\\$&');
+var $re = __webpack_require__(337)(/[\\^$*+?.()|[\]{}]/g, '\\$&');
 
 $export($export.S, 'RegExp', { escape: function escape(it) { return $re(it); } });
 
 
 /***/ }),
-/* 336 */
+/* 337 */
 /***/ (function(module, exports) {
 
 module.exports = function (regExp, replace) {
@@ -10795,20 +10979,20 @@ module.exports = function (regExp, replace) {
 
 
 /***/ }),
-/* 337 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _event_listeners = __webpack_require__(338);
+var _event_listeners = __webpack_require__(339);
 
 document.addEventListener('DOMContentLoaded', function () {
 	(0, _event_listeners.globeEvHandler)();
 });
 
 /***/ }),
-/* 338 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10821,13 +11005,57 @@ exports.globeEvHandler = globeEvHandler;
 
 var _global_dom = __webpack_require__(66);
 
-var _selectFunctions = __webpack_require__(132);
+var _selectFunctions = __webpack_require__(133);
 
 var _base_options_list = __webpack_require__(94);
 
-var _ui = __webpack_require__(133);
+var _ui = __webpack_require__(134);
+
+var _global_vars = __webpack_require__(95);
+
+var _localStorage = __webpack_require__(343);
 
 function globeEvHandler() {
+	(0, _ui.ls_getScrollPos)();
+	(0, _ui.ls_getBtnSelectorStyle)();
+
+	//selecting motor standard:
+	_global_dom.btn.selectorMotor_5ai.onclick = _global_dom.btn.selectorMotor_din.onclick = function (e) {
+		switch (e.target.id) {
+			case 'btn-5ai-select':
+				if (Array.from(e.target.classList).some(function (className) {
+					return className.includes('btn-option-non-selected');
+				})) {
+					_global_dom.btn.selectorMotor_din.classList.replace('btn-option-selected', 'btn-option-non-selected');
+					e.target.classList.replace('btn-option-non-selected', 'btn-option-selected');
+					_global_dom.checkboxConicShaft.parentElement.style.display = 'block';
+
+					_global_vars.motorStandartSetter.setMotorStandart(e.target.id);
+					(0, _localStorage.ls_keepStandardChoice)('5АИ');
+					_ui.mask.mask !== undefined && typeof _ui.mask.mask !== 'undefined' && _ui.mask.getMaskParams();
+					e.preventDefault();
+				}
+
+				break;
+
+			case 'btn-din-select':
+				if (Array.from(e.target.classList).some(function (className) {
+					return className.includes('btn-option-non-selected');
+				})) {
+					_global_dom.btn.selectorMotor_5ai.classList.replace('btn-option-selected', 'btn-option-non-selected');
+					e.target.classList.replace('btn-option-non-selected', 'btn-option-selected');
+					_global_dom.checkboxConicShaft.parentElement.style.display = 'none';
+
+					_global_vars.motorStandartSetter.setMotorStandart(e.target.id);
+					(0, _localStorage.ls_keepStandardChoice)('ESQ');
+					_ui.mask.mask !== undefined && typeof _ui.mask.mask !== 'undefined' && _ui.mask.getMaskParams();
+					e.preventDefault();
+				}
+
+				break;
+		}
+	};
+
 	//searching for a model against input:
 	_global_dom.inputModel.oninput = function (e) {
 		return (0, _selectFunctions.searchModel)(e);
@@ -10902,7 +11130,6 @@ function globeEvHandler() {
 
 	//choosing encoder:
 	_global_dom.checkboxEncoder.addEventListener('change', function (e) {
-		console.log(e.target.getAttribute('type'));
 		(0, _selectFunctions.getOptions)([_global_dom.selectorBrakes], 'resetOptionsList');
 		(0, _selectFunctions.setModelDescription)();
 		(0, _selectFunctions.fillUpgradesChart)();
@@ -11026,7 +11253,7 @@ function globeEvHandler() {
 			    brakeType = _selectFunctions.optionsSelector.brakeType;
 
 
-			(0, _base_options_list.fillBaseOptions)(frameSize, encoderIsChecked, ventSystemOptionValue, brakeType, document.getElementById('checkbox-currentInsulatingBearing').checked, document.getElementById('selector-importBearings').value, e.target.value);
+			_base_options_list.optionsConfig.fillBaseOptions(frameSize, encoderIsChecked, ventSystemOptionValue, brakeType, document.getElementById('checkbox-currentInsulatingBearing').checked, document.getElementById('selector-importBearings').value, e.target.value);
 
 			(0, _selectFunctions.populateOptionsList)([_global_dom.selectorVentSystem], [_base_options_list.optionsConfig.ventSystem], 'resetOptionsList');
 			(0, _selectFunctions.setModelName)();
@@ -11081,19 +11308,11 @@ function globeEvHandler() {
 	window.onresize = function () {
 		_ui.mask.mask !== undefined && typeof _ui.mask.mask !== 'undefined' && _ui.mask.getMaskParams();
 	};
+
+	window.onbeforeunload = function () {
+		return (0, _localStorage.ls_keepScrollPosY)(document.documentElement.scrollTop);
+	};
 }
-
-/***/ }),
-/* 339 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var regex = exports.regex = /^(?!\s*$).+/;
 
 /***/ }),
 /* 340 */
@@ -11113,8 +11332,7 @@ var motorData = [{
 		series: ['MA2', 'MA4', 'MB2', 'MB4'],
 		power: [0.09, 0.06, 0.12, 0.09],
 		voltage: '220/380',
-		rpm: [3000, 1500, 3000, 1500],
-		statorCurrent: ['0.52/0.3', '0.47/0.27', '0.64/0.37', '0.68/0.39']
+		rpm: [3000, 1500, 3000, 1500]
 	}
 }, {
 	standard: '5АИ',
@@ -11123,8 +11341,7 @@ var motorData = [{
 		series: ['A2', 'A4', 'A6', 'B2', 'B4', 'B6'],
 		power: [0.37, 0.25, 0.18, 0.55, 0.37, 0.25],
 		voltage: '220/380',
-		rpm: [3000, 1500, 1000, 3000, 1500, 1000],
-		statorCurrent: ['1.6/0.92', '1.44/0.83', '1.33/0.77', '2.27/1.31', '2.04/1.18', '1.65/0.95']
+		rpm: [3000, 1500, 1000, 3000, 1500, 1000]
 	}
 }, {
 	standard: '5АИ',
@@ -11133,8 +11350,25 @@ var motorData = [{
 		series: ['M2', 'M4', 'M6', 'M8', 'L2', 'L4', 'L6', 'L8'],
 		power: [37, 37, 22, 18.5, 45, 45, 30, 22],
 		voltage: '380/660',
-		rpm: [3000, 1500, 1000, 750, 3000, 1500, 1000, 750],
-		statorCurrent: ['69.52/40.03', '68.37/39.36', '44.27/25.49', '39.04/22.48', '82.67/47.6', '83.15/47.87', '59.65/34.35', '45.91/26.43']
+		rpm: [3000, 1500, 1000, 750, 3000, 1500, 1000, 750]
+	}
+}, {
+	standard: 'ESQ',
+	techData: {
+		frameSize: 63,
+		series: ['A2-SDN', 'A4-SDN', 'A6-SDN', 'B2-SDN', 'B4-SDN', 'B6-SDN', 'D4-SDN'],
+		power: [0.18, 0.12, 0.09, 0.25, 0.18, 0.12, 0.25],
+		voltage: '380/660',
+		rpm: [3000, 1500, 1000, 3000, 1500, 1000, 1500]
+	}
+}, {
+	standard: 'ESQ',
+	techData: {
+		frameSize: 225,
+		series: ['M2-SDN', 'M4-SDN', 'M6-SDN', 'M8-SDN', 'M10-SDN', 'S4-SDN', 'S8-SDN', 'S10-SDN'],
+		power: [45, 45, 30, 22, 18.5, 37, 18.5, 15],
+		voltage: '380/660',
+		rpm: [3000, 1500, 1000, 750, 600, 1500, 750, 600]
 	}
 }];
 
@@ -11160,6 +11394,7 @@ motorData.forEach(function (motorObject) {
 
 	motorsAllSeries.push(motorObject.names.map(function (name, index) {
 		return {
+			standard: motorObject.standard,
 			name: name,
 			frameSize: frameSize,
 			power: power[index],
@@ -11410,7 +11645,7 @@ var _global_dom = __webpack_require__(66);
 
 var _base_options_list = __webpack_require__(94);
 
-var _selectFunctions = __webpack_require__(132);
+var _selectFunctions = __webpack_require__(133);
 
 //заливка доступного для габарита опционала при выборе модели двигателя:
 function fillExtraOptions() {
@@ -11617,6 +11852,26 @@ function showWarning() {
 			return index === 2 && node.remove();
 		});
 	}
+}
+
+/***/ }),
+/* 343 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.ls_keepStandardChoice = ls_keepStandardChoice;
+exports.ls_keepScrollPosY = ls_keepScrollPosY;
+function ls_keepStandardChoice(motorStandard) {
+	localStorage.setItem('standard-selected', motorStandard);
+}
+
+function ls_keepScrollPosY(scrollPosY) {
+	localStorage.setItem('scrollPosY', scrollPosY);
 }
 
 /***/ })
