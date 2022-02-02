@@ -11789,7 +11789,12 @@ function fillExtraOptions() {
 						_global_dom.areaSelection.insertBefore(listItem, _global_dom.checkboxConicShaft.parentElement);
 					});
 				}
-			}
+			} //если да - стираем существующие опции для энкодера:
+			else {
+					Array.from(_global_dom.areaSelection.children).forEach(function (child) {
+						return child.id.includes('encoder-group-id') && child.remove();
+					});
+				}
 		}
 }
 

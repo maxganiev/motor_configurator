@@ -152,6 +152,9 @@ export function fillExtraOptions() {
 					areaSelection.insertBefore(listItem, checkboxConicShaft.parentElement);
 				});
 			}
+		} //если да - стираем существующие опции для энкодера:
+		else {
+			Array.from(areaSelection.children).forEach((child) => child.id.includes('encoder-group-id') && child.remove());
 		}
 	}
 }
