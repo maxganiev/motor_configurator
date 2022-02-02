@@ -5388,11 +5388,13 @@ function ls_getBtnSelectorStyle() {
 		case '5АИ':
 			selectorMotor_din.classList.replace('btn-option-selected', 'btn-option-non-selected');
 			selectorMotor_5ai.classList.replace('btn-option-non-selected', 'btn-option-selected');
+			_global_dom.checkboxConicShaft.parentElement.style.display = 'block';
 			break;
 
 		case 'ESQ':
 			selectorMotor_din.classList.replace('btn-option-non-selected', 'btn-option-selected');
 			selectorMotor_5ai.classList.replace('btn-option-selected', 'btn-option-non-selected');
+			_global_dom.checkboxConicShaft.parentElement.style.display = 'none';
 			break;
 	}
 }
