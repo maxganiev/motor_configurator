@@ -3267,7 +3267,7 @@ var optionsConfig = exports.optionsConfig = {
 		}];
 
 		//лапы и фланцы (UI: select):
-		this.paws = _global_vars.motorStandartSetter.selected === '5АИ' ? //if 5AI:
+		this.paws = _global_vars.motorStandartSetter.selected === '5AI' ? //if 5AI:
 		motorFrameSize >= 112 ? [{
 			id: motorFrameSize >= 132 ? 'IM1001' : 'IM1081',
 			group: 'Лапы и фланцы',
@@ -4596,7 +4596,7 @@ var optionsSelector = exports.optionsSelector = {
 		this.brakeType = _global_dom.selectorBrakes.value === '' ? '-' : _global_dom.selectorBrakes.value;
 		this.encoderIsChecked = _global_dom.checkboxEncoder.checked;
 		this.conicShaftIsChecked = _global_dom.checkboxConicShaft.checked;
-		this.pawType = _global_dom.selectorPaws.value === '' && _global_vars.motorStandartSetter.selected === '5АИ' ? 'Лапы (1001/1081)' : _global_dom.selectorPaws.value === '' && _global_vars.motorStandartSetter.selected === 'ESQ' ? 'Лапы (B3)' : _global_dom.selectorPaws.value;
+		this.pawType = _global_dom.selectorPaws.value === '' && _global_vars.motorStandartSetter.selected === '5AI' ? 'Лапы (1001/1081)' : _global_dom.selectorPaws.value === '' && _global_vars.motorStandartSetter.selected === 'ESQ' ? 'Лапы (B3)' : _global_dom.selectorPaws.value;
 
 		//elements temporarily unacceccisble with initial render:
 		var checkboxCurrentInsulatingBearing = document.getElementById('checkbox-currentInsulatingBearing') === null && this.frameSize >= 200 ? true : document.getElementById('checkbox-currentInsulatingBearing') === null && this.frameSize < 200 ? false : document.getElementById('checkbox-currentInsulatingBearing').checked;
@@ -4707,13 +4707,13 @@ function populateOptionsList(selectorsId, srcData, operationType) {
 function getModel(query, targetArr) {
 	setTimeout(function () {
 		if (query.length > 4 && query.match(_global_vars.regex) !== null && typeof query === 'string') {
-			targetArr = _global_vars.motorStandartSetter.selected === '5АИ' ? _models.motorsAllSeriesFlatten.filter(function (result) {
+			targetArr = _global_vars.motorStandartSetter.selected === '5AI' ? _models.motorsAllSeriesFlatten.filter(function (result) {
 				return result.standard === '5АИ' && result.name.toLowerCase().includes(query.toLowerCase());
 			}) : _models.motorsAllSeriesFlatten.filter(function (result) {
 				return result.standard === 'ESQ' && result.name.toLowerCase().includes(query.toLowerCase());
 			});
 		} else if ((typeof query === 'undefined' ? 'undefined' : _typeof(query)) === 'object' && Array.isArray(query)) {
-			targetArr = _global_vars.motorStandartSetter.selected === '5АИ' ? _models.motorsAllSeriesFlatten.filter(function (result) {
+			targetArr = _global_vars.motorStandartSetter.selected === '5AI' ? _models.motorsAllSeriesFlatten.filter(function (result) {
 				return result.standard === '5АИ' && String(result.power) === String(query[0]) && String(result.rpm) === String(query[1]);
 			}) : _models.motorsAllSeriesFlatten.filter(function (result) {
 				return result.standard === 'ESQ' && String(result.power) === String(query[0]) && String(result.rpm) === String(query[1]);
@@ -4838,7 +4838,7 @@ function setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValu
 			if (brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked) {
 				restPath = path_vent_part + path_shaft_part.concat(_global_vars.motorStandartSetter.selected === 'ESQ' && !ventSystemOptionValue.includes('наездник') ? 'din/large_flange_paws/' : 'large_flange_paws/');
 			} else {
-				restPath = _global_vars.motorStandartSetter.selected === '5АИ' && frameSize <= 180 ? '2001_below_small.png' : _global_vars.motorStandartSetter.selected === '5АИ' && frameSize > 180 ? '2001_over_small.png' : _global_vars.motorStandartSetter.selected === 'ESQ' && frameSize < 225 ? 'imb35.png' : 'imb35_over225.png';
+				restPath = _global_vars.motorStandartSetter.selected === '5AI' && frameSize <= 180 ? '2001_below_small.png' : _global_vars.motorStandartSetter.selected === '5AI' && frameSize > 180 ? '2001_over_small.png' : _global_vars.motorStandartSetter.selected === 'ESQ' && frameSize < 225 ? 'imb35.png' : 'imb35_over225.png';
 			}
 			break;
 
@@ -4848,7 +4848,7 @@ function setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValu
 			if (brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked) {
 				restPath = path_vent_part + path_shaft_part.concat(_global_vars.motorStandartSetter.selected === 'ESQ' && !ventSystemOptionValue.includes('наездник') ? 'din/flange/' : 'flange/');
 			} else {
-				restPath = _global_vars.motorStandartSetter.selected === '5АИ' && frameSize <= 132 ? '3001_below_small.png' : _global_vars.motorStandartSetter.selected === '5АИ' && frameSize > 132 ? '3001_over.png' : _global_vars.motorStandartSetter.selected === 'ESQ' && frameSize < 225 ? 'imb5.png' : 'imb5_over225.png';
+				restPath = _global_vars.motorStandartSetter.selected === '5AI' && frameSize <= 132 ? '3001_below_small.png' : _global_vars.motorStandartSetter.selected === '5AI' && frameSize > 132 ? '3001_over.png' : _global_vars.motorStandartSetter.selected === 'ESQ' && frameSize < 225 ? 'imb5.png' : 'imb5_over225.png';
 			}
 
 			break;
@@ -4858,7 +4858,7 @@ function setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValu
 			if (brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked) {
 				restPath = path_vent_part + path_shaft_part + 'little_flange_paws/';
 			} else {
-				restPath = _global_vars.motorStandartSetter.selected === '5АИ' ? '2101_small.png' : 'imb34.png';
+				restPath = _global_vars.motorStandartSetter.selected === '5AI' ? '2101_small.png' : 'imb34.png';
 			}
 			break;
 
@@ -5385,7 +5385,7 @@ function ls_getBtnSelectorStyle() {
 		case null:
 			break;
 
-		case '5АИ':
+		case '5AI':
 			selectorMotor_din.classList.replace('btn-option-selected', 'btn-option-non-selected');
 			selectorMotor_5ai.classList.replace('btn-option-non-selected', 'btn-option-selected');
 			_global_dom.checkboxConicShaft.parentElement.style.display = 'block';
@@ -11033,7 +11033,7 @@ function globeEvHandler() {
 					_global_dom.checkboxConicShaft.parentElement.style.display = 'block';
 
 					_global_vars.motorStandartSetter.setMotorStandart(e.target.id);
-					(0, _localStorage.ls_keepStandardChoice)('5АИ');
+					(0, _localStorage.ls_keepStandardChoice)('5AI');
 					_ui.mask.mask !== undefined && typeof _ui.mask.mask !== 'undefined' && _ui.mask.getMaskParams();
 					e.preventDefault();
 				}
@@ -11737,6 +11737,7 @@ function fillExtraOptions() {
 			});
 
 			//добавление опций для энкодера:
+			//если энкодер выбран:
 			if (_selectFunctions.optionsSelector.encoderIsChecked) {
 				//проверяем, не было ли рендера для доп опций энкодера; если нет - заливаем:
 				if (Array.from(_global_dom.areaSelection.children).every(function (child) {
@@ -11791,7 +11792,7 @@ function fillExtraOptions() {
 						_global_dom.areaSelection.insertBefore(listItem, _global_dom.checkboxConicShaft.parentElement);
 					});
 				}
-			} //если да - стираем существующие опции для энкодера:
+			} //если нет - стираем существующие опции для энкодера:
 			else {
 					Array.from(_global_dom.areaSelection.children).forEach(function (child) {
 						return child.id.includes('encoder-group-id') && child.remove();

@@ -387,7 +387,7 @@ export const optionsConfig = {
 
 		//лапы и фланцы (UI: select):
 		this.paws =
-			motorStandartSetter.selected === '5АИ'
+			motorStandartSetter.selected === '5AI'
 				? //if 5AI:
 				  motorFrameSize >= 112
 					? [

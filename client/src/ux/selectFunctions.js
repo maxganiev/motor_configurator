@@ -114,7 +114,7 @@ export const optionsSelector = {
 		this.encoderIsChecked = checkboxEncoder.checked;
 		this.conicShaftIsChecked = checkboxConicShaft.checked;
 		this.pawType =
-			selectorPaws.value === '' && motorStandartSetter.selected === '5АИ'
+			selectorPaws.value === '' && motorStandartSetter.selected === '5AI'
 				? 'Лапы (1001/1081)'
 				: selectorPaws.value === '' && motorStandartSetter.selected === 'ESQ'
 				? 'Лапы (B3)'
@@ -235,7 +235,7 @@ export function getModel(query, targetArr) {
 	setTimeout(() => {
 		if (query.length > 4 && query.match(regex) !== null && typeof query === 'string') {
 			targetArr =
-				motorStandartSetter.selected === '5АИ'
+				motorStandartSetter.selected === '5AI'
 					? motorsAllSeriesFlatten.filter(
 							(result) => result.standard === '5АИ' && result.name.toLowerCase().includes(query.toLowerCase())
 					  )
@@ -244,7 +244,7 @@ export function getModel(query, targetArr) {
 					  );
 		} else if (typeof query === 'object' && Array.isArray(query)) {
 			targetArr =
-				motorStandartSetter.selected === '5АИ'
+				motorStandartSetter.selected === '5AI'
 					? motorsAllSeriesFlatten.filter(
 							(result) =>
 								result.standard === '5АИ' &&
@@ -419,9 +419,9 @@ function setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValu
 					);
 			} else {
 				restPath =
-					motorStandartSetter.selected === '5АИ' && frameSize <= 180
+					motorStandartSetter.selected === '5AI' && frameSize <= 180
 						? '2001_below_small.png'
-						: motorStandartSetter.selected === '5АИ' && frameSize > 180
+						: motorStandartSetter.selected === '5AI' && frameSize > 180
 						? '2001_over_small.png'
 						: motorStandartSetter.selected === 'ESQ' && frameSize < 225
 						? 'imb35.png'
@@ -442,9 +442,9 @@ function setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValu
 					);
 			} else {
 				restPath =
-					motorStandartSetter.selected === '5АИ' && frameSize <= 132
+					motorStandartSetter.selected === '5AI' && frameSize <= 132
 						? '3001_below_small.png'
-						: motorStandartSetter.selected === '5АИ' && frameSize > 132
+						: motorStandartSetter.selected === '5AI' && frameSize > 132
 						? '3001_over.png'
 						: motorStandartSetter.selected === 'ESQ' && frameSize < 225
 						? 'imb5.png'
@@ -458,7 +458,7 @@ function setDrawing(frameSize, brakeType, encoderIsChecked, ventSystemOptionValu
 			if (brakeType !== '-' || encoderIsChecked || ventSystemOptionValue !== '-' || conicShaftIsChecked) {
 				restPath = path_vent_part + path_shaft_part + 'little_flange_paws/';
 			} else {
-				restPath = motorStandartSetter.selected === '5АИ' ? '2101_small.png' : 'imb34.png';
+				restPath = motorStandartSetter.selected === '5AI' ? '2101_small.png' : 'imb34.png';
 			}
 			break;
 

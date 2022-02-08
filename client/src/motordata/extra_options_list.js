@@ -100,6 +100,7 @@ export function fillExtraOptions() {
 		);
 
 		//добавление опций для энкодера:
+		//если энкодер выбран:
 		if (optionsSelector.encoderIsChecked) {
 			//проверяем, не было ли рендера для доп опций энкодера; если нет - заливаем:
 			if (Array.from(areaSelection.children).every((child) => !child.id.includes('encoder-group-id'))) {
@@ -152,7 +153,7 @@ export function fillExtraOptions() {
 					areaSelection.insertBefore(listItem, checkboxConicShaft.parentElement);
 				});
 			}
-		} //если да - стираем существующие опции для энкодера:
+		} //если нет - стираем существующие опции для энкодера:
 		else {
 			Array.from(areaSelection.children).forEach((child) => child.id.includes('encoder-group-id') && child.remove());
 		}

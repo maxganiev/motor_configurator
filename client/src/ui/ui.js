@@ -24,7 +24,7 @@ export function ls_getBtnSelectorStyle() {
 		case null:
 			break;
 
-		case '5АИ':
+		case '5AI':
 			selectorMotor_din.classList.replace('btn-option-selected', 'btn-option-non-selected');
 			selectorMotor_5ai.classList.replace('btn-option-non-selected', 'btn-option-selected');
 			checkboxConicShaft.parentElement.style.display = 'block';

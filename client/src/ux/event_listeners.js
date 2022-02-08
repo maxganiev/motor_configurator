@@ -38,7 +38,7 @@ export function globeEvHandler() {
 					checkboxConicShaft.parentElement.style.display = 'block';
 
 					motorStandartSetter.setMotorStandart(e.target.id);
-					ls_keepStandardChoice('5АИ');
+					ls_keepStandardChoice('5AI');
 					mask.mask !== undefined && typeof mask.mask !== 'undefined' && mask.getMaskParams();
 					e.preventDefault();
 				}
