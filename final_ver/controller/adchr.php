@@ -3,12 +3,7 @@ class ControllerToolAdchrTestAdchr extends Controller
 {
 	public function index()
 	{
-
-		//замени на свои, как вариант создать папку catalog/view/javascript/podbor/adchr/test/adchr.js
-		$this->document->addScript('catalog/view/javascript/podbor/adchr.js');
-
-		/** Стили
-		$this->document->addStyle('catalog/view/theme/default/stylesheet/tool/adchr/test/adchr.css');*/
+		$this->document->addStyle('catalog/view/theme/default/stylesheet/tool/adchr/style.css');
 
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
