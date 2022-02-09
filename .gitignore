@@ -1,6 +1,4 @@
 .env
 node_modules/
-client/stuff
-client/node_modules
 archive/
 client/
