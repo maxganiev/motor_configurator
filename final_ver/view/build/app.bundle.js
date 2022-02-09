@@ -4570,7 +4570,7 @@ var getModel = exports.getModel = function () {
 						postData = [{ power: String(query[0]) }, { rpm: String(query[1]) }, { type: _global_vars.motorStandartSetter.selected }];
 
 						postData.forEach(function (data) {
-							return _formData.append(Object.keys(data)[0], Object.values(data));
+							return _formData.append(Object.keys(data)[0], Object.values(data)[0]);
 						});
 
 						_url = '/index.php?route=tool/adchr/test/adchr/get_data_by_power_and_rpm_selection';

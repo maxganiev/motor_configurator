@@ -257,7 +257,7 @@ export async function getModel(query, targetArr) {
 			const formData = new FormData();
 
 			const postData = [{ power: String(query[0]) }, { rpm: String(query[1]) }, { type: motorStandartSetter.selected }];
-			postData.forEach((data) => formData.append(Object.keys(data)[0], Object.values(data)));
+			postData.forEach((data) => formData.append(Object.keys(data)[0], Object.values(data)[0]));
 
 			const url = '/index.php?route=tool/adchr/test/adchr/get_data_by_power_and_rpm_selection';
 			const req = await fetch(url, {
