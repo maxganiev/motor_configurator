@@ -233,6 +233,7 @@ export function populateOptionsList(selectorsId, srcData, operationType) {
 export async function getModel(query, targetArr) {
 	if (query.length > 4 && query.match(regex) !== null && typeof query === 'string') {
 		try {
+			console.log(motorStandartSetter.selected);
 			const formData = new FormData();
 			formData.append('type', motorStandartSetter.selected);
 			formData.append('keyword', query.toUpperCase());

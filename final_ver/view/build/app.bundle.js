@@ -3473,9 +3473,9 @@ Object.defineProperty(exports, "__esModule", {
 var regex = exports.regex = /^(?!\s*$).+/;
 var motorStandartSetter = exports.motorStandartSetter = {
 	//5ai by default when page first uploaded:
-	selected: localStorage.getItem('standard-selected') === null ? '5АИ' : localStorage.getItem('standard-selected'),
+	selected: localStorage.getItem('standard-selected') === null ? '5AI' : localStorage.getItem('standard-selected'),
 	setMotorStandart: function setMotorStandart(btnId) {
-		this.selected = btnId === 'btn-5ai-select' ? '5АИ' : 'ESQ';
+		this.selected = btnId === 'btn-5ai-select' ? '5AI' : 'ESQ';
 	}
 };
 
@@ -4516,17 +4516,19 @@ var getModel = exports.getModel = function () {
 						};
 
 						if (!(query.length > 4 && query.match(_global_vars.regex) !== null && typeof query === 'string')) {
-							_context.next = 22;
+							_context.next = 23;
 							break;
 						}
 
 						_context.prev = 2;
+
+						console.log(_global_vars.motorStandartSetter.selected);
 						formData = new FormData();
 
 						formData.append('type', _global_vars.motorStandartSetter.selected);
 						formData.append('keyword', query.toUpperCase());
 						url = '/index.php?route=tool/adchr/test/adchr/get_data_by_input';
-						_context.next = 9;
+						_context.next = 10;
 						return fetch(url, {
 							method: 'POST',
 							body: formData,
@@ -4535,37 +4537,37 @@ var getModel = exports.getModel = function () {
 							}
 						});
 
-					case 9:
+					case 10:
 						req = _context.sent;
-						_context.next = 12;
+						_context.next = 13;
 						return req.json();
 
-					case 12:
+					case 13:
 						res = _context.sent;
 
 						targetArr = res;
 
 						console.log(res);
-						_context.next = 20;
+						_context.next = 21;
 						break;
 
-					case 17:
-						_context.prev = 17;
+					case 18:
+						_context.prev = 18;
 						_context.t0 = _context['catch'](2);
 
 						console.log(_context.t0);
 
-					case 20:
-						_context.next = 41;
+					case 21:
+						_context.next = 42;
 						break;
 
-					case 22:
+					case 23:
 						if (!((typeof query === 'undefined' ? 'undefined' : _typeof(query)) === 'object' && Array.isArray(query))) {
-							_context.next = 41;
+							_context.next = 42;
 							break;
 						}
 
-						_context.prev = 23;
+						_context.prev = 24;
 						_formData = new FormData();
 						postData = [{ power: String(query[0]) }, { rpm: String(query[1]) }, { type: _global_vars.motorStandartSetter.selected }];
 
@@ -4574,7 +4576,7 @@ var getModel = exports.getModel = function () {
 						});
 
 						_url = '/index.php?route=tool/adchr/test/adchr/get_data_by_power_and_rpm_selection';
-						_context.next = 30;
+						_context.next = 31;
 						return fetch(_url, {
 							method: 'POST',
 							body: _formData,
@@ -4583,27 +4585,27 @@ var getModel = exports.getModel = function () {
 							}
 						});
 
-					case 30:
+					case 31:
 						_req = _context.sent;
-						_context.next = 33;
+						_context.next = 34;
 						return _req.json();
 
-					case 33:
+					case 34:
 						_res = _context.sent;
 
 						targetArr = _res;
 
 						console.log(_res);
-						_context.next = 41;
+						_context.next = 42;
 						break;
 
-					case 38:
-						_context.prev = 38;
-						_context.t1 = _context['catch'](23);
+					case 39:
+						_context.prev = 39;
+						_context.t1 = _context['catch'](24);
 
 						console.log(_context.t1);
 
-					case 41:
+					case 42:
 
 						Array.from(_global_dom.selectorModel.children).forEach(function (child, index) {
 							return index !== 0 && child.remove();
@@ -4707,12 +4709,12 @@ var getModel = exports.getModel = function () {
 							});
 						}
 
-					case 45:
+					case 46:
 					case 'end':
 						return _context.stop();
 				}
 			}
-		}, _callee, this, [[2, 17], [23, 38]]);
+		}, _callee, this, [[2, 18], [24, 39]]);
 	}));
 
 	return function getModel(_x, _x2) {
