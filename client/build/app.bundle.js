@@ -3475,7 +3475,7 @@ var motorStandartSetter = exports.motorStandartSetter = {
 	//5ai by default when page first uploaded:
 	selected: localStorage.getItem('standard-selected') === null ? '5АИ' : localStorage.getItem('standard-selected'),
 	setMotorStandart: function setMotorStandart(btnId) {
-		this.selected = btnId === 'btn-5ai-select' ? '5АИ' : 'ESQ';
+		this.selected = btnId === 'btn-5ai-select' ? '5AI' : 'ESQ';
 	}
 };
 
